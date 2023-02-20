@@ -11,7 +11,7 @@
 ```
 https://picsum.photos/
 ```
-👉🏻 [picsum API 정리](https://www.notion.so/seom-seom/Picsum-API-233deb20e25544469142c8376ba4ead2)
+👉🏻 [picsum API 정리](https://seom-seom.notion.site/Picsum-API-233deb20e25544469142c8376ba4ead2)
 
 ### 🛠 3. 제한사항
 1. 네트워크 관련 라이브러리를 제외한 라이브러리는 사용 불가
