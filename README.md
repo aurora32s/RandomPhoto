@@ -11,10 +11,14 @@
 ```
 https://picsum.photos/
 ```
-👉🏻 [picsum API 정리](https://seom-seom.notion.site/Picsum-API-233deb20e25544469142c8376ba4ead2)
-
 ### 🛠 3. 제한사항
 1. 네트워크 관련 라이브러리를 제외한 라이브러리는 사용 불가
 2. 이미지 로드 시 DiskCache까지 가능하도록 설계 필요
 2. 멀티모듈 구성 권장
 3. 테스트코드 작성 권장
+
+### 🔥 4. 문서 링크 정리
+|번호|문서명|링크|
+|-----|----------|---------------|
+|1|API 정리 문서|[API 정리 노션 링크](https://seom-seom.notion.site/Picsum-API-233deb20e25544469142c8376ba4ead2)|
+|1|화면기획서|[화면 기획서 링크](https://drive.google.com/file/d/1D72OHRV1FrJeZcKwtMeYneTLgmQMG5Kz/view?usp=sharing)|
