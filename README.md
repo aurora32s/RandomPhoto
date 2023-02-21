@@ -28,3 +28,14 @@ https://picsum.photos/
 ### 🪴 5.프로젝트 구조 기획서
 #### (* 추후 변경될 수 있습니다.)
 <img width="840" alt="스크린샷 2023-02-21 오후 10 52 00" src="https://user-images.githubusercontent.com/22411296/220365200-17cd6cfc-ffcb-4f50-81c7-73ca2e87f5ca.png">
+
+### 🏠 6. Branch 전략
+```
+1. 이슈 생성 > PR 생성 > 코드리뷰 > Allow > Merge
+2. 자신의 Branch는 자신이 Merge 합니다.
+3. 반드시 코드리뷰를 진행한 이후에 Merge 하셔야 합니다.
+4. 코드리뷰에 나온 사항 중 차후에 변경할 사항이라면 반드시 이슈생성이 선행적으로 이루어진 후 Merge할 수 있습니다.
+```
+
+#### 6.1 Branch Flow
+<img width="840" alt="스크린샷 2023-02-22 오전 12 19 27" src="https://user-images.githubusercontent.com/22411296/220386178-478f7056-de6e-45e0-80cf-fd947f3c3e5c.png">
