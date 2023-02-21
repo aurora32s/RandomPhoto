@@ -23,3 +23,7 @@ https://picsum.photos/
 |1|API 정리 문서|[API 정리 노션 링크](https://seom-seom.notion.site/Picsum-API-233deb20e25544469142c8376ba4ead2)|
 |2|화면기획서|[화면 기획서 링크](https://drive.google.com/file/d/1D72OHRV1FrJeZcKwtMeYneTLgmQMG5Kz/view?usp=sharing)|
 |3|Figma UI 기획서|[Figma 링크](https://www.figma.com/file/imArI7vqRy53wX6Q2ogj2r/%EB%8B%B9%EA%B7%BC%ED%8F%AC%ED%86%A0?node-id=0%3A1&t=XnVfBAjTElQ67qOb-1)|
+
+### 🪴 5.프로젝트 구조 기획서
+#### (* 추후 변경될 수 있습니다.)
+<img width="840" alt="스크린샷 2023-02-21 오후 10 52 00" src="https://user-images.githubusercontent.com/22411296/220365200-17cd6cfc-ffcb-4f50-81c7-73ca2e87f5ca.png">
