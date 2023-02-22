@@ -2,6 +2,7 @@
 androidGradlePlugin = "7.3.1"
 kotlin = "1.6.10"
 ksp = "1.6.10-1.0.2"
+androidxComposeCompiler = "1.4.1"
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "androidGradlePlugin" }
