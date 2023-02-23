@@ -17,3 +17,4 @@ rootProject.name = "DaangnPhoto"
 include ':app'
 include ':core:common'
 include ':core:data'
+include ':core:domain'
