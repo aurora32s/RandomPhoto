@@ -27,5 +27,9 @@ gradlePlugin {
             id = "daangn.android.hilt"
             implementationClass = "AndroidHiltConventionPlugin"
         }
+        register("androidLibrary") {
+            id = "daangn.android.library"
+            implementationClass = "AndroidLibraryConventionPlugin"
+        }
     }
 }

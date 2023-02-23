@@ -1,9 +1,7 @@
 plugins {
-    id("com.android.library")
-    id("org.jetbrains.kotlin.android")
+    id("daangn.android.library")
 }
 
 android {
     namespace = "com.haman.core.testing"
-    compileSdk = 32
 }
