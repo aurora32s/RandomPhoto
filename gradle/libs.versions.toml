@@ -1,7 +1,12 @@
 [versions]
+# 알파벳 순 정리입니다.
 androidGradlePlugin = "7.2.0"
+androidxActivity = "1.6.1"
 androidxComposeCompiler = "1.1.0"
+androidxCore = "1.8.0"
+composeUi = "1.1.1"
 hilt = "2.41"
+junit4 = "4.13.2"
 kotlin = "1.6.10"
 ksp = "1.6.10-1.0.2"
 
@@ -13,9 +18,26 @@ hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 
 [libraries]
+# use in build-logic
 android-gradlePlugin = { group = "com.android.tools.build", name = "gradle", version.ref = "androidGradlePlugin" }
 kotlin-gradlePlugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
 ksp-gradlePlugin = { group = "com.google.devtools.ksp", name = "com.google.devtools.ksp.gradle.plugin", version.ref = "ksp" }
 
+# core
+androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "androidxCore" }
+
+# hilt
 hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt" }
 hilt-compiler = { group = "com.google.dagger", name = "hilt-android-compiler", version.ref = "hilt" }
+
+# compose
+androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "androidxActivity" }
+androidx-compose-ui = { group = "androidx.compose.ui", name = "ui", version.ref = "composeUi" }
+androidx-compose-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview", version.ref = "composeUi" }
+androidx-compose-material = { group = "androidx.compose.material", name = "material", version.ref = "composeUi" }
+
+# test
+junit4 = { group = "junit", name = "junit", version.ref = "junit4" }
+
+[bundles]
+androidx-compose = ["androidx-activity-compose", "androidx-compose-ui", "androidx-compose-preview", "androidx-compose-material"]
