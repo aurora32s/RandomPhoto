@@ -18,12 +18,14 @@ https://picsum.photos/
 3. 테스트코드 작성 권장
 
 ### 🔥 4. 문서 링크 정리
+(* 열리지 않는 문서가 있다면 반드시 DM으로 말씀 부탁드립니다. 🙏)
 |번호|문서명|링크|
 |-----|----------|---------------|
 |1|API 정리 문서|[API 정리 노션 링크](https://seom-seom.notion.site/Picsum-API-233deb20e25544469142c8376ba4ead2)|
 |2|화면기획서|[화면 기획서 링크](https://drive.google.com/file/d/1D72OHRV1FrJeZcKwtMeYneTLgmQMG5Kz/view?usp=sharing)|
 |3|Figma UI 기획서|[Figma 링크](https://www.figma.com/file/imArI7vqRy53wX6Q2ogj2r/%EB%8B%B9%EA%B7%BC%ED%8F%AC%ED%86%A0?node-id=0%3A1&t=XnVfBAjTElQ67qOb-1)|
 |4|WBS 문서|[WBS 스프레드시트 링크](https://docs.google.com/spreadsheets/d/1eKU6OHMDxXxYqm6o-FdIEMV8gKxX7bSD43O3JEM-2nE/edit?usp=sharing)|
+|5|스크럼|[스크럼 노션 링크](https://seom-seom.notion.site/ede478dd358a4b37a016d58e6210f9e6)|
 
 ### 🪴 5.프로젝트 구조 기획서
 #### (* 추후 변경될 수 있습니다.)
