@@ -14,5 +14,5 @@ interface ImageCacheDataSource {
     /**
      * id에 해당하는 이미지 저장
      */
-    fun addImage(id: String, bitmap: Bitmap): Pair<String, Bitmap>?
+    fun addImage(id: String, bitmap: Bitmap)
 }
