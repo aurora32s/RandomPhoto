@@ -35,5 +35,9 @@ gradlePlugin {
             id = "daangn.android.library.compose"
             implementationClass = "AndroidLibraryComposeConventionPlugin"
         }
+        register("androidFeature") {
+            id = "daangn.android.feature"
+            implementationClass = "AndroidFeatureConventionPlugin"
+        }
     }
 }
