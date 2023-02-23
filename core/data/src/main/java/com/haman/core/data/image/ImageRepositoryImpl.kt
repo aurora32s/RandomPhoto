@@ -7,14 +7,14 @@ import javax.inject.Inject
 
 class ImageRepositoryImpl @Inject constructor(
     private val imageDataSource: ImageDataSource
-): ImageRepository {
-    override suspend fun getImage(id: String): Result<Bitmap> {
+) : ImageRepository {
+    override suspend fun getImage(id: String, width: Int, height: Int): Result<Bitmap> {
         // 1. 메모리에 캐싱되어 있는지 확인
 
         // 2. Disk 에 캐싱되어 있는지 확인
 
         // 3. 1,2 모두 없으면 네트워크에 요청
-        val imageBitmap = imageDataSource.getImage(id)
+        val imageBitmap = imageDataSource.getImage(id, width, height)
         return imageBitmap
     }
 }
