@@ -15,7 +15,7 @@ import java.util.concurrent.TimeUnit
 
 @Module
 @InstallIn(SingletonComponent::class)
-internal object NetworkModule {
+object NetworkModule {
     @Provides
     fun provideImageApiService(
         retrofit: Retrofit
@@ -24,7 +24,7 @@ internal object NetworkModule {
 
 @Module
 @InstallIn(SingletonComponent::class)
-private object RetrofitModule {
+object RetrofitModule {
     @Provides
     fun provideRetrofit(
         okHttpClient: OkHttpClient,
@@ -40,7 +40,7 @@ private object RetrofitModule {
 
 @Module
 @InstallIn(SingletonComponent::class)
-private object ConvertFactoryModule {
+object ConvertFactoryModule {
     @Provides
     fun provideJsonConverter(): Converter.Factory {
         return Json {
@@ -52,7 +52,7 @@ private object ConvertFactoryModule {
 
 @Module
 @InstallIn(SingletonComponent::class)
-private object HttpClientModule {
+object HttpClientModule {
     private const val TIMEOUT = 3L
 
     @Provides
