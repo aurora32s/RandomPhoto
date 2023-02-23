@@ -6,3 +6,7 @@ plugins {
 android {
     namespace = "com.haman.core.network"
 }
+
+dependencies {
+    implementation(libs.bundles.retrofit)
+}
