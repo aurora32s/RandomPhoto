@@ -1,33 +1,25 @@
 package com.haman.core.datastore.memory
 
 import android.graphics.Bitmap
+import android.util.LruCache
 import com.haman.core.datastore.source.ImageCacheDataSource
-import com.haman.core.datastore.model.Image
 import javax.inject.Inject
 
 class ImageCacheInMemoryDataSource @Inject constructor() : ImageCacheDataSource {
     // Memory Cache
-    private val cache = hashMapOf<String, Image>()
-
-    override fun getImage(id: String): Bitmap? {
-        return cache[id]?.bitmap
-    }
-
-    override fun addImage(id: String, bitmap: Bitmap): Pair<String, Bitmap>? {
-        var lru: Image? = null
-        cache[id] = cache[id]?.copy(storedTime = System.currentTimeMillis())
-            ?: run {
-                lru = cache.values.minByOrNull { it.storedTime }
-                Image(id, bitmap, storedTime = System.currentTimeMillis())
-            }
-        return lru?.let {
-            cache.remove(it.id)
-            it.id to it.bitmap
+    private val maxMemorySize = (Runtime.getRuntime().maxMemory() / 1024).toInt()
+    private val cacheSize = maxMemorySize / 8
+    private val cache = object : LruCache<String, Bitmap>(cacheSize) {
+        override fun sizeOf(key: String, value: Bitmap): Int {
+            return super.sizeOf(key, value)
         }
     }
 
-    companion object {
-        // 최대로 memory cache 에 저장할 수 있는 이미지 개수
-        const val DEFAULT_CACHE_SIZE = 5
+    override fun getImage(id: String): Bitmap? {
+        return cache.get(id)
+    }
+
+    override fun addImage(id: String, bitmap: Bitmap) {
+        cache.put(id, bitmap)
     }
 }
