@@ -9,6 +9,9 @@ hilt = "2.41"
 junit4 = "4.13.2"
 kotlin = "1.6.10"
 ksp = "1.6.10-1.0.2"
+okhttp = "4.10.0"
+retrofit = "2.9.0"
+retrofitKotlinxSerializationJson = "0.8.0"
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "androidGradlePlugin" }
@@ -36,8 +39,14 @@ androidx-compose-ui = { group = "androidx.compose.ui", name = "ui", version.ref 
 androidx-compose-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview", version.ref = "composeUi" }
 androidx-compose-material = { group = "androidx.compose.material", name = "material", version.ref = "composeUi" }
 
+# retrofit
+retrofit-core = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }
+retrofit-kotlin-serialization = { group = "com.jakewharton.retrofit", name = "retrofit2-kotlinx-serialization-converter", version.ref = "retrofitKotlinxSerializationJson" }
+okhttp-logging = { group = "com.squareup.okhttp3", name = "logging-interceptor", version.ref = "okhttp" }
+
 # test
 junit4 = { group = "junit", name = "junit", version.ref = "junit4" }
 
 [bundles]
 androidx-compose = ["androidx-activity-compose", "androidx-compose-ui", "androidx-compose-preview", "androidx-compose-material"]
+retrofit = ["retrofit-core", "retrofit-kotlin-serialization", "okhttp-logging"]
