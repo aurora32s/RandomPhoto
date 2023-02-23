@@ -7,7 +7,7 @@ import javax.inject.Inject
 class GetImageUseCase @Inject constructor(
     private val imageRepository: ImageRepository
 ) {
-    suspend operator fun invoke(id: String): Result<Bitmap?> {
-        return imageRepository.getImage(id)
+    suspend operator fun invoke(id: String, width: Int, height: Int): Result<Bitmap?> {
+        return imageRepository.getImage(id, width, height)
     }
 }
