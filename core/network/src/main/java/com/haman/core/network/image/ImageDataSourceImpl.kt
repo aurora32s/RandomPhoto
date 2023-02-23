@@ -2,7 +2,7 @@ package com.haman.core.network.image
 
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import com.haman.core.common.exception.NetworkException
+import com.haman.core.common.exception.ImageRequestNetworkException
 import com.haman.core.common.exception.NoneImageResponseException
 import com.haman.core.network.source.ImageDataSource
 import javax.inject.Inject
@@ -19,7 +19,7 @@ class ImageDataSourceImpl @Inject constructor(
                 val stream = response.body()?.byteStream()
                 BitmapFactory.decodeStream(stream)
                     ?: throw NoneImageResponseException(response.message())
-            } else throw NetworkException(response.message())
+            } else throw ImageRequestNetworkException(response.message())
         }
     }
 }
