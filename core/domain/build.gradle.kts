@@ -6,3 +6,7 @@ plugins {
 android {
     namespace = "com.haman.core.domain"
 }
+
+dependencies {
+    implementation(project(":core:data"))
+}
