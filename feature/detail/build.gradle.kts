@@ -1,6 +1,6 @@
 plugins {
-    id ("daangn.android.application")
-    id ("daangn.android.application.compose")
+    id ("daangn.android.library")
+    id ("daangn.android.library.compose")
     id("daangn.android.hilt")
 }
 
