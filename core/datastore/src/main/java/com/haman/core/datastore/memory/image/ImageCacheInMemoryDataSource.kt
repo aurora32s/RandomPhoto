@@ -1,4 +1,4 @@
-package com.haman.core.datastore.memory
+package com.haman.core.datastore.memory.image
 
 import android.graphics.Bitmap
 import android.util.LruCache
@@ -15,11 +15,11 @@ class ImageCacheInMemoryDataSource @Inject constructor() : ImageCacheDataSource 
         }
     }
 
-    override fun getImage(id: String): Bitmap? {
+    override suspend fun getImage(id: String): Bitmap? {
         return cache.get(id)
     }
 
-    override fun addImage(id: String, bitmap: Bitmap) {
+    override suspend fun addImage(id: String, bitmap: Bitmap) {
         cache.put(id, bitmap)
     }
 }
