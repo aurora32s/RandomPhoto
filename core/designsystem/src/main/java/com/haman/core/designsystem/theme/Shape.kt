@@ -1,4 +1,4 @@
-package com.haman.daangnphoto.ui.theme
+package com.haman.core.designsystem.theme
 
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Shapes
