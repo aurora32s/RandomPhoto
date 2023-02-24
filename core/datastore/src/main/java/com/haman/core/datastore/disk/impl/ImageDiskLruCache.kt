@@ -5,6 +5,10 @@ import android.graphics.BitmapFactory
 import com.haman.core.datastore.disk.DiskCache
 import java.io.*
 
+/**
+ * 이미지를 Disk 에 저장
+ * 여러 Coroutine 에서 접근할 수 있기 때문에 동기화 필수
+ */
 class DiskLruCache private constructor(
     private val directory: File,
     private val maxSize: Long
