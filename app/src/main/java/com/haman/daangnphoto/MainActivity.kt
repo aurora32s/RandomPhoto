@@ -12,9 +12,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.haman.core.domain.GetImageUseCase
 import com.haman.core.ui.item.AsyncImage
-import com.haman.daangnphoto.ui.theme.DaangnPhotoTheme
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
+import com.haman.core.designsystem.theme.DaangnPhotoTheme
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
