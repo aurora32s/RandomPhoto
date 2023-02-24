@@ -1,8 +1,10 @@
 package com.haman.core.ui.item
 
 import android.graphics.Bitmap
+import androidx.compose.foundation.Image
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.produceState
+import androidx.compose.ui.graphics.asImageBitmap
 
 @Composable
 fun AsyncImage(
@@ -14,6 +16,14 @@ fun AsyncImage(
     val bitmap = produceState<LoadImageState>(initialValue = LoadImageState.Loading) {
         val result = load(id, width, height)
         value = result?.let { LoadImageState.Success(it) } ?: LoadImageState.Error
+    }
+
+    when (val result = bitmap.value) {
+        is LoadImageState.Success -> Image(
+            bitmap = result.bitmap.asImageBitmap(),
+            contentDescription = ""
+        )
+        else -> {}
     }
 }
 
