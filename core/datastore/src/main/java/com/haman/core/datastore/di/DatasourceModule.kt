@@ -8,6 +8,7 @@ import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Qualifier
+import javax.inject.Singleton
 
 @Qualifier
 annotation class Disk
@@ -18,12 +19,14 @@ annotation class Memory
 @Module
 @InstallIn(SingletonComponent::class)
 interface DatasourceModule {
+    @Singleton
     @Memory
     @Binds
     fun bindImageCacheInMemory(
         imageCacheInMemoryDataSource: ImageCacheInMemoryDataSource
     ): ImageCacheDataSource
 
+    @Singleton
     @Disk
     @Binds
     fun bindImageCacheInDisk(
