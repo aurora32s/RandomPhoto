@@ -3,49 +3,73 @@ package com.haman.core.datastore.disk.impl
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import com.haman.core.datastore.disk.DiskCache
+import kotlinx.coroutines.*
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 import java.io.*
 
 /**
  * 이미지를 Disk 에 저장
  * 여러 Coroutine 에서 접근할 수 있기 때문에 동기화 필수
  */
-class DiskLruCache private constructor(
+internal class DiskLruCache private constructor(
     private val directory: File,
     private val maxSize: Long
 ) : DiskCache {
+    /**
+     * TODO OutOfMemory 가 발생하지 않도록 추가적인 작업 필요
+     */
+    private val mutex = Mutex()
 
+    // 실제 기록 파일
     private val historyFile = File(directory, HISTORY_FILE)
     private val historyFileTmp = File(directory, HISTORY_FILE_TEMP)
     private val historyFileBackup = File(directory, HISTORY_FILE_BACKUP)
 
+    // 현재 캐싱되어 있는 파일 리스트
     private val lruEntries = LinkedHashMap<String, Entry>(0, 0.75f, true)
     private var historyWriter: Writer? = null
     private var totalSize = 0L
+
+    @Volatile
     private var redundantOpCount = 0
 
     override suspend fun getBitmapFromDisk(id: String): Bitmap? {
+        checkNotClosed()
         val entry = lruEntries[id]
-        if (entry == null || entry.readable.not()) return null
+        mutex.withLock(entry) {
+            if (entry == null || entry.readable.not()) return null
 
-        val file = entry.getCleanFile()
-        return if (file.exists()) BitmapFactory.decodeStream(file.inputStream()) else null
+            val file = entry.getCleanFile()
+            redundantOpCount++
+            historyWriter?.write("${HistoryType.READ.ordinal} $id")
+
+            return if (file.exists()) BitmapFactory.decodeStream(file.inputStream()) else null
+        }
     }
 
     override suspend fun putBitmapInDisk(id: String, bitmap: Bitmap) {
         checkNotClosed()
-        val entry = lruEntries[id] ?: Entry(id).also { lruEntries[id] = it }
-        if (entry.currentEditor != null) return
+        val entry = lruEntries[id]
+        mutex.withLock(entry) {
+            try {
+                val currentEntry = entry ?: Entry(id).also { lruEntries[id] = it }
+                if (currentEntry.currentEditor != null) return
 
-        val editor = Editor(entry)
-        entry.currentEditor = editor
+                val editor = Editor(currentEntry)
+                currentEntry.currentEditor = editor
 
-        historyWriter?.let {
-            it.write("${HistoryType.DIRTY.ordinal} $id")
-            it.flush()
-        }
-        editor.newOutputStream()?.let {
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, it)
-            editor.commit()
+                historyWriter?.let {
+                    it.write("${HistoryType.DIRTY.ordinal} $id")
+                    it.flush()
+                }
+                editor.newOutputStream()?.let {
+                    bitmap.compress(Bitmap.CompressFormat.JPEG, 100, it)
+                    editor.commit()
+                }
+            } catch (e: Exception) {
+                println(e.printStackTrace())
+            }
         }
     }
 
@@ -67,7 +91,7 @@ class DiskLruCache private constructor(
         if (data.isEmpty()) throw IOException("Unexpected history line: $line")
 
         val type = HistoryType.getHistoryType(data[0].toInt())
-        val key = data[1]
+        val key = data[1] // 이미지 key
         // 제거 작업이었을 경우
         if (type == HistoryType.REMOVE) {
             // lru 리스트에서 제거
@@ -79,6 +103,7 @@ class DiskLruCache private constructor(
         if (type == HistoryType.CLEAN) {
             entry.readable = true
             entry.currentEditor = null
+            // 해당 이미지의 size
             entry.size = data[2].toLong()
         } else if (type == HistoryType.DIRTY) {
             entry.currentEditor = Editor(entry)
@@ -101,8 +126,8 @@ class DiskLruCache private constructor(
 
     private fun rebuildHistory() {
         if (historyWriter != null) historyWriter = null
-        val tmpWriter = historyFileTmp.outputStream().bufferedWriter(CHAR_SET)
 
+        val tmpWriter = historyFileTmp.outputStream().bufferedWriter(CHAR_SET)
         try {
             for (entry in lruEntries.values) {
                 if (entry.currentEditor != null) {
@@ -126,7 +151,7 @@ class DiskLruCache private constructor(
         historyWriter ?: throw IllegalStateException("cache is closed")
     }
 
-    private fun completeEdit(editor: Editor, success: Boolean) {
+    private suspend fun completeEdit(editor: Editor, success: Boolean) {
         val entry = editor.entry
         if (entry.currentEditor != editor)
             throw IllegalStateException("different editor exception")
@@ -151,9 +176,10 @@ class DiskLruCache private constructor(
         } else {
             deleteIfExist(dirtyFile)
         }
+
         redundantOpCount++
         entry.currentEditor = null
-        if (entry.readable || success) {
+        if (entry.readable or success) {
             entry.readable = true
             historyWriter?.write("${HistoryType.CLEAN.ordinal} ${entry.key} ${entry.size}")
         } else {
@@ -161,13 +187,14 @@ class DiskLruCache private constructor(
             historyWriter?.write("${HistoryType.REMOVE.ordinal} ${entry.key}")
         }
         historyWriter?.flush()
+        cleanup()
     }
 
-    private fun delete() {
+    private suspend fun delete() {
         close()
     }
 
-    private fun close() {
+    private suspend fun close() {
         if (historyWriter == null) return
         for (entry in lruEntries.values) {
             if (entry.currentEditor != null) {
@@ -179,14 +206,14 @@ class DiskLruCache private constructor(
         historyWriter = null
     }
 
-    private fun trimToSize() {
+    private suspend fun trimToSize() {
         while (totalSize > maxSize) {
             val firstKey = lruEntries.keys.first()
             remove(firstKey)
         }
     }
 
-    private fun remove(key: String) {
+    private suspend fun remove(key: String) {
         val entry = lruEntries[key]
         if (entry == null || entry.currentEditor != null) return
 
@@ -197,6 +224,32 @@ class DiskLruCache private constructor(
         redundantOpCount++
         historyWriter?.write("${HistoryType.REMOVE.ordinal} $key")
         lruEntries.remove(key)
+
+        if (historyRebuildRequired()) {
+            cleanup()
+        }
+    }
+
+    /**
+     * 보관할 수 있는 명령어(기록)의 개수가 많아지는 경우
+     * history 파일을 Rebuild 해야 합니다.
+     */
+    private fun historyRebuildRequired(): Boolean {
+        return redundantOpCount >= RedundantOpCompactThreshold
+                && redundantOpCount >= lruEntries.size
+    }
+
+    /**
+     * 새로운 정보가 추가된 이후, 개수를 유지하기 위해 정리가 필요합니다.
+     */
+    private suspend fun cleanup() = withContext(Dispatchers.IO) {
+        if (historyWriter != null) {
+            trimToSize()
+            if (historyRebuildRequired()) {
+                rebuildHistory()
+                redundantOpCount = 0
+            }
+        }
     }
 
     private inner class Entry(
@@ -214,9 +267,10 @@ class DiskLruCache private constructor(
         val entry: Entry
     ) {
         private var isError: Boolean = false
-        fun newOutputStream(): OutputStream? {
+        suspend fun newOutputStream(): OutputStream? {
             if (entry.currentEditor != this)
                 throw IllegalStateException("different editor exception")
+
             val dirtyFile = entry.getDirtyFile()
             val outputStream = try {
                 dirtyFile.outputStream()
@@ -232,7 +286,7 @@ class DiskLruCache private constructor(
             return outputStream?.let { FaultHidingOutputStream(it) }
         }
 
-        fun commit() {
+        suspend fun commit() {
             if (isError) {
                 completeEdit(this, false)
                 remove(entry.key)
@@ -241,7 +295,7 @@ class DiskLruCache private constructor(
             }
         }
 
-        fun abort() {
+        suspend fun abort() {
             completeEdit(this, false)
         }
 
@@ -287,8 +341,9 @@ class DiskLruCache private constructor(
         const val HISTORY_FILE_TEMP = "history_file_temp"
         const val HISTORY_FILE_BACKUP = "history_file_backup"
         val CHAR_SET = Charsets.US_ASCII
+        const val RedundantOpCompactThreshold = 2000
 
-        fun open(directory: File, maxSize: Long): DiskLruCache {
+        suspend fun open(directory: File, maxSize: Long): DiskLruCache {
             if (maxSize <= 0) throw IllegalStateException("maxSize have to be over 0")
 
             val backupFile = File(directory, HISTORY_FILE_BACKUP)
@@ -347,8 +402,11 @@ class DiskLruCache private constructor(
     }
 }
 
+/**
+ * 기록의 type
+ */
 enum class HistoryType {
-    CLEAN, DIRTY, REMOVE, READ, NONE;
+    CLEAN, DIRTY, REMOVE, READ;
 
     companion object {
         fun getHistoryType(type: Int) = values().first { it.ordinal == type }
