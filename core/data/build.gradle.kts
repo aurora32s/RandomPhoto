@@ -9,4 +9,5 @@ android {
 
 dependencies {
     implementation(project(":core:network"))
+    implementation(project(":core:datastore"))
 }

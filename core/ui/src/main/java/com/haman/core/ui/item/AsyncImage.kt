@@ -9,7 +9,7 @@ fun AsyncImage(
     width: Int = 200,
     height: Int = 300,
     id: String,
-    load: (String, Int, Int) -> Bitmap?
+    load: suspend (String, Int, Int) -> Bitmap?
 ) {
     val bitmap = produceState<LoadImageState>(initialValue = LoadImageState.Loading) {
         val result = load(id, width, height)
