@@ -8,6 +8,7 @@ composeUi = "1.1.1"
 hilt = "2.41"
 junit4 = "4.13.2"
 kotlin = "1.6.10"
+kotlinxCoroutines = "1.6.4"
 kotlinxSerializationJson = "1.4.1"
 ksp = "1.6.10-1.0.2"
 okhttp = "4.10.0"
@@ -31,6 +32,10 @@ ksp-gradlePlugin = { group = "com.google.devtools.ksp", name = "com.google.devto
 # core
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "androidxCore" }
 
+# coroutine
+kotlinx-coroutines-core = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "kotlinxCoroutines" }
+kotlinx-coroutines-android = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "kotlinxCoroutines" }
+
 # hilt
 hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt" }
 hilt-compiler = { group = "com.google.dagger", name = "hilt-android-compiler", version.ref = "hilt" }
@@ -53,3 +58,4 @@ junit4 = { group = "junit", name = "junit", version.ref = "junit4" }
 [bundles]
 androidx-compose = ["androidx-activity-compose", "androidx-compose-ui", "androidx-compose-preview", "androidx-compose-material"]
 retrofit = ["retrofit-core", "retrofit-kotlin-serialization", "okhttp-logging", "kotlinx-serialization-json"]
+kotlin-coroutine = ["kotlinx-coroutines-core", "kotlinx-coroutines-android"]

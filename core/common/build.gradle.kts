@@ -6,3 +6,7 @@ plugins {
 android {
     namespace = "com.haman.core.common"
 }
+
+dependencies {
+    implementation(libs.bundles.kotlin.coroutine)
+}
