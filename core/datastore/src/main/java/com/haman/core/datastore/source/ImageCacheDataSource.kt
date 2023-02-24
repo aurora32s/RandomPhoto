@@ -9,10 +9,10 @@ interface ImageCacheDataSource {
     /**
      * id 에 해당하는 이미지 요청
      */
-    fun getImage(id: String): Bitmap?
+    suspend fun getImage(id: String): Bitmap?
 
     /**
      * id에 해당하는 이미지 저장
      */
-    fun addImage(id: String, bitmap: Bitmap)
+    suspend fun addImage(id: String, bitmap: Bitmap)
 }
