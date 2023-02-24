@@ -17,8 +17,8 @@ class ImageRepositoryImpl @Inject constructor(
     override suspend fun getImage(id: String, width: Int, height: Int): Bitmap? {
         return try {
             // 1. 메모리에 캐싱되어 있는지 확인
-//            val bitmapInMemory = imageCachedInMemoryDataSource.getImage(id)
-//            if (bitmapInMemory != null) return bitmapInMemory
+            val bitmapInMemory = imageCachedInMemoryDataSource.getImage(id)
+            if (bitmapInMemory != null) return bitmapInMemory
 
             // 2. Disk 에 캐싱되어 있는지 확인
             val bitmapInDisk = imageCachedInDiskDataSource.getImage(id)

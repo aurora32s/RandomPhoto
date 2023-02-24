@@ -11,9 +11,4 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 interface CacheModule {
-    @Singleton
-    @Binds
-    fun bindDiskLruCache(
-        diskLruCache: DiskLruCache
-    ): DiskCache
 }
