@@ -12,5 +12,10 @@ class NoneImageResponseException(
 
 // 이미지 요청 시, 네트워크 자체에서 에러가 발생한 경우
 class ImageRequestNetworkException(
-    msg: String = "occur Exception in Retrofit"
+    msg: String = "occur Exception in Retrofit when request image"
+) : Exception(msg)
+
+// IOException 발생 시
+class ImageIOException(
+    msg: String = "occur IO Exception in Retrofit when request image"
 ) : Exception(msg)
