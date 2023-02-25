@@ -1,7 +1,6 @@
 package com.haman.core.network.image
 
 import com.haman.core.model.response.ImageResponse
-import com.haman.core.model.response.ImagesResponse
 import okhttp3.ResponseBody
 import retrofit2.Response
 import retrofit2.http.GET
@@ -34,7 +33,7 @@ interface ImageApiService {
     suspend fun getImagesInfo(
         @Query("page") page: Int,
         @Query("limit") limit: Int
-    ): Response<ImagesResponse>
+    ): Response<List<ImageResponse>>
 
     /**
      * 특정 이미지 정보 요청
