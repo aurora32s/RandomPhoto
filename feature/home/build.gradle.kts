@@ -8,5 +8,7 @@ android {
 }
 
 dependencies {
+    implementation(project(":core:designsystem"))
+
     implementation(libs.bundles.paging)
 }
