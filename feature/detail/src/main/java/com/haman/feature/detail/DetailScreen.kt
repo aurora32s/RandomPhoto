@@ -19,7 +19,7 @@ import com.haman.core.model.ui.ImageUiModel
 
 @Composable
 fun DetailScreen(
-    imageId: String,
+    imageId: String?,
     onBackPressed: () -> Unit,
     viewModel: DetailViewModel = hiltViewModel()
 ) {
@@ -60,13 +60,15 @@ fun DetailScreen(
                     text = "by ${value.image.author}"
                 )
             }
-            AsyncImage(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .heightIn(min = 260.dp),
-                id = imageId,
-                load = viewModel::getImageByUrl
-            )
+            if (imageId != null) {
+                AsyncImage(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .heightIn(min = 260.dp),
+                    id = imageId,
+                    load = viewModel::getImageByUrl
+                )
+            }
         }
     }
 }

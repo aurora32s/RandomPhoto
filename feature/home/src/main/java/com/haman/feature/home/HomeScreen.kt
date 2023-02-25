@@ -1,5 +1,6 @@
 package com.haman.feature.home
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -17,8 +18,13 @@ import com.haman.core.ui.item.ImageLinearItem
 import com.haman.core.ui.list.GridPagingList
 import com.haman.core.ui.list.PagingList
 
+/**
+ * Home(Main) 화면
+ * @param toDetail 이미지 클릭 시, 상세 화면으로 이동
+ */
 @Composable
 fun HomeScreen(
+    toDetail: (String) -> Unit,
     viewModel: HomeViewModel = hiltViewModel()
 ) {
     val images = viewModel.imagesInfo.collectAsLazyPagingItems()
@@ -55,11 +61,15 @@ fun HomeScreen(
                 when (listType.value) {
                     ListType.GRID -> AsyncImage(
                         modifier = Modifier
-                            .aspectRatio(1f),
+                            .aspectRatio(1f)
+                            .clickable { toDetail(it.id) },
                         id = it.id,
                         load = viewModel::getImageByUrl
                     )
                     ListType.LINEAR -> ImageLinearItem(
+                        modifier = Modifier.clickable {
+                            toDetail(it.id)
+                        },
                         imageId = it.id,
                         author = it.author,
                         loadImage = viewModel::getImageByUrl

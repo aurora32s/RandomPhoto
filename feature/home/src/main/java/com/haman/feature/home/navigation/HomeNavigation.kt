@@ -19,6 +19,6 @@ fun NavGraphBuilder.homeScreen(toDetail: (String) -> Unit) {
     composable(
         route = HomeRoute
     ) {
-        HomeScreen()
+        HomeScreen(toDetail)
     }
 }
