@@ -1,8 +1,8 @@
 package com.haman.core.domain
 
 import com.haman.core.data.repository.ImageRepository
-import com.haman.core.domain.model.Image
-import com.haman.core.domain.model.toModel
+import com.haman.core.model.domain.Image
+import com.haman.core.model.domain.toModel
 import javax.inject.Inject
 
 /**

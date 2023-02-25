@@ -6,3 +6,7 @@ plugins {
 android {
     namespace = "com.haman.core.model"
 }
+
+dependencies {
+    implementation(libs.kotlinx.serialization.json)
+}

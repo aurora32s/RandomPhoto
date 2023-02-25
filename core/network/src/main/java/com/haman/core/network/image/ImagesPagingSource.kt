@@ -6,7 +6,7 @@ import androidx.paging.PagingState
 import com.haman.core.common.exception.ImageIOException
 import com.haman.core.common.exception.ImageRequestNetworkException
 import com.haman.core.common.exception.NoneImageResponseException
-import com.haman.core.network.response.ImageResponse
+import com.haman.core.model.response.ImageResponse
 import java.io.IOException
 
 /**
