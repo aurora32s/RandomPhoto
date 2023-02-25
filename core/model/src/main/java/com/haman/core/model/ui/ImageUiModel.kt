@@ -6,13 +6,13 @@ import com.haman.core.model.domain.Image
  * feature.home 에 사용되는 Image model
  */
 data class ImageUiModel(
-    val id: String, // 이미지 id
-    val type: CellType, // 아이템 type
+    override val id: String, // 이미지 id
+    override val type: CellType, // 아이템 type
     val author: String, // 이미지 창작자 명
     val width: Int, // 이미지 가로 길이
     val height: Int, // 이미지 세로 길이
     val imageUrl: String // 이미지 URL
-)
+) : UiModel
 
 fun Image.toUiModel() = ImageUiModel(
     id = id,

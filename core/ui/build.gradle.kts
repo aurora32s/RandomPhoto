@@ -1,6 +1,6 @@
 plugins {
-    id ("daangn.android.library")
-    id ("daangn.android.library.compose")
+    id("daangn.android.library")
+    id("daangn.android.library.compose")
 }
 
 android {
@@ -8,5 +8,8 @@ android {
 }
 
 dependencies {
+    implementation(libs.bundles.paging)
+
+    implementation(project(":core:model"))
     implementation(project(":core:designsystem"))
 }
