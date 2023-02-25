@@ -11,8 +11,8 @@ private val arguments = listOf(navArgument(ImageIdArgs) { type = NavType.IntType
 private const val DetailNavigationRoute = "${DetailRoute}/{${ImageIdArgs}}"
 
 
-fun NavController.navigateToDetail(navOptions: NavOptions? = null) {
-    this.navigate(DetailRoute, navOptions)
+fun NavController.navigateToDetail(imageId: String) {
+    this.navigate("${DetailRoute}/$imageId")
 }
 
 /**

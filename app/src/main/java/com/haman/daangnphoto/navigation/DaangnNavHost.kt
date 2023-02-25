@@ -6,18 +6,22 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import com.haman.feature.detail.navigation.DetailRoute
 import com.haman.feature.detail.navigation.detailScreen
+import com.haman.feature.detail.navigation.navigateToDetail
+import com.haman.feature.home.navigation.HomeRoute
+import com.haman.feature.home.navigation.homeScreen
 
 @Composable
 fun DaangnNavHost(
     modifier: Modifier = Modifier,
     navController: NavHostController,
-    startDestination: String = "${DetailRoute}"
+    startDestination: String = HomeRoute
 ) {
     NavHost(
         modifier = modifier,
         navController = navController,
         startDestination = startDestination
     ) {
-        detailScreen { }
+        homeScreen(navController::navigateToDetail)
+        detailScreen(navController::popBackStack)
     }
 }
