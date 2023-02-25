@@ -13,7 +13,7 @@ kotlinxSerializationJson = "1.4.1"
 ksp = "1.6.10-1.0.2"
 okhttp = "4.10.0"
 paging = "3.1.1"
-pagingCompose = "1.0.0"
+pagingCompose = "1.0.0-alpha14"
 retrofit = "2.9.0"
 retrofitKotlinxSerializationJson = "0.8.0"
 
