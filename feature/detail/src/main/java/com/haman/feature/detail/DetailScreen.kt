@@ -46,38 +46,27 @@ fun DetailScreen(
             }
         }
     ) {
-        when (val value = detailUiState.value) {
-            DetailUiState.Error -> onBackPressed()
-            DetailUiState.Loading -> {}
-            is DetailUiState.Success -> DetailBody(
-                image = value.image,
-                loadImage = viewModel::getImageByUrl
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(vertical = 24.dp),
+            verticalArrangement = Arrangement.Center
+        ) {
+            when (val value = detailUiState.value) {
+                DetailUiState.Error -> onBackPressed()
+                DetailUiState.Loading -> {}
+                is DetailUiState.Success -> SubTitle(
+                    modifier = Modifier.padding(8.dp),
+                    text = "by ${value.image.author}"
+                )
+            }
+            AsyncImage(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .heightIn(min = 260.dp),
+                id = imageId,
+                load = viewModel::getImageByUrl
             )
         }
-    }
-}
-
-@Composable
-fun DetailBody(
-    image: ImageUiModel,
-    loadImage: suspend (String, Int, Int) -> Bitmap?
-) {
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(vertical = 24.dp),
-        verticalArrangement = Arrangement.Center
-    ) {
-        SubTitle(
-            modifier = Modifier.padding(8.dp),
-            text = "by ${image.author}"
-        )
-        AsyncImage(
-            modifier = Modifier
-                .fillMaxWidth()
-                .heightIn(min = 260.dp),
-            id = image.id,
-            load = loadImage
-        )
     }
 }

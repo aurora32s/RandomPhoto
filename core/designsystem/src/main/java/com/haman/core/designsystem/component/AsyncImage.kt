@@ -6,20 +6,17 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.produceState
-import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.unit.dp
 import com.haman.core.designsystem.icon.DaangnIcons
-import com.haman.core.designsystem.theme.Black
-import com.haman.core.designsystem.theme.Gray200
-import com.haman.core.designsystem.theme.Gray700
-import com.haman.core.designsystem.theme.Gray900
 
 @Composable
 fun AsyncImage(
@@ -38,7 +35,8 @@ fun AsyncImage(
     Box(
         modifier = modifier.background(
             MaterialTheme.colors.surface
-        )
+        ),
+        contentAlignment = Alignment.Center
     ) {
         when (val result = bitmap.value) {
             is LoadImageState.Success -> Image(
@@ -48,6 +46,7 @@ fun AsyncImage(
                 contentScale = ContentScale.FillWidth
             )
             is LoadImageState.Error -> Image(
+                modifier = Modifier.size(50.dp),
                 painter = painterResource(id = DaangnIcons.logo),
                 contentDescription = "Fail to load $id Image"
             )
