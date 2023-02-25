@@ -18,7 +18,6 @@ import javax.inject.Inject
 
 @HiltViewModel
 class DetailViewModel @Inject constructor(
-    savedStateHandle: SavedStateHandle,
     private val getImageInfoUseCase: GetImageInfoUseCase,
     private val getImageUseCase: GetImageUseCase
 ) : ViewModel() {
@@ -27,14 +26,11 @@ class DetailViewModel @Inject constructor(
     val detailUiState: StateFlow<DetailUiState>
         get() = _detailUiState.asStateFlow()
 
-    init {
+    fun getImageInfo(imageId: String) {
         viewModelScope.launch {
-            val imageId: String? = savedStateHandle[""]
-            imageId?.let {
-                val image = getImageInfoUseCase(it)
-                if (image != null) _detailUiState.emit(DetailUiState.Success(image.toUiModel()))
-                else _detailUiState.emit(DetailUiState.Error)
-            }
+            val image = getImageInfoUseCase(imageId)
+            if (image != null) _detailUiState.emit(DetailUiState.Success(image.toUiModel()))
+            else _detailUiState.emit(DetailUiState.Error)
         }
     }
 
