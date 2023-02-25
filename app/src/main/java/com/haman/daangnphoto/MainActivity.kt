@@ -31,9 +31,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-                    AsyncImage(id = "0") { id, width, height ->
-                        getImageUseCase(id, width, height)
-                    }
+                    Greeting(name = "Android")
                 }
             }
         }
