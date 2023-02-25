@@ -2,6 +2,7 @@ package com.haman.feature.detail.navigation
 
 import androidx.navigation.*
 import androidx.navigation.compose.composable
+import com.haman.core.designsystem.theme.DaangnBlackTheme
 import com.haman.feature.detail.DetailScreen
 
 const val DetailRoute = "detail"
@@ -23,7 +24,9 @@ fun NavGraphBuilder.detailScreen(onBackPressed: () -> Unit) {
         route = DetailRoute,
         arguments = arguments
     ) {
-        val imageId = "0"
-        DetailScreen(imageId = imageId)
+        val imageId = "14"
+        DaangnBlackTheme {
+            DetailScreen(imageId = imageId, onBackPressed = onBackPressed)
+        }
     }
 }
