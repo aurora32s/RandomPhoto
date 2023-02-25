@@ -7,7 +7,7 @@ import com.haman.feature.detail.DetailScreen
 
 const val DetailRoute = "detail"
 private const val ImageIdArgs = "image_id"
-private val arguments = listOf(navArgument(ImageIdArgs) { type = NavType.IntType })
+private val arguments = listOf(navArgument(ImageIdArgs) { type = NavType.StringType })
 private const val DetailNavigationRoute = "${DetailRoute}/{${ImageIdArgs}}"
 
 
@@ -21,12 +21,15 @@ fun NavController.navigateToDetail(imageId: String) {
  */
 fun NavGraphBuilder.detailScreen(onBackPressed: () -> Unit) {
     composable(
-        route = DetailRoute,
+        route = DetailNavigationRoute,
         arguments = arguments
     ) {
-        val imageId = "14"
+        val imageId = it.arguments?.getString(ImageIdArgs)
         DaangnBlackTheme {
-            DetailScreen(imageId = imageId, onBackPressed = onBackPressed)
+            DetailScreen(
+                imageId = imageId,
+                onBackPressed = onBackPressed
+            )
         }
     }
 }

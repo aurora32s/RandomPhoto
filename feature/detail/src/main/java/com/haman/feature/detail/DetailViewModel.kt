@@ -26,11 +26,15 @@ class DetailViewModel @Inject constructor(
     val detailUiState: StateFlow<DetailUiState>
         get() = _detailUiState.asStateFlow()
 
-    fun getImageInfo(imageId: String) {
-        viewModelScope.launch {
-            val image = getImageInfoUseCase(imageId)
-            if (image != null) _detailUiState.emit(DetailUiState.Success(image.toUiModel()))
-            else _detailUiState.emit(DetailUiState.Error)
+    suspend fun getImageInfo(imageId: String?) {
+        imageId?.let {
+            viewModelScope.launch {
+                val image = getImageInfoUseCase(imageId)
+                if (image != null) _detailUiState.emit(DetailUiState.Success(image.toUiModel()))
+                else _detailUiState.emit(DetailUiState.Error)
+            }
+        } ?: run {
+            _detailUiState.emit(DetailUiState.Error)
         }
     }
 
