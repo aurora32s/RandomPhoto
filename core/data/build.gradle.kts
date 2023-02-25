@@ -13,4 +13,5 @@ dependencies {
     implementation(project(":core:common"))
 
     implementation(libs.bundles.kotlin.coroutine)
+    implementation(libs.bundles.paging)
 }
