@@ -33,6 +33,7 @@ android {
 dependencies {
     implementation(project(":core:designsystem"))
     implementation(project(":feature:home"))
+    implementation(project(":feature:detail"))
 
     implementation(libs.androidx.core.ktx)
     implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.3.1'
