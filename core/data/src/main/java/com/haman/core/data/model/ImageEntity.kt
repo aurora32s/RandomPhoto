@@ -5,7 +5,7 @@ import com.haman.core.network.response.ImageResponse
 /**
  * 이미지 정보 Model
  */
-data class Image(
+data class ImageEntity(
     val id: String, // 이미지 id
     val author: String, // 이미지 창작자 명
     val width: Int, // 이미지 가로 길이
@@ -13,7 +13,7 @@ data class Image(
     val imageUrl: String // 이미지 URL
 )
 
-fun ImageResponse.toModel() = Image(
+fun ImageResponse.toEntity() = ImageEntity(
     id = id,
     author = author,
     width = width,
