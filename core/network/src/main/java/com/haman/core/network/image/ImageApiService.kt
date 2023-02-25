@@ -13,7 +13,9 @@ import retrofit2.http.Query
 interface ImageApiService {
     /**
      * 서버로부터 이미지 자체를 요청
-     * @path id 이미지 id
+     * @param id 이미지 id
+     * @param width 이미지 가로 길이
+     * @param height 이미지 세로 길이
      */
     @GET("id/{id}/{width}/{height}")
     suspend fun getImage(
@@ -22,9 +24,14 @@ interface ImageApiService {
         @Path("height") height: Int
     ): Response<ResponseBody>
 
+    /**
+     * 이미지 리스트 요청
+     * @param page 페이지 번호
+     * @param limit 페이지 당 이미지 개수
+     */
     @GET("v2/list")
     suspend fun getImagesInfo(
-        @Query("page") page: Int, // 페이지 번호
-        @Query("limit") limit: Int // 페이지 당 이미지 개수
+        @Query("page") page: Int,
+        @Query("limit") limit: Int
     ): Response<ImagesResponse>
 }
