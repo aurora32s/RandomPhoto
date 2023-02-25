@@ -10,18 +10,11 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.haman.core.domain.GetImageUseCase
-import com.haman.core.ui.item.AsyncImage
 import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
 import com.haman.core.designsystem.theme.DaangnPhotoTheme
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
-
-    @Inject
-    lateinit var getImageUseCase: GetImageUseCase
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
