@@ -6,6 +6,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.produceState
@@ -33,17 +34,11 @@ fun AsyncImage(
         val result = load(id, width, height)
         value = result?.let { LoadImageState.Success(it) } ?: LoadImageState.Error
     }
-    val backgroundColor = remember {
-        derivedStateOf {
-            when (bitmap.value) {
-                LoadImageState.Error -> if (isDarkTheme) Black else Gray900
-                else -> if (isDarkTheme) Gray700 else Gray200
-            }
-        }
-    }
 
     Box(
-        modifier = modifier.background(backgroundColor.value)
+        modifier = modifier.background(
+            MaterialTheme.colors.surface
+        )
     ) {
         when (val result = bitmap.value) {
             is LoadImageState.Success -> Image(
