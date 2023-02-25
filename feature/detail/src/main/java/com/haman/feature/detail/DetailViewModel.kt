@@ -1,12 +1,15 @@
 package com.haman.feature.detail
 
+import android.graphics.Bitmap
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.haman.core.domain.GetImageInfoUseCase
+import com.haman.core.domain.GetImageUseCase
 import com.haman.core.model.ui.ImageUiModel
 import com.haman.core.model.ui.toUiModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -16,7 +19,8 @@ import javax.inject.Inject
 @HiltViewModel
 class DetailViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
-    private val getImageInfoUseCase: GetImageInfoUseCase
+    private val getImageInfoUseCase: GetImageInfoUseCase,
+    private val getImageUseCase: GetImageUseCase
 ) : ViewModel() {
 
     private val _detailUiState = MutableStateFlow<DetailUiState>(DetailUiState.Loading)
@@ -32,6 +36,15 @@ class DetailViewModel @Inject constructor(
                 else _detailUiState.emit(DetailUiState.Error)
             }
         }
+    }
+
+    /**
+     * 이미지 id 를 이용해
+     */
+    suspend fun getImageByUrl(id: String, width: Int, height: Int): Bitmap? {
+        return viewModelScope
+            .async { getImageUseCase(id, width, height) }
+            .await()
     }
 }
 
