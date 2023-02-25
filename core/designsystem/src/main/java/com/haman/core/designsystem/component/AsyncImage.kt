@@ -1,4 +1,4 @@
-package com.haman.core.ui.item
+package com.haman.core.designsystem.component
 
 import android.graphics.Bitmap
 import androidx.compose.foundation.Image
