@@ -4,7 +4,7 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import com.haman.core.common.exception.ImageRequestNetworkException
 import com.haman.core.common.exception.NoneImageResponseException
-import com.haman.core.network.response.ImageResponse
+import com.haman.core.model.response.ImageResponse
 import com.haman.core.network.source.ImageDataSource
 import javax.inject.Inject
 import javax.inject.Singleton

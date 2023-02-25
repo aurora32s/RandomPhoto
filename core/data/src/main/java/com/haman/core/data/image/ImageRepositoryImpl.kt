@@ -6,12 +6,12 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.map
 import com.haman.core.common.di.IODispatcher
-import com.haman.core.data.model.ImageEntity
-import com.haman.core.data.model.toEntity
 import com.haman.core.data.repository.ImageRepository
 import com.haman.core.datastore.di.Disk
 import com.haman.core.datastore.di.Memory
 import com.haman.core.datastore.source.ImageCacheDataSource
+import com.haman.core.model.entity.ImageEntity
+import com.haman.core.model.entity.toEntity
 import com.haman.core.network.image.ImageApiService
 import com.haman.core.network.image.ImagesPagingSource
 import com.haman.core.network.source.ImageDataSource
