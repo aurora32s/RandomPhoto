@@ -1,4 +1,4 @@
-package com.haman.feature.home.model
+package com.haman.core.model.ui
 
 /**
  * feature.home 에서 사용하는 각 element 타입

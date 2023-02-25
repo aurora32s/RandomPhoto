@@ -1,20 +1,22 @@
-package com.haman.core.domain.model
+package com.haman.core.model.ui
 
-import com.haman.core.data.model.ImageEntity
+import com.haman.core.model.domain.Image
 
 /**
- * 이미지 정보 Model
+ * feature.home 에 사용되는 Image model
  */
-data class Image(
+data class ImageUiModel(
     val id: String, // 이미지 id
+    val type: CellType, // 아이템 type
     val author: String, // 이미지 창작자 명
     val width: Int, // 이미지 가로 길이
     val height: Int, // 이미지 세로 길이
     val imageUrl: String // 이미지 URL
 )
 
-fun ImageEntity.toModel() = Image(
+fun Image.toUiModel() = ImageUiModel(
     id = id,
+    type = CellType.GridImage,
     author = author,
     width = width,
     height = height,

@@ -8,13 +8,12 @@ import androidx.paging.cachedIn
 import androidx.paging.map
 import com.haman.core.domain.GetImageUseCase
 import com.haman.core.domain.GetImagesInfoUseCase
-import com.haman.feature.home.model.image.ImageUiModel
-import com.haman.feature.home.model.image.toUiModel
+import com.haman.core.model.ui.ImageUiModel
+import com.haman.core.model.ui.toUiModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
