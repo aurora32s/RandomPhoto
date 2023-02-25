@@ -28,7 +28,7 @@ class ImagesPagingSource(
         return try {
             val response = imageApiService.getImagesInfo(page = page, limit = LIMIT_PER_PAGE)
             if (response.isSuccessful && response.body() != null) {
-                val images = response.body()!!.images
+                val images = response.body()!!
                 LoadResult.Page(
                     data = images,
                     prevKey = if (page == INIT_KEY) null else page - 1,
