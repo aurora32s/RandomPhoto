@@ -2,7 +2,8 @@ package com.haman.core.designsystem.theme
 
 import androidx.compose.ui.graphics.Color
 
-val Purple200 = Color(0xFFBB86FC)
-val Purple500 = Color(0xFF6200EE)
-val Purple700 = Color(0xFF3700B3)
-val Teal200 = Color(0xFF03DAC5)
+val Orange800 = Color(0xFFEF6C00)
+val White = Color(0xFFFFFFFF)
+val Black = Color(0xFF000000)
+val Gray600 = Color(0xFF757575)
+val Gray900 = Color(0xFF212121)
