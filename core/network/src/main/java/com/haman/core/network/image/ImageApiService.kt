@@ -1,5 +1,6 @@
 package com.haman.core.network.image
 
+import com.haman.core.network.response.ImagesResponse
 import okhttp3.ResponseBody
 import retrofit2.Response
 import retrofit2.http.GET
@@ -25,5 +26,5 @@ interface ImageApiService {
     suspend fun getImagesInfo(
         @Query("page") page: Int, // 페이지 번호
         @Query("limit") limit: Int // 페이지 당 이미지 개수
-    )
+    ): Response<ImagesResponse>
 }
