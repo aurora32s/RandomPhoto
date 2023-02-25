@@ -12,6 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import dagger.hilt.android.AndroidEntryPoint
 import com.haman.core.designsystem.theme.DaangnPhotoTheme
+import com.haman.daangnphoto.ui.DaangnPhotoApp
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -19,27 +20,8 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             DaangnPhotoTheme {
-                // A surface container using the 'background' color from the theme
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colors.background
-                ) {
-                    Greeting(name = "Android")
-                }
+                DaangnPhotoApp()
             }
         }
-    }
-}
-
-@Composable
-fun Greeting(name: String) {
-    Text(text = "Hello $name!")
-}
-
-@Preview(showBackground = true)
-@Composable
-fun DefaultPreview() {
-    DaangnPhotoTheme {
-        Greeting("Android")
     }
 }

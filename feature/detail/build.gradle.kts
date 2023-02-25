@@ -6,3 +6,7 @@ plugins {
 android {
     namespace = "com.haman.feature.detail"
 }
+
+dependencies {
+    implementation(project(":core:designsystem"))
+}
