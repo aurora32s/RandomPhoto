@@ -9,6 +9,15 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 
+/**
+ * Custom 한 Text Component 생성
+ * @param modifier Modifier
+ * @param text 보여줄 문자
+ * @param style Text Style(MaterialTheme 로 전달 권장)
+ * @param align Text 정렬(기본은 가운데 정렬)
+ * @param bold true 일 경우 Bold 처리
+ * @param color Text 색(기본은 Unspecified)
+ */
 @Composable
 fun CustomText(
     modifier: Modifier = Modifier,
@@ -28,6 +37,13 @@ fun CustomText(
     )
 }
 
+/**
+ * Header5 스타일의 Text Component 생성
+ * @param modifier Modifier
+ * @param text 보여줄 문자
+ * @param align Text 정렬(기본은 시작 정렬)
+ * @param color Text 색(기본은 Unspecified)
+ */
 @Composable
 fun Header(
     modifier: Modifier = Modifier,
@@ -44,6 +60,13 @@ fun Header(
     )
 }
 
+/**
+ * Subtitle1 스타일의 Text Component 생성
+ * @param modifier Modifier
+ * @param text 보여줄 문자
+ * @param align Text 정렬(기본은 가운데 정렬)
+ * @param color Text 색(기본은 Unspecified)
+ */
 @Composable
 fun SubTitle(
     modifier: Modifier = Modifier,
@@ -60,6 +83,13 @@ fun SubTitle(
     )
 }
 
+/**
+ * Caption 스타일의 Text Component 생성
+ * @param modifier Modifier
+ * @param text 보여줄 문자
+ * @param align Text 정렬(기본은 시작 정렬)
+ * @param color Text 색(기본은 Unspecified)
+ */
 @Composable
 fun ContentText(
     modifier: Modifier = Modifier,
