@@ -23,6 +23,7 @@ fun NavGraphBuilder.detailScreen(onBackPressed: () -> Unit) {
         route = DetailRoute,
         arguments = arguments
     ) {
-        DetailScreen()
+        val imageId = "0"
+        DetailScreen(imageId = imageId)
     }
 }
