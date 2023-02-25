@@ -21,7 +21,7 @@ class HomeViewModel @Inject constructor(
     private val getImageUseCase: GetImageUseCase
 ) : ViewModel() {
 
-    private val _listType = MutableStateFlow<ListType>(ListType.LINEAR)
+    private val _listType = MutableStateFlow(ListType.GRID)
     val listType: StateFlow<ListType>
         get() = _listType.asStateFlow()
 
@@ -36,19 +36,19 @@ class HomeViewModel @Inject constructor(
      * 이미지 id 를 이용해
      */
     suspend fun getImageByUrl(id: String, width: Int, height: Int): Bitmap? {
-        return viewModelScope.async {
-            getImageByUrl(id, width, height)
+        return viewModelScope.async(loadImageJob) {
+            getImageUseCase(id, width, height)
         }.await()
     }
 
     fun toggleListType() {
         viewModelScope.launch {
-            _listType.emit(
+            loadImageJob.cancelChildren()
+            _listType.value =
                 when (_listType.value) {
                     ListType.LINEAR -> ListType.GRID
                     ListType.GRID -> ListType.LINEAR
                 }
-            )
         }
     }
 }

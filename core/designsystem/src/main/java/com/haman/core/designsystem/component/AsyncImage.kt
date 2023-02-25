@@ -7,11 +7,13 @@ import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.produceState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
@@ -24,6 +26,7 @@ fun AsyncImage(
     width: Int = 200,
     height: Int = 300,
     id: String,
+    cornerRadius: Float = 4f,
     load: suspend (String, Int, Int) -> Bitmap?,
     isDarkTheme: Boolean = isSystemInDarkTheme()
 ) {
@@ -33,14 +36,18 @@ fun AsyncImage(
     }
 
     Box(
-        modifier = modifier.background(
-            MaterialTheme.colors.surface
-        ),
+        modifier = modifier
+            .background(
+                MaterialTheme.colors.surface
+            )
+            .clip(RoundedCornerShape(cornerRadius.dp)),
         contentAlignment = Alignment.Center
     ) {
         when (val result = bitmap.value) {
             is LoadImageState.Success -> Image(
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clip(RoundedCornerShape(cornerRadius.dp)),
                 bitmap = result.bitmap.asImageBitmap(),
                 contentDescription = "Image's id is $id",
                 contentScale = ContentScale.FillWidth
