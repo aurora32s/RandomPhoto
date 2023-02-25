@@ -62,4 +62,12 @@ class ImageRepositoryImpl @Inject constructor(
         ).flow
             .map { it.map { image -> image.toEntity() } }
     }
+
+    override suspend fun getImageInfo(id: String): Result<ImageEntity?> =
+        withContext(ioDispatcher) {
+            runCatching {
+                return@runCatching imageDataSource.getImageInfo(id)
+                    .getOrNull()?.toEntity()
+            }
+        }
 }

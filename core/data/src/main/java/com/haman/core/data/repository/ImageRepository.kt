@@ -16,4 +16,10 @@ interface ImageRepository {
      * 이미지 리스트 요청
      */
     fun getImagesInfo(): Flow<PagingData<ImageEntity>>
+
+    /**
+     * 특정 이미지 정보 요청
+     * @param id 이미지 id
+     */
+    suspend fun getImageInfo(id: String): Result<ImageEntity?>
 }
