@@ -6,3 +6,7 @@ plugins {
 android {
     namespace = "com.haman.core.ui"
 }
+
+dependencies {
+    implementation(project(":core:designsystem"))
+}
