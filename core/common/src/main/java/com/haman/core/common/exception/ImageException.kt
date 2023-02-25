@@ -7,7 +7,7 @@ package com.haman.core.common.exception
 
 // 이미지 요청에 따른 Response 는 정상적으로 받았지만, bitmap 으로 전환할 수 없는 경우
 class NoneImageResponseException(
-    msg: String = "None Image Bitmap in Response"
+    msg: String = "None Image Data in Response"
 ) : Exception(msg)
 
 // 이미지 요청 시, 네트워크 자체에서 에러가 발생한 경우
