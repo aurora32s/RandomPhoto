@@ -11,6 +11,7 @@ kotlin = "1.6.10"
 kotlinxCoroutines = "1.6.4"
 kotlinxSerializationJson = "1.4.1"
 ksp = "1.6.10-1.0.2"
+navigation = "1.0.0"
 okhttp = "4.10.0"
 paging = "3.1.1"
 pagingCompose = "1.0.0-alpha14"
@@ -45,6 +46,7 @@ hilt-compiler = { group = "com.google.dagger", name = "hilt-android-compiler", v
 # compose
 androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "androidxActivity" }
 androidx-compose-ui = { group = "androidx.compose.ui", name = "ui", version.ref = "composeUi" }
+hilt-navigation-compose = { group = "androidx.hilt", name = "hilt-navigation-compose", version.ref = "navigation" }
 androidx-compose-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview", version.ref = "composeUi" }
 androidx-compose-material = { group = "androidx.compose.material", name = "material", version.ref = "composeUi" }
 
@@ -62,7 +64,8 @@ paging-compose = { group = "androidx.paging", name = "paging-compose", version.r
 junit4 = { group = "junit", name = "junit", version.ref = "junit4" }
 
 [bundles]
-androidx-compose = ["androidx-activity-compose", "androidx-compose-ui", "androidx-compose-preview", "androidx-compose-material"]
+androidx-compose = ["androidx-activity-compose", "androidx-compose-ui", "androidx-compose-preview",
+    "androidx-compose-material", "hilt-navigation-compose"]
 retrofit = ["retrofit-core", "retrofit-kotlin-serialization", "okhttp-logging", "kotlinx-serialization-json"]
 kotlin-coroutine = ["kotlinx-coroutines-core", "kotlinx-coroutines-android"]
 paging = ["paging-runtime", "paging-compose"]
