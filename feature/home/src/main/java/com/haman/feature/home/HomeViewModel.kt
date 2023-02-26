@@ -31,21 +31,10 @@ class HomeViewModel @Inject constructor(
 
     private var loadImageJob = SupervisorJob()
 
-    private val _randomImage = MutableStateFlow<ImageUiModel?>(null)
-    val randomImage: StateFlow<ImageUiModel?>
-        get() = _randomImage.asStateFlow()
-
     val imagesInfo: Flow<PagingData<ImageUiModel>> =
         getImagesInfoUseCase()
             .map { it.map { image -> image.toUiModel() } }
             .cachedIn(viewModelScope)
-
-    init {
-        viewModelScope.launch {
-            val image = getRandomImageInfoUseCase("DaangnPhoto")
-            image?.let { _randomImage.value = it.toUiModel() }
-        }
-    }
 
     /**
      * 이미지 id 를 이용해
