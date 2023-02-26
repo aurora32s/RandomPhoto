@@ -36,9 +36,6 @@ fun AsyncImage(
 
     Box(
         modifier = modifier
-            .background(
-                MaterialTheme.colors.surface
-            )
             .clip(RoundedCornerShape(cornerRadius.dp)),
         contentAlignment = Alignment.Center
     ) {
