@@ -15,4 +15,9 @@ sealed interface ImageType {
         @DrawableRes
         val id: Int
     ) : ImageType
+
+    data class AsyncImage(
+        val imageId: String?,
+        val load: suspend (String, Int, Int) -> Bitmap?
+    ) : ImageType
 }
