@@ -92,7 +92,6 @@ fun HomeScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(innerPadding)
-                .nestedScroll(nestedScrollConnection)
         ) {
             CollapsingToolbar(
                 modifier = Modifier
@@ -105,16 +104,18 @@ fun HomeScreen(
             )
 
             PagingList(
+                modifier = Modifier
+                    .nestedScroll(nestedScrollConnection)
+                    .fillMaxWidth()
+                    .graphicsLayer {
+                        translationY = toolbarState.height
+                    },
                 data = images,
                 errorMsg = R.string.fail_to_load_page,
                 toast = toast
             ) {
                 GridPagingList(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .graphicsLayer {
-                            translationY = toolbarState.height
-                        },
+                    modifier = Modifier,
                     cell = listType.value.column,
                     contentPadding = PaddingValues(
                         bottom = minHeightToolbar,
