@@ -19,6 +19,8 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.haman.core.designsystem.icon.DaangnIcons
+import com.haman.core.designsystem.theme.Gray200
+import com.haman.core.designsystem.theme.Gray700
 
 @Composable
 fun AsyncImage(
@@ -27,7 +29,8 @@ fun AsyncImage(
     height: Int = 300,
     id: String,
     cornerRadius: Float = 4f,
-    load: suspend (String, Int, Int) -> Bitmap?
+    load: suspend (String, Int, Int) -> Bitmap?,
+    isDarkTheme: Boolean = isSystemInDarkTheme(),
 ) {
     val bitmap = produceState<LoadImageState>(initialValue = LoadImageState.Loading) {
         val result = load(id, width, height)
@@ -36,7 +39,8 @@ fun AsyncImage(
 
     Box(
         modifier = modifier
-            .clip(RoundedCornerShape(cornerRadius.dp)),
+            .clip(RoundedCornerShape(cornerRadius.dp))
+            .background(if (isDarkTheme) Gray700 else Gray200),
         contentAlignment = Alignment.Center
     ) {
         when (val result = bitmap.value) {
