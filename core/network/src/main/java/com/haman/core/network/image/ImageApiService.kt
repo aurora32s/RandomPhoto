@@ -43,4 +43,13 @@ interface ImageApiService {
     suspend fun getImageInfo(
         @Path("id") id: String
     ): Response<ImageResponse>
+
+    /**
+     * 랟덤 이미지 정보 요청
+     * @param seed 랜덤 정보에 사용될 seed 정보
+     */
+    @GET("seed/{seed}/info")
+    suspend fun getRandomImageInfo(
+        @Path("seed") seed: String
+    ): Response<ImageResponse>
 }

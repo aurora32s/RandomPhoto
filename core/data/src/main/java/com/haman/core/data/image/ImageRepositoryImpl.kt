@@ -70,4 +70,12 @@ class ImageRepositoryImpl @Inject constructor(
                     .getOrNull()?.toEntity()
             }
         }
+
+    override suspend fun getRandomImageInfo(seed: String): Result<ImageEntity?> =
+        withContext(ioDispatcher) {
+            runCatching {
+                return@runCatching imageDataSource.getRandomImageInfo(seed)
+                    .getOrNull()?.toEntity()
+            }
+        }
 }
