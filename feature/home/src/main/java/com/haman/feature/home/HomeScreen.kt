@@ -1,26 +1,27 @@
 package com.haman.feature.home
 
 import android.graphics.Bitmap
-import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material.*
-import androidx.compose.runtime.*
+import androidx.compose.material.Scaffold
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
 import androidx.compose.ui.input.nestedscroll.NestedScrollSource
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.haman.core.common.state.ToastPosition
-import com.haman.core.designsystem.icon.DaangnIcons
+import com.haman.core.designsystem.R
 import com.haman.core.model.ui.ImageUiModel
+import com.haman.core.ui.list.PagingList
 import com.haman.core.ui.state.ToolbarState
 import com.haman.core.ui.state.rememberToolbarState
 import com.haman.feature.home.ui.HomeFloatingButton
@@ -57,11 +58,11 @@ fun HomeScreen(
                 toolbarState.scrollTopLimitReached =
                     listState.firstVisibleItemIndex == 0 && listState.firstVisibleItemScrollOffset == 0
                 toolbarState.scrollOffset = toolbarState.scrollOffset - available.y
+
                 return Offset(0f, toolbarState.consumed)
             }
         }
     }
-
     Scaffold(
         floatingActionButton = {
             HomeFloatingButton(
@@ -71,42 +72,45 @@ fun HomeScreen(
             )
         }
     ) {
-        HomeBody(
-            images = images,
-            toolbarState = toolbarState,
-            listState = listState,
-            listType = listType.value,
-            nestedScrollConnection = nestedScrollConnection,
-            toast = toast,
-            toDetail = toDetail,
-            loadImage = viewModel::getImageByUrl
-        )
+        PagingList(
+            modifier = Modifier
+                .nestedScroll(nestedScrollConnection),
+            data = images,
+            errorMsg = R.string.fail_to_load_page,
+            loadingMsg = R.string.loading_msg,
+            toast = toast
+        ) {
+            HomeBody(
+                images = images,
+                toolbarState = toolbarState,
+                listState = listState,
+                listType = listType.value,
+                toDetail = toDetail,
+                loadImage = viewModel::getImageByUrl
+            )
+        }
     }
 }
 
 @Composable
 fun HomeBody(
-    modifier: Modifier = Modifier,
     images: LazyPagingItems<ImageUiModel>,
     toolbarState: ToolbarState,
     listState: LazyListState,
     listType: ListType,
-    nestedScrollConnection: NestedScrollConnection,
-    toast: (ToastPosition, Int) -> Unit,
     toDetail: (String) -> Unit,
     loadImage: suspend (String, Int, Int) -> Bitmap?
 ) {
-    Box(modifier = modifier.nestedScroll(nestedScrollConnection)) {
-        HomeToolbar(toolbarState = toolbarState)
-        HomeImagePaging(
-            modifier = Modifier.nestedScroll(nestedScrollConnection),
-            images = images,
-            toolbarState = toolbarState,
-            listState = listState,
-            listType = listType,
-            toast = toast,
-            toDetail = toDetail,
-            loadImage = loadImage
-        )
-    }
+    HomeToolbar(toolbarState = toolbarState)
+    HomeImagePaging(
+        modifier = Modifier
+            .graphicsLayer {
+                translationY = toolbarState.height
+            },
+        images = images,
+        listState = listState,
+        listType = listType,
+        toDetail = toDetail,
+        loadImage = loadImage
+    )
 }

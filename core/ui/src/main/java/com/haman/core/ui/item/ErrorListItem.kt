@@ -20,12 +20,14 @@ import com.haman.core.designsystem.component.ContentText
  * 화면에 보여주는 Item
  */
 @Composable
-fun ErrorListItem(
+fun BoxScope.ErrorListItem(
     @StringRes
     message: Int
 ) {
     Column(
-        modifier = Modifier.padding(24.dp),
+        modifier = Modifier
+            .align(Alignment.Center)
+            .padding(24.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Image(
