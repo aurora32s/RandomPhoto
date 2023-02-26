@@ -1,6 +1,5 @@
 package com.haman.core.designsystem.component
 
-import android.graphics.Paint.Align
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -16,14 +15,14 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.zIndex
+import androidx.compose.ui.unit.lerp
 import com.haman.core.designsystem.icon.DaangnIcons
 import com.haman.core.designsystem.util.ImageType
 import com.haman.core.designsystem.R
-import com.haman.core.designsystem.theme.Black
 
 @Stable
 interface ToolbarState {
@@ -140,18 +139,70 @@ fun CollapsingToolbar(
                     AsyncImage(id = it, load = imageType.load)
                 }
             }
-            Column(
-                modifier = Modifier.fillMaxSize(),
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally
+            DaangnToolBarLayout(
+                modifier = Modifier.padding(8.dp),
+                state = state
             ) {
                 Image(
                     modifier = Modifier.size(50.dp),
                     painter = painterResource(id = DaangnIcons.logo),
                     contentDescription = ""
                 )
-                Header(text = stringResource(id = R.string.app_title))
+                SubTitle(text = stringResource(id = R.string.app_title))
             }
+//            Column(
+//                modifier = Modifier.fillMaxSize(),
+//                verticalArrangement = Arrangement.Center,
+//                horizontalAlignment = Alignment.CenterHorizontally
+//            ) {
+//            }
+        }
+    }
+}
+
+@Composable
+fun DaangnToolBarLayout(
+    modifier: Modifier = Modifier,
+    state: Float,
+    content: @Composable () -> Unit
+) {
+    Layout(
+        modifier = modifier,
+        content = content
+    ) { measurables, constraints ->
+        val placeables = measurables.map { it.measure(constraints) }
+        layout(
+            width = constraints.maxWidth,
+            height = constraints.maxHeight
+        ) {
+            val logo = placeables[0] // 로고 아이콘
+            val title = placeables[1] // Title
+            val totalWidth = logo.measuredWidth + title.measuredWidth
+
+            logo.placeRelative(
+                x = lerp(
+                    start = ((constraints.maxWidth - totalWidth) / 2).toDp(),
+                    stop = ((constraints.maxWidth - logo.measuredWidth) / 2).toDp(),
+                    fraction = state
+                ).roundToPx(),
+                y = lerp(
+                    start = ((constraints.maxHeight - logo.measuredHeight) / 2).toDp(),
+                    stop = ((constraints.maxHeight / 2 - logo.measuredHeight)).toDp(),
+                    fraction = state
+                ).roundToPx()
+            )
+            title.placeRelative(
+                x = lerp(
+                    start = ((constraints.maxWidth - totalWidth) / 2 + logo.measuredWidth).toDp(),
+                    stop = ((constraints.maxWidth - title.measuredWidth) / 2).toDp(),
+                    fraction = state
+                ).roundToPx(),
+                y = lerp(
+                    start = ((constraints.maxHeight - title.measuredHeight) / 2 + 10).toDp(),
+                    stop = (constraints.maxHeight / 2).toDp(),
+                    fraction = state
+                ).roundToPx()
+            )
         }
     }
 }
