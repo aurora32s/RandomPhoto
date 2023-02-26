@@ -19,6 +19,7 @@ fun <T : UiModel> GridPagingList(
     space: Float = 0f,
     data: LazyPagingItems<T>,
     listState: LazyListState,
+    title: @Composable () -> Unit = {},
     item: @Composable (T) -> Unit
 ) {
     LazyVerticalGrid(
@@ -29,6 +30,7 @@ fun <T : UiModel> GridPagingList(
         verticalArrangement = Arrangement.spacedBy(space.dp),
         horizontalArrangement = Arrangement.spacedBy(space.dp)
     ) {
+        item(span = { GridItemSpan(cell) }) { title() }
         items(data.itemCount) { index ->
             data[index]?.let { item(it) }
         }

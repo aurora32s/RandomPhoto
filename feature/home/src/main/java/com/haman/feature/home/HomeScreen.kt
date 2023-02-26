@@ -80,15 +80,16 @@ fun HomeScreen(
                     toolbarState.scrollTopLimitReached =
                         listState.firstVisibleItemIndex == 0 && listState.firstVisibleItemScrollOffset == 0
                     toolbarState.scrollOffset = toolbarState.scrollOffset - available.y
-                    println("${available.y}")
                     return Offset(0f, toolbarState.consumed)
                 }
             }
         }
 
-        Box(modifier = Modifier
-            .padding(innerPadding)
-            .nestedScroll(nestedScrollConnection)) {
+        Box(
+            modifier = Modifier
+                .padding(innerPadding)
+                .nestedScroll(nestedScrollConnection)
+        ) {
             CollapsingToolbar(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -113,7 +114,17 @@ fun HomeScreen(
                 ),
                 space = 8f,
                 data = images,
-                listState = listState
+                listState = listState,
+                title = {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(4.dp),
+                        horizontalArrangement = Arrangement.Center
+                    ) {
+                        ContentText(text = "오늘의 갤러리")
+                    }
+                }
             ) {
                 when (listType.value) {
                     ListType.GRID -> AsyncImage(
