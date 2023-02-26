@@ -7,5 +7,5 @@ object DaangnIcons {
     val close = R.drawable.close
     val linearBtn = R.drawable.linear_btn
     val gridBtn = R.drawable.grid_btn
-    val refresh = R.drawable.grid_btn
+    val refresh = R.drawable.refresh
 }

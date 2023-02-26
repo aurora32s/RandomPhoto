@@ -25,12 +25,7 @@ class HomeViewModel @Inject constructor(
     private val getRandomImageInfoUseCase: GetRandomImageInfoUseCase
 ) : ViewModel() {
 
-    private val _listType = MutableStateFlow(ListType.GRID)
-    val listType: StateFlow<ListType>
-        get() = _listType.asStateFlow()
-
     private var loadImageJob = SupervisorJob()
-
     val imagesInfo: Flow<PagingData<ImageUiModel>> =
         getImagesInfoUseCase()
             .map { it.map { image -> image.toUiModel() } }
@@ -43,17 +38,6 @@ class HomeViewModel @Inject constructor(
         return viewModelScope.async(loadImageJob) {
             getImageUseCase(id, width, height)
         }.await()
-    }
-
-    fun toggleListType() {
-        viewModelScope.launch {
-            loadImageJob.cancelChildren()
-            _listType.value =
-                when (_listType.value) {
-                    ListType.LINEAR -> ListType.GRID
-                    ListType.GRID -> ListType.LINEAR
-                }
-        }
     }
 }
 
