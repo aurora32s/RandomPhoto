@@ -4,4 +4,7 @@
 
     <string name="fail_to_load_page">이미지 정보를 불러오지 못했습니다. \n 네트워크 상태를 확인해주세요.</string>
     <string name="fail_to_load_detail">이미지 상세 정보를 불러오지 못했습니다. \n 네트워크 상태를 확인해주세요.</string>
+
+    <!-- home screen -->
+    <string name="home_paging_title">오늘의 갤러리</string>
 </resources>
