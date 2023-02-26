@@ -2,9 +2,10 @@ package com.haman.core.ui.list
 
 import androidx.annotation.StringRes
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
+import com.haman.core.common.state.ToastPosition
 import com.haman.core.model.ui.UiModel
 import com.haman.core.ui.item.ErrorListItem
 
@@ -16,20 +17,25 @@ fun <T : UiModel> PagingList(
     data: LazyPagingItems<T>,
     @StringRes
     errorMsg: Int,
+    toast: (ToastPosition, Int) -> Unit,
     content: @Composable () -> Unit
 ) {
     when (data.loadState.refresh) {
         LoadState.Loading -> {}
         is LoadState.Error -> {
             // 초기 데이터 요청 실패
-            if (data.itemCount == 0) {
-                // 에러 아이템 출력
-                ErrorListItem(message = errorMsg)
-            } else { // 페이징 데이터 실패
-                // TODO 에러 Toast 출력
-            }
+            ErrorListItem(message = errorMsg)
         }
-//        else -> content()
         else -> content()
+    }
+    when (data.loadState.append) {
+        LoadState.Loading -> {}
+        is LoadState.Error -> toast(ToastPosition.BOTTOM, errorMsg)
+        else -> {}
+    }
+    when (data.loadState.prepend) {
+        LoadState.Loading -> {}
+        is LoadState.Error -> toast(ToastPosition.MIDDLE, errorMsg)
+        else -> {}
     }
 }
