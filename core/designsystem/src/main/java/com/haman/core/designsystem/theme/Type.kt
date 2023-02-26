@@ -16,14 +16,14 @@ val font = FontFamily(
 val Typography = Typography(
     h5 = TextStyle(
         fontFamily = font,
-        fontSize = 24.sp
+        fontSize = 32.sp
     ),
     subtitle1 = TextStyle(
         fontFamily = font,
-        fontSize = 16.sp
+        fontSize = 24.sp
     ),
     caption = TextStyle(
         fontFamily = font,
-        fontSize = 12.sp
+        fontSize = 16.sp
     )
 )
