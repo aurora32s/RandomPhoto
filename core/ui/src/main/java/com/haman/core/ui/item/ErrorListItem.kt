@@ -24,23 +24,19 @@ fun ErrorListItem(
     @StringRes
     message: Int
 ) {
-    Box(
-        modifier = Modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center
+    Column(
+        modifier = Modifier.padding(24.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Image(
-                modifier = Modifier.clip(RoundedCornerShape(99)),
-                painter = painterResource(id = R.drawable.profile_sample),
-                contentDescription = ""
-            )
-            Spacer(modifier = Modifier.height(8.dp))
-            ContentText(
-                text = stringResource(id = message),
-                align = TextAlign.Center
-            )
-        }
+        Image(
+            modifier = Modifier.clip(RoundedCornerShape(99)),
+            painter = painterResource(id = R.drawable.profile_sample),
+            contentDescription = ""
+        )
+        Spacer(modifier = Modifier.height(8.dp))
+        ContentText(
+            text = stringResource(id = message),
+            align = TextAlign.Center
+        )
     }
 }
