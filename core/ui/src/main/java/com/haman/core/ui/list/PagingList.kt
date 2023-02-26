@@ -1,14 +1,22 @@
 package com.haman.core.ui.list
 
 import androidx.annotation.StringRes
-import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.*
+import androidx.compose.material.Button
+import androidx.compose.material.Icon
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import com.haman.core.common.state.ToastPosition
+import com.haman.core.designsystem.icon.DaangnIcons
 import com.haman.core.model.ui.UiModel
 import com.haman.core.ui.item.ErrorListItem
 
@@ -24,7 +32,10 @@ fun <T : UiModel> PagingList(
     toast: (ToastPosition, Int) -> Unit,
     content: @Composable () -> Unit
 ) {
-    Box(modifier = modifier, contentAlignment = Alignment.TopCenter) {
+    Box(
+        modifier = modifier.fillMaxSize(),
+        contentAlignment = Alignment.TopCenter
+    ) {
         when (data.loadState.refresh) {
             LoadState.Loading -> {}
             is LoadState.Error -> {
