@@ -48,7 +48,6 @@ fun HomeScreen(
     viewModel: HomeViewModel = hiltViewModel()
 ) {
     val images = viewModel.imagesInfo.collectAsLazyPagingItems()
-    val randomImage = viewModel.randomImage.collectAsState()
     val listType = viewModel.listType.collectAsState()
 
     Scaffold(
@@ -104,10 +103,7 @@ fun HomeScreen(
                     .height(
                         with(LocalDensity.current) { toolbarState.height.toDp() }
                     ),
-                imageType = ImageType.AsyncImage(
-                    imageId = randomImage.value?.id,
-                    load = viewModel::getImageByUrl
-                ),
+                imageType = ImageType.DrawableImage(id = R.drawable.background),
                 state = toolbarState.progress
             )
             GridPagingList(

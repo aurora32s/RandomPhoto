@@ -1,22 +1,29 @@
 package com.haman.core.designsystem.component
 
+import android.graphics.Paint.Align
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Surface
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.Saver
 import androidx.compose.runtime.saveable.mapSaver
-import androidx.compose.ui.BiasAlignment
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.zIndex
+import com.haman.core.designsystem.icon.DaangnIcons
 import com.haman.core.designsystem.util.ImageType
+import com.haman.core.designsystem.R
+import com.haman.core.designsystem.theme.Black
 
 @Stable
 interface ToolbarState {
@@ -104,26 +111,46 @@ fun CollapsingToolbar(
 ) {
     Box(
         modifier = modifier
-            .clip(RoundedCornerShape(bottomStart = 16.dp, bottomEnd = 16.dp))
+            .clip(RoundedCornerShape(bottomStart = 16.dp * state, bottomEnd = 16.dp * state))
+            .background(
+                color = MaterialTheme.colors.background.copy(alpha = 1 - state)
+            ),
+        contentAlignment = Alignment.Center,
     ) {
-        when (imageType) {
-            is ImageType.BitmapImage -> Image(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .graphicsLayer { alpha = state * 0.75f },
-                bitmap = imageType.bitmap.asImageBitmap(),
-                contentDescription = ""
-            )
-            is ImageType.DrawableImage -> Image(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .graphicsLayer { alpha = state * 0.75f },
-                contentScale = ContentScale.Crop,
-                painter = painterResource(id = imageType.id),
-                contentDescription = ""
-            )
-            is ImageType.AsyncImage -> imageType.imageId?.let {
-                AsyncImage(id = it, load = imageType.load)
+        Surface(
+            color = MaterialTheme.colors.surface.copy(alpha = state)
+        ) {
+            when (imageType) {
+                is ImageType.BitmapImage -> Image(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .graphicsLayer { alpha = state * 0.75f },
+                    bitmap = imageType.bitmap.asImageBitmap(),
+                    contentDescription = ""
+                )
+                is ImageType.DrawableImage -> Image(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .graphicsLayer { alpha = state * 0.75f },
+                    contentScale = ContentScale.Crop,
+                    painter = painterResource(id = imageType.id),
+                    contentDescription = ""
+                )
+                is ImageType.AsyncImage -> imageType.imageId?.let {
+                    AsyncImage(id = it, load = imageType.load)
+                }
+            }
+            Column(
+                modifier = Modifier.fillMaxSize(),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Image(
+                    modifier = Modifier.size(50.dp),
+                    painter = painterResource(id = DaangnIcons.logo),
+                    contentDescription = ""
+                )
+                Header(text = stringResource(id = R.string.app_title))
             }
         }
     }
