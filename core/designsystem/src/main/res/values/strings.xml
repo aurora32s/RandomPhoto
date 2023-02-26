@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="error_message_for_image">이미지를 불러오는 도중 \n 문제가 발생했어요.</string>
     <string name="app_title">당근포토</string>
+
+    <string name="fail_to_load_page">이미지 정보를 불러오지 못했습니다. \n 네트워크 상태를 확인해주세요.</string>
+    <string name="fail_to_load_detail">이미지 상세 정보를 불러오지 못했습니다. \n 네트워크 상태를 확인해주세요.</string>
 </resources>

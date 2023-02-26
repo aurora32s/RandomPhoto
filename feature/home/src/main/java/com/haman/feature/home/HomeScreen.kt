@@ -18,12 +18,14 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
+import com.haman.core.common.state.ToastPosition
 import com.haman.core.designsystem.icon.DaangnIcons
 import com.haman.core.ui.item.ImageLinearItem
 import com.haman.core.ui.list.GridPagingList
 import com.haman.core.designsystem.R
 import com.haman.core.designsystem.component.*
 import com.haman.core.designsystem.util.ImageType
+import com.haman.core.ui.list.PagingList
 
 private val minHeightToolbar = 54.dp
 private val maxHeightToolbar = 340.dp
@@ -35,6 +37,7 @@ private val maxHeightToolbar = 340.dp
 @Composable
 fun HomeScreen(
     toDetail: (String) -> Unit,
+    toast: (ToastPosition, Int) -> Unit,
     viewModel: HomeViewModel = hiltViewModel()
 ) {
     val images = viewModel.imagesInfo.collectAsLazyPagingItems()
@@ -87,6 +90,7 @@ fun HomeScreen(
 
         Box(
             modifier = Modifier
+                .fillMaxSize()
                 .padding(innerPadding)
                 .nestedScroll(nestedScrollConnection)
         ) {
@@ -99,49 +103,56 @@ fun HomeScreen(
                 imageType = ImageType.DrawableImage(id = R.drawable.background),
                 state = toolbarState.progress
             )
-            GridPagingList(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .graphicsLayer {
-                        translationY = toolbarState.height
-                    },
-                cell = listType.value.column,
-                contentPadding = PaddingValues(
-                    bottom = minHeightToolbar,
-                    start = 8.dp,
-                    end = 8.dp,
-                    top = 16.dp
-                ),
-                space = 8f,
+
+            PagingList(
                 data = images,
-                listState = listState,
-                title = {
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(4.dp),
-                        horizontalArrangement = Arrangement.Center
-                    ) {
-                        ContentText(text = "오늘의 갤러리")
-                    }
-                }
+                errorMsg = R.string.fail_to_load_page,
+                toast = toast
             ) {
-                when (listType.value) {
-                    ListType.GRID -> AsyncImage(
-                        modifier = Modifier
-                            .aspectRatio(1f)
-                            .clickable { toDetail(it.id) },
-                        id = it.id,
-                        load = viewModel::getImageByUrl
-                    )
-                    ListType.LINEAR -> ImageLinearItem(
-                        modifier = Modifier.clickable {
-                            toDetail(it.id)
+                GridPagingList(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .graphicsLayer {
+                            translationY = toolbarState.height
                         },
-                        imageId = it.id,
-                        author = it.author,
-                        loadImage = viewModel::getImageByUrl
-                    )
+                    cell = listType.value.column,
+                    contentPadding = PaddingValues(
+                        bottom = minHeightToolbar,
+                        start = 8.dp,
+                        end = 8.dp,
+                        top = 16.dp
+                    ),
+                    space = 8f,
+                    data = images,
+                    listState = listState,
+                    title = {
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(4.dp),
+                            horizontalArrangement = Arrangement.Center
+                        ) {
+                            ContentText(text = "오늘의 갤러리")
+                        }
+                    }
+                ) {
+                    when (listType.value) {
+                        ListType.GRID -> AsyncImage(
+                            modifier = Modifier
+                                .aspectRatio(1f)
+                                .clickable { toDetail(it.id) },
+                            id = it.id,
+                            load = viewModel::getImageByUrl
+                        )
+                        ListType.LINEAR -> ImageLinearItem(
+                            modifier = Modifier.clickable {
+                                toDetail(it.id)
+                            },
+                            imageId = it.id,
+                            author = it.author,
+                            loadImage = viewModel::getImageByUrl
+                        )
+                    }
                 }
             }
         }
