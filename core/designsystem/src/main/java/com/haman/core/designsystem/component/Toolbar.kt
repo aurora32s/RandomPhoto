@@ -177,7 +177,7 @@ fun DaangnToolBarLayout(
         ) {
             val logo = placeables[0] // 로고 아이콘
             val title = placeables[1] // Title
-            val totalWidth = logo.measuredWidth + title.measuredWidth
+            val totalWidth = (logo.measuredWidth / 2) + title.measuredWidth
 
             logo.placeRelative(
                 x = lerp(
@@ -193,7 +193,7 @@ fun DaangnToolBarLayout(
             )
             title.placeRelative(
                 x = lerp(
-                    start = ((constraints.maxWidth - totalWidth) / 2 + logo.measuredWidth).toDp(),
+                    start = ((constraints.maxWidth - totalWidth) / 2 + logo.measuredWidth * 3 / 4).toDp(),
                     stop = ((constraints.maxWidth - title.measuredWidth) / 2).toDp(),
                     fraction = state
                 ).roundToPx(),
