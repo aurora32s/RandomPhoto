@@ -17,6 +17,7 @@ paging = "3.1.1"
 pagingCompose = "1.0.0-alpha14"
 retrofit = "2.9.0"
 retrofitKotlinxSerializationJson = "0.8.0"
+splashscreen = "1.0.0-beta01"
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "androidGradlePlugin" }
@@ -62,6 +63,9 @@ paging-compose = { group = "androidx.paging", name = "paging-compose", version.r
 
 # test
 junit4 = { group = "junit", name = "junit", version.ref = "junit4" }
+
+# Splash Screen
+splash-screen = { group = "androidx.core", name = "core-splashscreen", version.ref = "splashscreen" }
 
 [bundles]
 androidx-compose = ["androidx-activity-compose", "androidx-compose-ui", "androidx-compose-preview",

@@ -5,6 +5,7 @@ import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -16,6 +17,7 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.haman.core.common.state.ToastPosition
@@ -39,9 +41,15 @@ private val maxHeightToolbar = 340.dp
 fun HomeScreen(
     toDetail: (String) -> Unit,
     toast: (ToastPosition, Int) -> Unit,
+    completeLoadInitData: () -> Unit,
     viewModel: HomeViewModel = hiltViewModel()
 ) {
     val images = viewModel.imagesInfo.collectAsLazyPagingItems()
+    LaunchedEffect(key1 = images.loadState.refresh) {
+        if (images.loadState.refresh != LoadState.Loading) {
+            completeLoadInitData()
+        }
+    }
     // Toolbar 가능 높이
     val toolbarHeightRange = with(LocalDensity.current) {
         minHeightToolbar.roundToPx()..maxHeightToolbar.roundToPx()

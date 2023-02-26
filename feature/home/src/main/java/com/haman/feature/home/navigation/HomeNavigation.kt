@@ -18,11 +18,12 @@ fun NavController.navigateToHome() {
  */
 fun NavGraphBuilder.homeScreen(
     toDetail: (String) -> Unit,
-    toast: (ToastPosition, Int) -> Unit
+    toast: (ToastPosition, Int) -> Unit,
+    completeLoadInitData: () -> Unit,
 ) {
     composable(
         route = HomeRoute
     ) {
-        HomeScreen(toDetail, toast)
+        HomeScreen(toDetail, toast, completeLoadInitData)
     }
 }
