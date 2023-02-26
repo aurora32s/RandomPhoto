@@ -1,16 +1,10 @@
 package com.haman.feature.home
 
-import androidx.compose.animation.core.FloatDecayAnimationSpec
-import androidx.compose.animation.core.FloatExponentialDecaySpec
-import androidx.compose.animation.core.animateDecay
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.*
 import androidx.compose.runtime.*
-import androidx.compose.runtime.saveable.Saver
-import androidx.compose.runtime.saveable.mapSaver
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
@@ -18,10 +12,8 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
 import androidx.compose.ui.input.nestedscroll.NestedScrollSource
 import androidx.compose.ui.input.nestedscroll.nestedScroll
-import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.unit.Velocity
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.LoadState
@@ -32,8 +24,6 @@ import com.haman.core.ui.list.GridPagingList
 import com.haman.core.designsystem.R
 import com.haman.core.designsystem.component.*
 import com.haman.core.designsystem.util.ImageType
-import kotlinx.coroutines.cancelChildren
-import kotlinx.coroutines.launch
 
 private val minHeightToolbar = 54.dp
 private val maxHeightToolbar = 340.dp
@@ -73,7 +63,7 @@ fun HomeScreen(
                 )
             }
         }
-    ) {
+    ) { innerPadding ->
         val toolbarHeightRange = with(LocalDensity.current) {
             minHeightToolbar.roundToPx()..maxHeightToolbar.roundToPx()
         }
@@ -96,7 +86,9 @@ fun HomeScreen(
             }
         }
 
-        Box(modifier = Modifier.nestedScroll(nestedScrollConnection)) {
+        Box(modifier = Modifier
+            .padding(innerPadding)
+            .nestedScroll(nestedScrollConnection)) {
             CollapsingToolbar(
                 modifier = Modifier
                     .fillMaxWidth()
