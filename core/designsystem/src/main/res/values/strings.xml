@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="error_message_for_image">이미지를 불러오는 도중 \n 문제가 발생했어요.</string>
+</resources>
