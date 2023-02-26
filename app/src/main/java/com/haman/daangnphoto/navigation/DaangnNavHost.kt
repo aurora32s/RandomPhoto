@@ -5,6 +5,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import com.haman.core.common.state.ToastPosition
+import com.haman.daangnphoto.MainViewModel
 import com.haman.feature.detail.navigation.DetailRoute
 import com.haman.feature.detail.navigation.detailScreen
 import com.haman.feature.detail.navigation.navigateToDetail
@@ -16,14 +17,18 @@ fun DaangnNavHost(
     modifier: Modifier = Modifier,
     navController: NavHostController,
     startDestination: String = HomeRoute,
-    toast: (ToastPosition, Int) -> Unit
+    mainViewModel: MainViewModel
 ) {
     NavHost(
         modifier = modifier,
         navController = navController,
         startDestination = startDestination
     ) {
-        homeScreen(navController::navigateToDetail, toast)
+        homeScreen(
+            navController::navigateToDetail,
+            mainViewModel::toast,
+            mainViewModel::completeLoadInitData
+        )
         detailScreen(navController::popBackStack)
     }
 }

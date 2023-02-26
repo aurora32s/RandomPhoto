@@ -25,5 +25,9 @@ class MainViewModel @Inject constructor() : ViewModel() {
             position = position
         )
     }
+
+    fun completeLoadInitData() {
+        _uiEvent.value = UiEvent.CompleteLoadInitData
+    }
 }
 
