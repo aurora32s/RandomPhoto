@@ -30,7 +30,7 @@ fun ImageLinearItem(
         AsyncImage(
             modifier = Modifier
                 .fillMaxWidth()
-                .aspectRatio(3f / 2f),
+                .aspectRatio(5f / 3f),
             id = imageId,
             load = loadImage
         )

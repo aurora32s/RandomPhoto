@@ -27,8 +27,7 @@ fun AsyncImage(
     height: Int = 300,
     id: String,
     cornerRadius: Float = 4f,
-    load: suspend (String, Int, Int) -> Bitmap?,
-    isDarkTheme: Boolean = isSystemInDarkTheme()
+    load: suspend (String, Int, Int) -> Bitmap?
 ) {
     val bitmap = produceState<LoadImageState>(initialValue = LoadImageState.Loading) {
         val result = load(id, width, height)

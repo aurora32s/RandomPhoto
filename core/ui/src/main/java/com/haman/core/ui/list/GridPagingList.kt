@@ -15,7 +15,8 @@ import com.haman.core.model.ui.UiModel
 fun <T : UiModel> GridPagingList(
     modifier: Modifier = Modifier,
     cell: Int = 2,
-    contentPadding: Float = 0f,
+    contentPadding: PaddingValues = PaddingValues(),
+    space: Float = 0f,
     data: LazyPagingItems<T>,
     listState: LazyListState,
     item: @Composable (T) -> Unit
@@ -24,9 +25,9 @@ fun <T : UiModel> GridPagingList(
         modifier = modifier,
         cells = GridCells.Fixed(cell),
         state = listState,
-        contentPadding = PaddingValues(contentPadding.dp),
-        verticalArrangement = Arrangement.spacedBy(contentPadding.dp),
-        horizontalArrangement = Arrangement.spacedBy(contentPadding.dp)
+        contentPadding = contentPadding,
+        verticalArrangement = Arrangement.spacedBy(space.dp),
+        horizontalArrangement = Arrangement.spacedBy(space.dp)
     ) {
         items(data.itemCount) { index ->
             data[index]?.let { item(it) }
