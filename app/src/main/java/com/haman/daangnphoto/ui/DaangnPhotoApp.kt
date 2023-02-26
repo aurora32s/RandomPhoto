@@ -1,5 +1,7 @@
 package com.haman.daangnphoto.ui
 
+import androidx.core.splashscreen.SplashScreen
+
 import androidx.annotation.StringRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -24,16 +26,22 @@ import kotlinx.coroutines.delay
 
 @Composable
 fun DaangnPhotoApp(
+    splashScreen: SplashScreen,
     viewModel: MainViewModel = hiltViewModel(),
     navController: NavHostController = rememberNavController()
 ) {
     val uiEvent = viewModel.uiEvent.collectAsState()
-
+    splashScreen.setKeepOnScreenCondition {
+        when (uiEvent.value) {
+            UiEvent.Initialized -> true
+            else -> false
+        }
+    }
     Scaffold { padding ->
         Box(modifier = Modifier.fillMaxSize()) {
             DaangnNavHost(
                 navController = navController,
-                toast = viewModel::toast
+                mainViewModel = viewModel
             )
 
             Event(
@@ -45,13 +53,17 @@ fun DaangnPhotoApp(
 
 @Composable
 fun BoxScope.Event(
-    event: UiEvent?,
+    event: UiEvent?
 ) {
     when (event) {
+        UiEvent.Initialized -> {
+            SplashScreen()
+        }
         is UiEvent.Toast -> Toast(
             type = event.position,
             message = event.message
         )
+        UiEvent.CompleteLoadInitData -> {}
         null -> {}
     }
 }
