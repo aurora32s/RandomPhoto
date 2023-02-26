@@ -22,4 +22,10 @@ interface ImageRepository {
      * @param id 이미지 id
      */
     suspend fun getImageInfo(id: String): Result<ImageEntity?>
+
+    /**
+     * 랜덤 이미지 정보 요청
+     * @param seed 랜덤에 사용될 seed 정보
+     */
+    suspend fun getRandomImageInfo(seed: String): Result<ImageEntity?>
 }

@@ -33,4 +33,14 @@ class ImageDataSourceImpl @Inject constructor(
             } else throw ImageRequestNetworkException(response.message())
         }
     }
+
+    override suspend fun getRandomImageInfo(seed: String): Result<ImageResponse> {
+        return runCatching {
+            val response = imageApiService.getRandomImageInfo(seed)
+            if (response.isSuccessful && response.body() != null) {
+                val image = response.body()
+                image ?: throw NoneImageResponseException()
+            } else throw ImageRequestNetworkException(response.message())
+        }
+    }
 }
