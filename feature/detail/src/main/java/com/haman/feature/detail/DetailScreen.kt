@@ -58,9 +58,6 @@ fun DetailScreen(
             // 이미지는 캐싱된 거 보여주기
             if (imageId != null) {
                 AsyncImage(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .heightIn(min = 260.dp),
                     id = imageId,
                     load = viewModel::getImageByUrl
                 )
