@@ -10,7 +10,7 @@ import com.haman.core.model.response.ImageResponse
 import java.io.IOException
 
 /**
- * 이미지 리스트 요청
+ * 이미지 리스트 요청(with Paging3)
  */
 class ImagesPagingSource(
     private val imageApiService: ImageApiService

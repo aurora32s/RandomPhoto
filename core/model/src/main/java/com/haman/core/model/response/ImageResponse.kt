@@ -1,5 +1,6 @@
 package com.haman.core.model.response
 
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /**
@@ -11,5 +12,6 @@ data class ImageResponse(
     val author: String, // 이미지 창작자 명
     val width: Int, // 이미지 가로 길이
     val height: Int, // 이미지 세로 길이
+    @SerialName("download_url")
     val imageUrl: String // 이미지 URL
 )
