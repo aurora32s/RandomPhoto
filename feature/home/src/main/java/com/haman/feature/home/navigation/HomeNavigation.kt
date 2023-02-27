@@ -17,7 +17,7 @@ fun NavController.navigateToHome() {
  * @param toDetail 상세 화면으로 이동
  */
 fun NavGraphBuilder.homeScreen(
-    toDetail: (String) -> Unit,
+    toDetail: (String, String) -> Unit,
     toast: (ToastPosition, Int) -> Unit,
     completeLoadInitData: () -> Unit,
 ) {

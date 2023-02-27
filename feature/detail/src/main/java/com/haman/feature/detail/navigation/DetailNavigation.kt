@@ -10,12 +10,16 @@ import com.haman.feature.detail.DetailScreen
 
 const val DetailRoute = "detail"
 private const val ImageIdArgs = "image_id"
-private val arguments = listOf(navArgument(ImageIdArgs) { type = NavType.StringType })
-private const val DetailNavigationRoute = "${DetailRoute}/{${ImageIdArgs}}"
+private const val AuthorIdArgs = "author_name"
+private val arguments = listOf(
+    navArgument(ImageIdArgs) { type = NavType.StringType },
+    navArgument(AuthorIdArgs) { type = NavType.StringType }
+)
+private const val DetailNavigationRoute = "${DetailRoute}/{${ImageIdArgs}}/{${AuthorIdArgs}}"
 
 
-fun NavController.navigateToDetail(imageId: String) {
-    this.navigate("${DetailRoute}/$imageId")
+fun NavController.navigateToDetail(imageId: String, author: String) {
+    this.navigate("${DetailRoute}/$imageId/$author")
 }
 
 /**
@@ -30,9 +34,11 @@ fun NavGraphBuilder.detailScreen(
         arguments = arguments
     ) {
         val imageId = it.arguments?.getString(ImageIdArgs)
+        val authorName = it.arguments?.getString(AuthorIdArgs)
         DaangnBlackTheme {
             DetailScreen(
                 imageId = imageId,
+                author = authorName,
                 onBackPressed = onBackPressed
             )
         }

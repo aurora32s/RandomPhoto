@@ -39,7 +39,7 @@ private val maxHeightToolbar = 340.dp
  */
 @Composable
 fun HomeScreen(
-    toDetail: (String) -> Unit,
+    toDetail: (String, String) -> Unit,
     toast: (ToastPosition, Int) -> Unit,
     completeLoadInitData: () -> Unit,
     viewModel: HomeViewModel = hiltViewModel()
@@ -106,7 +106,7 @@ fun HomeBody(
     toolbarState: ToolbarState,
     listState: LazyListState,
     listType: ListType,
-    toDetail: (String) -> Unit,
+    toDetail: (String, String) -> Unit,
     loadImage: suspend (String, Int, Int) -> Bitmap?
 ) {
     HomeToolbar(toolbarState = toolbarState)
