@@ -14,6 +14,6 @@ sealed interface ImageType {
 
     data class AsyncImage(
         val imageId: String?,
-        val load: suspend (String, Int, Int) -> Bitmap?
+        val load: suspend (String) -> Bitmap?
     ) : ImageType
 }

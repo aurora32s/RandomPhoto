@@ -21,7 +21,7 @@ fun ImageLinearItem(
     modifier: Modifier = Modifier,
     imageId: String,
     author: String,
-    loadImage: suspend (String, Int, Int) -> Bitmap?
+    loadImage: suspend (String) -> Bitmap?
 ) {
     Column(
         modifier = modifier.fillMaxWidth(),

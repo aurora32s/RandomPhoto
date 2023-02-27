@@ -24,19 +24,25 @@ import com.haman.core.designsystem.icon.DaangnIcons
 import com.haman.core.designsystem.theme.Gray200
 import com.haman.core.designsystem.theme.Gray700
 
+/**
+ * 서버로 부터 이미지 Bitmap 을 받으와 보여주는 Component
+ * (캐시가 있다면 캐시 사용)
+ * @param id 이미지 id
+ * @param cornerRadius 모서리 Radius
+ * @param scaleType Image ContentScaleType
+ * @param load 이미지 로드 메서드
+ */
 @Composable
 fun AsyncImage(
     modifier: Modifier = Modifier,
-    width: Int = 200,
-    height: Int = 300,
     id: String,
     cornerRadius: Float = 4f,
     scaleType: ContentScale = ContentScale.FillWidth,
-    load: suspend (String, Int, Int) -> Bitmap?,
+    load: suspend (String) -> Bitmap?,
     isDarkTheme: Boolean = isSystemInDarkTheme(),
 ) {
     val bitmap = produceState<LoadImageState>(initialValue = LoadImageState.Loading) {
-        val result = load(id, width, height)
+        val result = load(id)
         value = result?.let { LoadImageState.Success(it) } ?: LoadImageState.Error
     }
 
@@ -69,7 +75,7 @@ fun AsyncImage(
                 painter = painterResource(id = DaangnIcons.logo),
                 contentDescription = "Fail to load $id Image"
             )
-            else -> {}
+            LoadImageState.Loading -> {}
         }
     }
 }

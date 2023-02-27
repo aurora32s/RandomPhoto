@@ -92,7 +92,7 @@ fun HomeImagePagingItem(
     image: ImageUiModel,
     listType: ListType,
     toDetail: (String, String) -> Unit,
-    loadImage: suspend (String, Int, Int) -> Bitmap?
+    loadImage: suspend (String) -> Bitmap?
 ) {
     when (listType) {
         ListType.GRID -> AsyncImage(

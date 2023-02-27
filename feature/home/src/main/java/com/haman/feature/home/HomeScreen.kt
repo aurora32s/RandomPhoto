@@ -107,7 +107,7 @@ fun HomeBody(
     listState: LazyListState,
     listType: ListType,
     toDetail: (String, String) -> Unit,
-    loadImage: suspend (String, Int, Int) -> Bitmap?
+    loadImage: suspend (String) -> Bitmap?
 ) {
     HomeToolbar(toolbarState = toolbarState)
     HomeImagePaging(

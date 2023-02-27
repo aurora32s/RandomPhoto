@@ -17,9 +17,14 @@ import androidx.compose.ui.unit.dp
 import com.haman.core.common.state.ToastPosition
 import kotlinx.coroutines.delay
 
+/**
+ * position(위치)에 따른 Toast 를 뛰워주는 Component
+ * @param position Toast 가 띄워질 위치
+ * @param message Toast 에 보여줄 message resource id
+ */
 @Composable
 fun BoxScope.Toast(
-    type: ToastPosition,
+    position: ToastPosition,
     @StringRes
     message: Int
 ) {
@@ -34,7 +39,7 @@ fun BoxScope.Toast(
         Row(
             modifier = Modifier
                 .align(
-                    when (type) {
+                    when (position) {
                         ToastPosition.BOTTOM -> Alignment.BottomCenter
                         ToastPosition.MIDDLE -> Alignment.Center
                     }

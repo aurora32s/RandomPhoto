@@ -57,7 +57,7 @@ fun BoxScope.Event(
     when (event) {
         // Toast 띄워주기
         is UiEvent.Toast -> Toast(
-            type = event.position,
+            position = event.position,
             message = event.message
         )
         else -> {}
