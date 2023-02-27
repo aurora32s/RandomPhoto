@@ -18,8 +18,12 @@ import com.haman.core.network.source.ImageDataSource
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
+import kotlin.math.max
+
+private const val BASE_SIZE = 200
 
 class ImageRepositoryImpl @Inject constructor(
     @IODispatcher private val ioDispatcher: CoroutineDispatcher,
@@ -40,11 +44,24 @@ class ImageRepositoryImpl @Inject constructor(
                 if (imageInDisk != null) return@runCatching imageInDisk
 
                 // 3. 1,2 모두 없으면 네트워크에 요청
-                val bitmapFromApi = imageDataSource.getImage(id, width, height).getOrNull()
+                // 3.1 먼저 이미지의 가로와 세로 길이를 알기 위해 서버에 이미지 정보 요청
+                val imageInfo = imageDataSource.getImageInfo(id).getOrNull()
+                imageInfo ?: return@runCatching null
+
+                val newWidth = if (imageInfo.width < imageInfo.height) {
+                    BASE_SIZE * imageInfo.width / imageInfo.height
+                } else BASE_SIZE
+                val newHeight = if (imageInfo.width > imageInfo.height) {
+                    BASE_SIZE * imageInfo.height / imageInfo.width
+                } else BASE_SIZE
+
+                // 3.2 받아온 이미지 정보를 바탕으로 실제 이미지 요청
+                val bitmapFromApi =
+                    imageDataSource.getImage(id, newWidth, newHeight).getOrNull()
                 if (bitmapFromApi != null) {
                     // 3.1 메모리와 Disk 에 모두 저장
-                    imageCachedInMemoryDataSource.addImage(id, bitmapFromApi)
-                    imageCachedInDiskDataSource.addImage(id, bitmapFromApi)
+                    launch { imageCachedInMemoryDataSource.addImage(id, bitmapFromApi) }
+                    launch { imageCachedInDiskDataSource.addImage(id, bitmapFromApi) }
                 }
                 return@runCatching bitmapFromApi
             }
