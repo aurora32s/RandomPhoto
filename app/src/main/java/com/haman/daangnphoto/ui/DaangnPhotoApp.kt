@@ -1,7 +1,5 @@
 package com.haman.daangnphoto.ui
 
-import androidx.core.splashscreen.SplashScreen
-
 import androidx.annotation.StringRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -14,6 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.core.splashscreen.SplashScreen
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
@@ -24,6 +23,8 @@ import com.haman.daangnphoto.MainViewModel
 import com.haman.daangnphoto.navigation.DaangnNavHost
 import kotlinx.coroutines.delay
 
+private const val splashTime = 2000L
+
 @Composable
 fun DaangnPhotoApp(
     splashScreen: SplashScreen,
@@ -31,12 +32,18 @@ fun DaangnPhotoApp(
     navController: NavHostController = rememberNavController()
 ) {
     val uiEvent = viewModel.uiEvent.collectAsState()
-    splashScreen.setKeepOnScreenCondition {
-        when (uiEvent.value) {
-            UiEvent.Initialized -> true
-            else -> false
-        }
+    val timeOutSplashScreen = remember { mutableStateOf(false) }
+
+    LaunchedEffect(key1 = null) {
+        delay(splashTime)
+        timeOutSplashScreen.value = true
     }
+
+    splashScreen.setKeepOnScreenCondition {
+        if (uiEvent.value is UiEvent.Initialized) true
+        else timeOutSplashScreen.value.not()
+    }
+
     Scaffold { padding ->
         Box(modifier = Modifier.fillMaxSize()) {
             DaangnNavHost(
@@ -56,15 +63,11 @@ fun BoxScope.Event(
     event: UiEvent?
 ) {
     when (event) {
-        UiEvent.Initialized -> {
-            SplashScreen()
-        }
         is UiEvent.Toast -> Toast(
             type = event.position,
             message = event.message
         )
-        UiEvent.CompleteLoadInitData -> {}
-        null -> {}
+        else -> {}
     }
 }
 

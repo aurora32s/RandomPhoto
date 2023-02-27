@@ -41,8 +41,7 @@ fun <T : UiModel> PagingList(
         contentAlignment = Alignment.TopCenter
     ) {
         when (data.loadState.refresh) {
-            LoadState.Loading ->
-                ErrorListItem(message = loadingMsg)
+            LoadState.Loading -> ErrorListItem(message = loadingMsg)
             is LoadState.Error -> {
                 // 초기 데이터 요청 실패
                 ErrorListItem(message = errorMsg)
