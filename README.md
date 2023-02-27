@@ -26,6 +26,7 @@ https://picsum.photos/
 |3|Figma UI 기획서|[Figma 링크](https://www.figma.com/file/imArI7vqRy53wX6Q2ogj2r/%EB%8B%B9%EA%B7%BC%ED%8F%AC%ED%86%A0?node-id=0%3A1&t=XnVfBAjTElQ67qOb-1)|
 |4|WBS 문서|[WBS 스프레드시트 링크](https://docs.google.com/spreadsheets/d/1eKU6OHMDxXxYqm6o-FdIEMV8gKxX7bSD43O3JEM-2nE/edit?usp=sharing)|
 |5|스크럼|[스크럼 노션 링크](https://seom-seom.notion.site/ede478dd358a4b37a016d58e6210f9e6)|
+|6|테스트버전 설치 링크|[Firebase 설치링크](https://appdistribution.firebase.dev/i/d4bfb118c5bc92aa)|
 
 ### 🪴 5.프로젝트 구조 기획서
 #### (* 추후 변경될 수 있습니다.)
