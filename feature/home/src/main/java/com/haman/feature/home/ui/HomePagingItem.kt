@@ -11,6 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -99,7 +100,8 @@ fun HomeImagePagingItem(
                 .aspectRatio(1f)
                 .clickable { toDetail(image.id, image.author) },
             id = image.id,
-            load = loadImage
+            load = loadImage,
+            scaleType = ContentScale.Crop
         )
         ListType.LINEAR -> ImageLinearItem(
             modifier = Modifier.clickable {
