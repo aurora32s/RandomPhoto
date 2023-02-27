@@ -35,9 +35,7 @@ class HomeViewModel @Inject constructor(
      * 이미지 id 를 이용해
      */
     suspend fun getImageByUrl(id: String, width: Int, height: Int): Bitmap? {
-        return viewModelScope.async(loadImageJob) {
-            getImageUseCase(id, width, height)
-        }.await()
+        return getImageUseCase(id, width, height)
     }
 }
 
