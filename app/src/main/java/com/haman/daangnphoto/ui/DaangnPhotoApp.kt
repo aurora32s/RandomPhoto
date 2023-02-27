@@ -100,7 +100,10 @@ fun BoxScope.Toast(
                 .padding(16.dp),
             horizontalArrangement = Arrangement.Center
         ) {
-            ContentText(text = stringResource(id = message))
+            ContentText(
+                text = stringResource(id = message),
+                color = MaterialTheme.colors.onSurface
+            )
         }
     }
 }
