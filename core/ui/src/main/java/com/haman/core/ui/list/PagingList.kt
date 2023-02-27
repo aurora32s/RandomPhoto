@@ -1,29 +1,25 @@
 package com.haman.core.ui.list
 
 import androidx.annotation.StringRes
-import androidx.compose.foundation.layout.*
-import androidx.compose.material.Button
-import androidx.compose.material.Icon
-import androidx.compose.material.LinearProgressIndicator
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.painter.Painter
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import com.haman.core.common.state.ToastPosition
 import com.haman.core.designsystem.component.LinearProgressBar
-import com.haman.core.designsystem.icon.DaangnIcons
 import com.haman.core.model.ui.UiModel
-import com.haman.core.ui.item.ErrorListItem
+import com.haman.core.ui.item.ErrorMessageText
 
 /**
  * 페이징 데이터 처리 공통 Component
+ * @param data 페이지 데이터
+ * @param errorMsg 에러가 발생했을 때 보여줄 메시지 resource id
+ * @param loadingMsg 로딩 중에 보여줄 메시지 resource id
+ * @param toast 에러가 발생했을 때 보여줄 toast
+ * @param content 실질적으로 보여줄 content
  */
 @Composable
 fun <T : UiModel> PagingList(
@@ -41,10 +37,11 @@ fun <T : UiModel> PagingList(
         contentAlignment = Alignment.TopCenter
     ) {
         when (data.loadState.refresh) {
-            LoadState.Loading -> ErrorListItem(message = loadingMsg)
+            // 초기 데이터 로딩 중
+            LoadState.Loading -> ErrorMessageText(message = loadingMsg)
             is LoadState.Error -> {
                 // 초기 데이터 요청 실패
-                ErrorListItem(message = errorMsg)
+                ErrorMessageText(message = errorMsg)
             }
             else -> content()
         }

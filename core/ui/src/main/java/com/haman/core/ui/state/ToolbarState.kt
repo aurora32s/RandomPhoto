@@ -39,15 +39,23 @@ abstract class ScrollFlagState(heightRange: IntRange) : ToolbarState {
     final override var scrollTopLimitReached = true
 }
 
+/**
+ * Scroll 시 App bar 가 상단에 고정되는 Collapsed Toolbar 의 State
+ */
 class ExitUnitCollapsedState(
     heightRange: IntRange,
     scrollOffset: Float = 0f
 ) : ScrollFlagState(heightRange) {
-    // backing property
     override var _scrollOffset by mutableStateOf(
         value = scrollOffset.coerceIn(0f, rangeOfDiff.toFloat()),
         policy = structuralEqualityPolicy()
     )
+
+    /**
+     * Scroll 된 정도
+     * 즉, Toolbar 의 줄어든 길이
+     * 때문에 height = maxHeight - scrollOffset 입니다.
+     */
     override var scrollOffset: Float
         get() = _scrollOffset
         set(value) {
