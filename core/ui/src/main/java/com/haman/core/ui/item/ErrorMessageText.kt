@@ -18,9 +18,10 @@ import com.haman.core.designsystem.component.ContentText
 /**
  * 리스트 아이템 자체를 호출하는데 문제가 발생하였을 경우
  * 화면에 보여주는 Item
+ * @param message 에러 메시지 resource id
  */
 @Composable
-fun BoxScope.ErrorListItem(
+fun BoxScope.ErrorMessageText(
     @StringRes
     message: Int
 ) {

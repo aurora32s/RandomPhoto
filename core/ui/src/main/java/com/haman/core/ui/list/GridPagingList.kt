@@ -10,6 +10,16 @@ import androidx.compose.ui.unit.dp
 import androidx.paging.compose.LazyPagingItems
 import com.haman.core.model.ui.UiModel
 
+/**
+ * Paging 에 쓰이는 Grid List Layout
+ * @param cell 세로 column 개수
+ * @param contentPadding contentPadding
+ * @param space 아이템 들 사이 space 크기
+ * @param data Paging Data
+ * @param listState List State
+ * @param title 리스트 상단 제목
+ * @param item 리스트에 들어갈 아이템 Component
+ */
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun <T : UiModel> GridPagingList(
