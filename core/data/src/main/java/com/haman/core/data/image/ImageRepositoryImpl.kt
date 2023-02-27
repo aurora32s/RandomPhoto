@@ -23,7 +23,7 @@ import kotlinx.coroutines.withContext
 import javax.inject.Inject
 import kotlin.math.max
 
-private const val BASE_SIZE = 200
+private const val BASE_SIZE = 500
 
 class ImageRepositoryImpl @Inject constructor(
     @IODispatcher private val ioDispatcher: CoroutineDispatcher,
