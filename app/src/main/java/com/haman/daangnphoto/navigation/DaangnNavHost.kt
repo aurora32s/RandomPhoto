@@ -29,6 +29,8 @@ fun DaangnNavHost(
             mainViewModel::toast,
             mainViewModel::completeLoadInitData
         )
-        detailScreen(navController::popBackStack)
+        detailScreen(
+            navController::popBackStack
+        )
     }
 }
