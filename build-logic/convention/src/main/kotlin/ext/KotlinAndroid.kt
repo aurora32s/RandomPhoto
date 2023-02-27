@@ -16,7 +16,7 @@ internal fun Project.configureKotlinAndroid(
         compileSdk = 33
 
         defaultConfig {
-            minSdk = 31
+            minSdk = 28
         }
         compileOptions {
             sourceCompatibility = JavaVersion.VERSION_1_8
