@@ -1,6 +1,6 @@
 plugins {
-    id ("daangn.android.library")
-    id ("daangn.android.hilt")
+    id("daangn.android.library")
+    id("daangn.android.hilt")
 }
 
 android {
