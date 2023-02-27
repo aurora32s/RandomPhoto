@@ -5,12 +5,14 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.produceState
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -29,6 +31,7 @@ fun AsyncImage(
     height: Int = 300,
     id: String,
     cornerRadius: Float = 4f,
+    scaleType: ContentScale = ContentScale.FillWidth,
     load: suspend (String, Int, Int) -> Bitmap?,
     isDarkTheme: Boolean = isSystemInDarkTheme(),
 ) {
@@ -37,20 +40,29 @@ fun AsyncImage(
         value = result?.let { LoadImageState.Success(it) } ?: LoadImageState.Error
     }
 
+    val imageModifier = remember {
+        derivedStateOf {
+            when (scaleType) {
+                ContentScale.Crop -> Modifier.fillMaxSize()
+                else -> Modifier.fillMaxWidth()
+            }
+        }
+    }
+
     Box(
         modifier = modifier
+            .fillMaxWidth()
             .clip(RoundedCornerShape(cornerRadius.dp))
             .background(if (isDarkTheme) Gray700 else Gray200),
         contentAlignment = Alignment.Center
     ) {
         when (val result = bitmap.value) {
             is LoadImageState.Success -> Image(
-                modifier = Modifier
-                    .fillMaxWidth()
+                modifier = imageModifier.value
                     .clip(RoundedCornerShape(cornerRadius.dp)),
                 bitmap = result.bitmap.asImageBitmap(),
                 contentDescription = "Image's id is $id",
-                contentScale = ContentScale.FillWidth
+                contentScale = scaleType
             )
             is LoadImageState.Error -> Image(
                 modifier = Modifier.size(50.dp),
