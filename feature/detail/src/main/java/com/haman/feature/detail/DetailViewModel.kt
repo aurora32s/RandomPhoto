@@ -43,8 +43,8 @@ class DetailViewModel @Inject constructor(
     /**
      * 이미지 id 를 이용해
      */
-    suspend fun getImageByUrl(id: String, width: Int, height: Int): Bitmap? {
-        return getImageUseCase(id, width, height)
+    suspend fun getImageByUrl(id: String): Bitmap? {
+        return getImageUseCase(id)
     }
 }
 

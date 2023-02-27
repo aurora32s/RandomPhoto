@@ -46,7 +46,7 @@ class ImageRepositoryImpl @Inject constructor(
     private val imageApiService: ImageApiService,
     private val imageDataSource: ImageDataSource
 ) : ImageRepository {
-    override suspend fun getImage(id: String, width: Int, height: Int): Result<Bitmap?> =
+    override suspend fun getImage(id: String): Result<Bitmap?> =
         withContext(ioDispatcher) {
             tryCatching(tag = TAG, methodName = "getImage") {
                 // 1. 메모리에 캐싱되어 있는지 확인\
