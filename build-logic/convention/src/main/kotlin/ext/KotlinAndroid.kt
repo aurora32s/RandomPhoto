@@ -1,22 +1,21 @@
 package ext
 
 import com.android.build.api.dsl.CommonExtension
+import const.COMPILE_SDK
+import const.MIN_SDK
 import org.gradle.api.JavaVersion
 import org.gradle.api.Project
-import org.gradle.api.artifacts.VersionCatalogsExtension
 import org.gradle.api.plugins.ExtensionAware
-import org.gradle.kotlin.dsl.configure
-import org.gradle.kotlin.dsl.getByType
 import org.jetbrains.kotlin.gradle.dsl.KotlinJvmOptions
 
 internal fun Project.configureKotlinAndroid(
     commonExtension: CommonExtension<*, *, *, *>
 ) {
     commonExtension.apply {
-        compileSdk = 33
+        compileSdk = COMPILE_SDK
 
         defaultConfig {
-            minSdk = 28
+            minSdk = MIN_SDK
         }
         compileOptions {
             sourceCompatibility = JavaVersion.VERSION_1_8
@@ -28,6 +27,6 @@ internal fun Project.configureKotlinAndroid(
     }
 }
 
-fun CommonExtension<*, *, *, *>.kotlinOptions(block: KotlinJvmOptions.() -> Unit) {
+private fun CommonExtension<*, *, *, *>.kotlinOptions(block: KotlinJvmOptions.() -> Unit) {
     (this as ExtensionAware).extensions.configure("kotlinOptions", block)
 }
