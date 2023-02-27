@@ -1,4 +1,5 @@
 import com.android.build.api.dsl.LibraryExtension
+import const.TARGET_SDK
 import ext.configureKotlinAndroid
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -18,7 +19,7 @@ class AndroidLibraryConventionPlugin : Plugin<Project> {
 
             extensions.configure<LibraryExtension> {
                 configureKotlinAndroid(this)
-                defaultConfig.targetSdk = 33
+                defaultConfig.targetSdk = TARGET_SDK
             }
             val libs = extensions.getByType<VersionCatalogsExtension>().named("libs")
             configurations.configureEach {
