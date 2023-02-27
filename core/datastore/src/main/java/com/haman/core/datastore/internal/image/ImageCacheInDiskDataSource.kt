@@ -12,10 +12,10 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class ImageCacheInDiskDataSource @Inject constructor(
-    @ApplicationContext
-    context: Context,
+    @ApplicationContext context: Context,
     @IODispatcher val ioDispatcher: CoroutineDispatcher
 ) : ImageCacheDataSource {
+
     private lateinit var diskLruCache: DiskLruCache
 
     init {
