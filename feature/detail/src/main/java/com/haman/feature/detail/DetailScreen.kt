@@ -16,6 +16,12 @@ import com.haman.core.designsystem.component.AsyncImage
 import com.haman.core.designsystem.component.SubTitle
 import com.haman.core.designsystem.icon.DaangnIcons
 
+/**
+ * 이미지의 상세 정보를 보여줄 Screen
+ * @param imageId 이미지 id
+ * @param author 해당 이미지 작성자명
+ * @param onBackPressed 이전 화면으로 이동
+ */
 @Composable
 fun DetailScreen(
     imageId: String?,
@@ -25,11 +31,8 @@ fun DetailScreen(
 ) {
     val authorState = remember { mutableStateOf(author) }
     LaunchedEffect(null) {
-        /**
-         * 전달된 author 정보가 없는 경우에만 다시 서버로 요청하기
-         */
-        if (author == null)
-            authorState.value = viewModel.getImageInfo(imageId = imageId)
+        // 전달된 author 정보가 없는 경우에만 다시 서버로 요청하기
+        if (author == null) authorState.value = viewModel.getImageInfo(imageId = imageId)
     }
 
     Box(

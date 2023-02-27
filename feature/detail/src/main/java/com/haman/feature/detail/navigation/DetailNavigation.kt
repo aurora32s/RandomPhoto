@@ -33,6 +33,7 @@ fun NavGraphBuilder.detailScreen(
         route = DetailNavigationRoute,
         arguments = arguments
     ) {
+        // 이미지의 id 와 해당 이미지 작성자
         val imageId = it.arguments?.getString(ImageIdArgs)
         val authorName = it.arguments?.getString(AuthorIdArgs)
         DaangnBlackTheme {
