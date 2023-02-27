@@ -90,20 +90,20 @@ fun HomeFloatingButton(
 fun HomeImagePagingItem(
     image: ImageUiModel,
     listType: ListType,
-    toDetail: (String) -> Unit,
+    toDetail: (String, String) -> Unit,
     loadImage: suspend (String, Int, Int) -> Bitmap?
 ) {
     when (listType) {
         ListType.GRID -> AsyncImage(
             modifier = Modifier
                 .aspectRatio(1f)
-                .clickable { toDetail(image.id) },
+                .clickable { toDetail(image.id, image.author) },
             id = image.id,
             load = loadImage
         )
         ListType.LINEAR -> ImageLinearItem(
             modifier = Modifier.clickable {
-                toDetail(image.id)
+                toDetail(image.id, image.author)
             },
             imageId = image.id,
             author = image.author,
