@@ -12,7 +12,7 @@ import javax.inject.Inject
 @HiltViewModel
 class MainViewModel @Inject constructor() : ViewModel() {
 
-    private val _uiEvent = MutableStateFlow<UiEvent?>(null)
+    private val _uiEvent = MutableStateFlow<UiEvent>(UiEvent.Initialized)
     val uiEvent: StateFlow<UiEvent?>
         get() = _uiEvent.asStateFlow()
 

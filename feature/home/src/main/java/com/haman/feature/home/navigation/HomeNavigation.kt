@@ -24,6 +24,10 @@ fun NavGraphBuilder.homeScreen(
     composable(
         route = HomeRoute
     ) {
-        HomeScreen(toDetail, toast, completeLoadInitData)
+        HomeScreen(
+            toDetail,
+            toast,
+            completeLoadInitData
+        )
     }
 }
