@@ -1,5 +1,6 @@
 package com.haman.daangnphoto
 
+import androidx.annotation.StringRes
 import androidx.lifecycle.ViewModel
 import com.haman.core.common.state.ToastPosition
 import com.haman.core.common.state.UiEvent
@@ -16,9 +17,13 @@ class MainViewModel @Inject constructor() : ViewModel() {
     val uiEvent: StateFlow<UiEvent?>
         get() = _uiEvent.asStateFlow()
 
+    /**
+     * @param position Toast 를 보여줄 위치(Bottom, Middle)
+     * @param message Toast 에 보여줄 메시지의 Resource Id
+     */
     fun toast(
         position: ToastPosition,
-        message: Int
+        @StringRes message: Int
     ) {
         _uiEvent.value = UiEvent.Toast(
             message = message,
@@ -26,6 +31,7 @@ class MainViewModel @Inject constructor() : ViewModel() {
         )
     }
 
+    // 초기 데이터를 받아온 경우
     fun completeLoadInitData() {
         _uiEvent.value = UiEvent.CompleteLoadInitData
     }
