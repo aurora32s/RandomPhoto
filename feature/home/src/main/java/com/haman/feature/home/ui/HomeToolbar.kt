@@ -56,7 +56,7 @@ fun HomeToolbar(
             Image(
                 modifier = Modifier.size(50.dp),
                 painter = painterResource(id = DaangnIcons.logo),
-                contentDescription = ""
+                contentDescription = stringResource(id = R.string.home_toolbar_image)
             )
             SubTitle(text = stringResource(id = R.string.app_title))
         }
@@ -64,7 +64,9 @@ fun HomeToolbar(
 }
 
 /**
- * HomeScreen Toolbar 에 보이는 Logo 와 Title
+ * HomeScreen Toolbar 에 보이는 Logo 와 Title 의 이동 로직
+ * @param progress 현재 Scroll 정도
+ * @param content logo 와 title 이 포함된 content
  */
 @Composable
 fun HomeToolBarContent(

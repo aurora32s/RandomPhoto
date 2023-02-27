@@ -1,7 +1,6 @@
 package com.haman.feature.home.ui
 
 import android.graphics.Bitmap
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.FloatingActionButton
@@ -17,6 +16,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
+import com.haman.core.designsystem.R
 import com.haman.core.designsystem.component.AsyncImage
 import com.haman.core.designsystem.component.ContentText
 import com.haman.core.designsystem.icon.DaangnIcons
@@ -24,6 +24,9 @@ import com.haman.core.model.ui.ImageUiModel
 import com.haman.core.ui.item.ImageLinearItem
 import com.haman.feature.home.ListType
 
+/**
+ * 이미지 리스트 위에 띄워줄 Title Component
+ */
 @Composable
 fun HomeImagePagingTitle() {
     Row(
@@ -34,12 +37,15 @@ fun HomeImagePagingTitle() {
     ) {
         ContentText(
             text = stringResource(
-                id = com.haman.core.designsystem.R.string.home_paging_title
+                id = R.string.home_paging_title
             )
         )
     }
 }
 
+/**
+ * 이미지 리스트 타입 변경 또는 Refresh 할 수 있는 FAB
+ */
 @Composable
 fun HomeFloatingButton(
     listType: ListType,
@@ -82,11 +88,22 @@ fun HomeFloatingButton(
                     }
                 }
             ),
-            contentDescription = ""
+            contentDescription = stringResource(
+                if (isFailed.value)
+                    R.string.home_floating_action_button_for_refresh
+                else
+                    R.string.home_floating_action_button_for_changing_type
+            )
         )
     }
 }
 
+/**
+ * 이미지 리스트 타입에 따른 리스트 Item
+ * @param listType Grid or Linear
+ * @param toDetail 상세 화면으로 이동하는 Event
+ * @param loadImage 서버로부터(또는 캐시) 이미지를 받아오는 Event
+ */
 @Composable
 fun HomeImagePagingItem(
     image: ImageUiModel,
