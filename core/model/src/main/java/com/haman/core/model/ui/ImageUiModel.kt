@@ -3,7 +3,7 @@ package com.haman.core.model.ui
 import com.haman.core.model.domain.Image
 
 /**
- * feature.home 에 사용되는 Image model
+ * feature module 에서 사용되는 Image model
  */
 data class ImageUiModel(
     override val id: String, // 이미지 id
@@ -14,6 +14,9 @@ data class ImageUiModel(
     val imageUrl: String // 이미지 URL
 ) : UiModel
 
+/**
+ * domain module image -> feature module image
+ */
 fun Image.toUiModel() = ImageUiModel(
     id = id,
     type = CellType.GridImage,
