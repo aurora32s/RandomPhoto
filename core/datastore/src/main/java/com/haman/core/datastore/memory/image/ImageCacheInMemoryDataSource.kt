@@ -17,11 +17,12 @@ import javax.inject.Inject
 class ImageCacheInMemoryDataSource @Inject constructor(
     @IODispatcher val ioDispatcher: CoroutineDispatcher
 ) : ImageCacheDataSource {
-    /**
-     * TODO OutOfMemory 가 발생하지 않도록 추가적인 작업 필요
-     */
     private val maxMemorySize = (Runtime.getRuntime().maxMemory() / 1024).toInt()
     private val cacheSize = maxMemorySize / 8
+
+    /**
+     * 한 번에 한 코루틴이 Lru 를 쓸 수 있도록 actor 처리
+     */
     private fun CoroutineScope.cacheActor() = actor<ActorMessage> {
         val cache = object : LruCache<String, Bitmap>(cacheSize) {
             override fun sizeOf(key: String, value: Bitmap): Int {
@@ -56,12 +57,17 @@ class ImageCacheInMemoryDataSource @Inject constructor(
     }
 }
 
+/**
+ * LruCache 에서 수행할 있는 작업 모음
+ */
 private sealed interface ActorMessage {
+    // 이미지 Bitmap 요청
     data class GetImage(
         val id: String,
         val response: CompletableDeferred<Bitmap?>
     ) : ActorMessage
 
+    // 이미지 Bitmap 저장
     data class PutImage(
         val id: String,
         val image: Bitmap

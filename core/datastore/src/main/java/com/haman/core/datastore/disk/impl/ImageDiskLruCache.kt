@@ -2,11 +2,15 @@ package com.haman.core.datastore.disk.impl
 
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import com.haman.core.common.extension.tryCatching
 import com.haman.core.datastore.disk.DiskCache
-import kotlinx.coroutines.*
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
+import kotlinx.coroutines.withContext
 import java.io.*
+
+private const val TAG = "com.haman.core.datastore.disk.impl.ImageDiskLruCache"
 
 /**
  * 이미지를 Disk 에 저장
@@ -16,9 +20,6 @@ internal class DiskLruCache private constructor(
     private val directory: File,
     private val maxSize: Long
 ) : DiskCache {
-    /**
-     * TODO OutOfMemory 가 발생하지 않도록 추가적인 작업 필요
-     */
     private val mutex = Mutex()
 
     // 실제 기록 파일
@@ -38,13 +39,15 @@ internal class DiskLruCache private constructor(
         checkNotClosed()
         val entry = lruEntries[id]
         mutex.withLock(entry) {
-            if (entry == null || entry.readable.not()) return null
+            return tryCatching(TAG, "getBitmapFromDisk") {
+                if (entry == null || entry.readable.not()) return null
 
-            val file = entry.getCleanFile()
-            redundantOpCount++
-            historyWriter?.write("${HistoryType.READ.ordinal} $id")
+                val file = entry.getCleanFile()
+                redundantOpCount++
+                historyWriter?.write("${HistoryType.READ.ordinal} $id")
 
-            return if (file.exists()) BitmapFactory.decodeStream(file.inputStream()) else null
+                return if (file.exists()) BitmapFactory.decodeStream(file.inputStream()) else null
+            }.getOrNull()
         }
     }
 
@@ -52,7 +55,7 @@ internal class DiskLruCache private constructor(
         checkNotClosed()
         val entry = lruEntries[id]
         mutex.withLock(entry) {
-            try {
+            tryCatching(TAG, "putBitmapInDisk") {
                 val currentEntry = entry ?: Entry(id).also { lruEntries[id] = it }
                 if (currentEntry.currentEditor != null) return
 
@@ -67,8 +70,6 @@ internal class DiskLruCache private constructor(
                     bitmap.compress(Bitmap.CompressFormat.JPEG, 100, it)
                     editor.commit()
                 }
-            } catch (e: Exception) {
-                println(e.printStackTrace())
             }
         }
     }

@@ -19,16 +19,16 @@ annotation class Memory
 @Module
 @InstallIn(SingletonComponent::class)
 interface DatasourceModule {
-    @Singleton
     @Memory
     @Binds
+    @Singleton
     fun bindImageCacheInMemory(
         imageCacheInMemoryDataSource: ImageCacheInMemoryDataSource
     ): ImageCacheDataSource
 
-    @Singleton
     @Disk
     @Binds
+    @Singleton
     fun bindImageCacheInDisk(
         imageCacheInDiskDataSource: ImageCacheInDiskDataSource
     ): ImageCacheDataSource
