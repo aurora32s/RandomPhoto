@@ -3,7 +3,7 @@ package com.haman.core.model.domain
 import com.haman.core.model.entity.ImageEntity
 
 /**
- * 이미지 정보 Model
+ * domain module 의 이미지 정보 Model
  */
 data class Image(
     val id: String, // 이미지 id
@@ -13,6 +13,9 @@ data class Image(
     val imageUrl: String // 이미지 URL
 )
 
+/**
+ * repository module image -> domain module image
+ */
 fun ImageEntity.toModel() = Image(
     id = id,
     author = author,
