@@ -6,6 +6,7 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.map
 import com.haman.core.common.di.IODispatcher
+import com.haman.core.common.extension.tryCatching
 import com.haman.core.data.repository.ImageRepository
 import com.haman.core.datastore.di.Disk
 import com.haman.core.datastore.di.Memory
@@ -21,10 +22,23 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
-import kotlin.math.max
 
+/**
+ * 이미지의 기준 사이즈
+ * 자세한 설명은 PR 참고
+ * https://github.com/aurora32s/Daangn_Test/pull/43
+ */
 private const val BASE_SIZE = 500
+private const val TAG = "com.haman.core.data.image.ImageRepositoryImpl"
 
+/**
+ * 이미지와 관련된 Repository 동작 관리
+ * @param ioDispatcher Dispatchers.IO
+ * @param imageCachedInMemoryDataSource 메모리 캐시
+ * @param imageCachedInDiskDataSource Disk 캐시
+ * @param imageApiService 서버로 이미지를 요청하는 Api(For Paging3)
+ * @param imageDataSource 서버로부터 이미지 정보를 요청하는 Api
+ */
 class ImageRepositoryImpl @Inject constructor(
     @IODispatcher private val ioDispatcher: CoroutineDispatcher,
     @Memory private val imageCachedInMemoryDataSource: ImageCacheDataSource,
@@ -34,19 +48,19 @@ class ImageRepositoryImpl @Inject constructor(
 ) : ImageRepository {
     override suspend fun getImage(id: String, width: Int, height: Int): Result<Bitmap?> =
         withContext(ioDispatcher) {
-            runCatching {
+            tryCatching(tag = TAG, methodName = "getImage") {
                 // 1. 메모리에 캐싱되어 있는지 확인\
                 val imageInMemory = imageCachedInMemoryDataSource.getImage(id)
-                if (imageInMemory != null) return@runCatching imageInMemory
+                if (imageInMemory != null) return@tryCatching imageInMemory
 
                 // 2. Disk 에 캐싱되어 있는지 확인
                 val imageInDisk = imageCachedInDiskDataSource.getImage(id)
-                if (imageInDisk != null) return@runCatching imageInDisk
+                if (imageInDisk != null) return@tryCatching imageInDisk
 
                 // 3. 1,2 모두 없으면 네트워크에 요청
                 // 3.1 먼저 이미지의 가로와 세로 길이를 알기 위해 서버에 이미지 정보 요청
                 val imageInfo = imageDataSource.getImageInfo(id).getOrNull()
-                imageInfo ?: return@runCatching null
+                imageInfo ?: return@tryCatching null
 
                 val newWidth = if (imageInfo.width < imageInfo.height) {
                     BASE_SIZE * imageInfo.width / imageInfo.height
@@ -59,11 +73,11 @@ class ImageRepositoryImpl @Inject constructor(
                 val bitmapFromApi =
                     imageDataSource.getImage(id, newWidth, newHeight).getOrNull()
                 if (bitmapFromApi != null) {
-                    // 3.1 메모리와 Disk 에 모두 저장
+                    // 3.3 메모리와 Disk 에 모두 저장
                     launch { imageCachedInMemoryDataSource.addImage(id, bitmapFromApi) }
                     launch { imageCachedInDiskDataSource.addImage(id, bitmapFromApi) }
                 }
-                return@runCatching bitmapFromApi
+                return@tryCatching bitmapFromApi
             }
         }
 
@@ -82,17 +96,15 @@ class ImageRepositoryImpl @Inject constructor(
 
     override suspend fun getImageInfo(id: String): Result<ImageEntity?> =
         withContext(ioDispatcher) {
-            runCatching {
-                return@runCatching imageDataSource.getImageInfo(id)
-                    .getOrNull()?.toEntity()
+            tryCatching(TAG, "getImageInfo") {
+                imageDataSource.getImageInfo(id).getOrNull()?.toEntity()
             }
         }
 
     override suspend fun getRandomImageInfo(seed: String): Result<ImageEntity?> =
         withContext(ioDispatcher) {
-            runCatching {
-                return@runCatching imageDataSource.getRandomImageInfo(seed)
-                    .getOrNull()?.toEntity()
+            tryCatching(TAG, "getRandomImageInfo") {
+                imageDataSource.getRandomImageInfo(seed).getOrNull()?.toEntity()
             }
         }
 }
