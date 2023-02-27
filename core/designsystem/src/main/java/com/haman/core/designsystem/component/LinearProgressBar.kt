@@ -9,6 +9,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 
+/**
+ * 막대 모양의 Progress bar
+ */
 @Composable
 fun LinearProgressBar(
     modifier: Modifier = Modifier,
