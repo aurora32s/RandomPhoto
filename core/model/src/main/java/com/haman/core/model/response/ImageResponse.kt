@@ -1,10 +1,9 @@
 package com.haman.core.model.response
 
-import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /**
- * 이미지 정보 Response
+ * network module 의 이미지 정보 Response
  */
 @Serializable
 data class ImageResponse(
