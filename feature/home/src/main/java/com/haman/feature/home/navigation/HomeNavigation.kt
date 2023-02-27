@@ -15,11 +15,13 @@ fun NavController.navigateToHome() {
 /**
  * HomeScreen
  * @param toDetail 상세 화면으로 이동
+ * @param toast Toast 띄우기 Event
+ * @param completeLoadInitData 초기 데이터 요청 성공 시의 Event
  */
 fun NavGraphBuilder.homeScreen(
     toDetail: (String, String) -> Unit,
     toast: (ToastPosition, Int) -> Unit,
-    completeLoadInitData: () -> Unit,
+    completeLoadInitData: () -> Unit
 ) {
     composable(
         route = HomeRoute
