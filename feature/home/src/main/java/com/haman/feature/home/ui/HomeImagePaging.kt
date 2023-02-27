@@ -22,7 +22,7 @@ fun HomeImagePaging(
     images: LazyPagingItems<ImageUiModel>,
     listState: LazyListState = rememberLazyListState(),
     listType: ListType,
-    toDetail: (String) -> Unit,
+    toDetail: (String, String) -> Unit,
     loadImage: suspend (String, Int, Int) -> Bitmap?
 ) {
     LazyVerticalGrid(
