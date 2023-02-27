@@ -2,7 +2,10 @@ import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.dependencies
 
-class AndroidFeatureConventionPlugin: Plugin<Project> {
+/**
+ * Feature Module Convention Plugin
+ */
+class AndroidFeatureConventionPlugin : Plugin<Project> {
     override fun apply(target: Project) {
         with(target) {
             pluginManager.apply {
@@ -10,6 +13,7 @@ class AndroidFeatureConventionPlugin: Plugin<Project> {
                 apply("daangn.android.hilt")
             }
 
+            // Feature Module 에서 공통적으로 사용되는 Module 추가
             dependencies {
                 "implementation"(project(":core:domain"))
                 "implementation"(project(":core:model"))
