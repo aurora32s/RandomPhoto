@@ -17,8 +17,12 @@ import com.haman.core.model.entity.toEntity
 import com.haman.core.network.image.ImageApiService
 import com.haman.core.network.image.ImagesPagingSource
 import com.haman.core.network.source.ImageDataSource
-import kotlinx.coroutines.*
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 /**
@@ -46,7 +50,6 @@ class ImageRepositoryImpl @Inject constructor(
     private val imageDataSource: ImageDataSource
 ) : ImageRepository {
 
-    private val imageLoadJob = Job()
     override suspend fun getImage(id: String, width: Int, height: Int): Result<Bitmap?> =
         withContext(ioDispatcher) {
             tryCatching(tag = TAG, methodName = "getImage") {
@@ -101,17 +104,7 @@ class ImageRepositoryImpl @Inject constructor(
                 ImagesPagingSource(imageApiService = imageApiService)
             }
         ).flow.map {
-            imageLoadJob.cancel()
-            it.map { image ->
-                externalScope.launch(ioDispatcher + imageLoadJob) {
-                    getImage(
-                        image.id,
-                        image.width,
-                        image.height
-                    )
-                }
-                image.toEntity()
-            }
+            it.map { image -> image.toEntity() }
         }
 
     override suspend fun getImageInfo(id: String): Result<ImageEntity?> =
