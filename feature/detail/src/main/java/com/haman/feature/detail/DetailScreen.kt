@@ -17,6 +17,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.haman.core.designsystem.component.AsyncImage
 import com.haman.core.designsystem.component.SubTitle
 import com.haman.core.designsystem.icon.DaangnIcons
+import com.haman.core.model.ui.CellType
+import com.haman.core.model.ui.ImageUiModel
 
 /**
  * 이미지의 상세 정보를 보여줄 Screen
@@ -63,7 +65,14 @@ fun DetailScreen(
             // 이미지는 캐싱된 거 보여주기
             if (imageId != null) {
                 AsyncImage(
-                    id = imageId,
+                    image = ImageUiModel(
+                        id = imageId,
+                        type = CellType.GridImage,
+                        author = author ?: "",
+                        width = 200,
+                        height = 200,
+                        imageUrl = ""
+                    ),
                     load = viewModel::getImageByUrl
                 )
             }
