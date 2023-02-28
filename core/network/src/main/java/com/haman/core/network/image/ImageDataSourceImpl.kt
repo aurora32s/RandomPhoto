@@ -1,15 +1,12 @@
 package com.haman.core.network.image
 
 import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import com.haman.core.common.exception.ImageRequestNetworkException
 import com.haman.core.common.exception.NoneImageResponseException
+import com.haman.core.common.extension.decodeImage
 import com.haman.core.common.extension.tryCatching
 import com.haman.core.model.response.ImageResponse
 import com.haman.core.network.source.ImageDataSource
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
-import java.io.InputStream
 import javax.inject.Inject
 
 private const val TAG = "com.haman.core.network.image.ImageDataSourceImpl"
@@ -22,14 +19,10 @@ class ImageDataSourceImpl @Inject constructor(
             val response = imageApiService.getImage(id, width, height)
             if (response.isSuccessful && response.body() != null) {
                 val stream = response.body()?.byteStream()
-                stream?.let { decodeImage(stream) }
+                stream.decodeImage()
                     ?: throw NoneImageResponseException(response.message())
             } else throw ImageRequestNetworkException(response.message())
         }
-    }
-
-    private suspend fun decodeImage(stream: InputStream) = withContext(Dispatchers.Default) {
-        BitmapFactory.decodeStream(stream)
     }
 
     override suspend fun getImageInfo(id: String): Result<ImageResponse> {

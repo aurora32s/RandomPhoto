@@ -7,7 +7,6 @@ import com.haman.core.common.exception.ImageIOException
 import com.haman.core.common.exception.ImageRequestNetworkException
 import com.haman.core.common.exception.NoneImageResponseException
 import com.haman.core.model.response.ImageResponse
-import kotlinx.coroutines.coroutineScope
 import java.io.IOException
 
 /**
