@@ -67,7 +67,8 @@ fun AsyncImage(
             is LoadImageState.Success -> Image(
                 modifier = imageModifier.value
                     .clip(RoundedCornerShape(cornerRadius.dp)),
-                bitmap = result.bitmap.asImageBitmap(),
+                bitmap = result.bitmap.asImageBitmap()
+                    .apply { prepareToDraw() },
                 contentDescription = "Image's id is ${image.id}",
                 contentScale = scaleType
             )
