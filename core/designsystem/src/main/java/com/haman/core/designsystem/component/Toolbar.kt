@@ -40,8 +40,8 @@ fun CollapsingToolbar(
                     painter = painterResource(id = imageType.id),
                     contentDescription = ""
                 )
-                is ImageType.AsyncImage -> imageType.imageId?.let {
-                    AsyncImage(id = it, load = imageType.load)
+                is ImageType.AsyncImage -> imageType.image.let {
+                    AsyncImage(image = it, load = imageType.load)
                 }
             }
             content()

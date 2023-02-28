@@ -11,6 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.haman.core.designsystem.component.AsyncImage
 import com.haman.core.designsystem.component.ContentText
+import com.haman.core.model.ui.ImageUiModel
 
 /**
  * LinearLayout Image List 에 사용되는 Item
@@ -22,9 +23,9 @@ import com.haman.core.designsystem.component.ContentText
 @Composable
 fun ImageLinearItem(
     modifier: Modifier = Modifier,
-    imageId: String,
+    image: ImageUiModel,
     author: String,
-    loadImage: suspend (String) -> Bitmap?
+    loadImage: suspend (String, Int, Int) -> Bitmap?
 ) {
     Column(
         modifier = modifier.fillMaxWidth(),
@@ -34,7 +35,7 @@ fun ImageLinearItem(
             modifier = Modifier
                 .fillMaxWidth()
                 .aspectRatio(5f / 3f),
-            id = imageId,
+            image = image,
             load = loadImage
         )
         ContentText(
