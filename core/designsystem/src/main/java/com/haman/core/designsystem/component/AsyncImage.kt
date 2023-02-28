@@ -42,7 +42,7 @@ fun AsyncImage(
     load: suspend (String, Int, Int) -> Bitmap?,
     isDarkTheme: Boolean = isSystemInDarkTheme(),
 ) {
-    val bitmap = produceState<LoadImageState>(initialValue = LoadImageState.Loading) {
+    val bitmap = produceState<LoadImageState>(initialValue = LoadImageState.Loading, key1 = Unit) {
         val result = load(image.id, image.width, image.height)
         value = result?.let { LoadImageState.Success(it) } ?: LoadImageState.Error
     }

@@ -26,7 +26,7 @@ import javax.inject.Inject
  * 자세한 설명은 PR 참고
  * https://github.com/aurora32s/Daangn_Test/pull/43
  */
-private const val BASE_SIZE = 10
+private const val BASE_SIZE = 500
 private const val TAG = "com.haman.core.data.image.ImageRepositoryImpl"
 
 /**
@@ -45,6 +45,8 @@ class ImageRepositoryImpl @Inject constructor(
     private val imageApiService: ImageApiService,
     private val imageDataSource: ImageDataSource
 ) : ImageRepository {
+
+    private val imageLoadJob = Job()
     override suspend fun getImage(id: String, width: Int, height: Int): Result<Bitmap?> =
         withContext(ioDispatcher) {
             tryCatching(tag = TAG, methodName = "getImage") {
@@ -55,7 +57,7 @@ class ImageRepositoryImpl @Inject constructor(
                 // 2. Disk 에 캐싱되어 있는지 확인
                 val imageInDisk = imageCachedInDiskDataSource.getImage(id)
                 if (imageInDisk != null) {
-                    launch { imageCachedInMemoryDataSource.addImage(id, imageInDisk) }
+                    externalScope.launch { imageCachedInMemoryDataSource.addImage(id, imageInDisk) }
                     return@tryCatching imageInDisk
                 }
 
@@ -81,10 +83,10 @@ class ImageRepositoryImpl @Inject constructor(
                 // 3.2 받아온 이미지 정보를 바탕으로 실제 이미지 요청
                 val bitmapFromApi =
                     imageDataSource.getImage(id, newWidth, newHeight).getOrNull()
-//                if (bitmapFromApi != null) {
-//                    // 3.3 메모리와 Disk 에 모두 저장
-//                    launch { imageCachedInDiskDataSource.addImage(id, bitmapFromApi) }
-//                }
+                if (bitmapFromApi != null) {
+                    // 3.3 메모리와 Disk 에 모두 저장
+                    externalScope.launch { imageCachedInDiskDataSource.addImage(id, bitmapFromApi) }
+                }
                 return@tryCatching bitmapFromApi
             }
         }
@@ -99,9 +101,9 @@ class ImageRepositoryImpl @Inject constructor(
                 ImagesPagingSource(imageApiService = imageApiService)
             }
         ).flow.map {
-            externalScope.coroutineContext.cancel()
+            imageLoadJob.cancel()
             it.map { image ->
-                externalScope.launch(ioDispatcher) {
+                externalScope.launch(ioDispatcher + imageLoadJob) {
                     getImage(
                         image.id,
                         image.width,

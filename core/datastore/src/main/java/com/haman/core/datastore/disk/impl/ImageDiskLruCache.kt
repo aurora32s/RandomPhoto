@@ -2,6 +2,7 @@ package com.haman.core.datastore.disk.impl
 
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import com.haman.core.common.extension.decodeImage
 import com.haman.core.common.extension.tryCatching
 import com.haman.core.datastore.disk.DiskCache
 import kotlinx.coroutines.Dispatchers
@@ -46,7 +47,7 @@ internal class DiskLruCache private constructor(
                 redundantOpCount++
                 historyWriter?.write("${HistoryType.READ.ordinal} $id")
 
-                return if (file.exists()) BitmapFactory.decodeStream(file.inputStream()) else null
+                return if (file.exists()) file.inputStream().decodeImage() else null
             }.getOrNull()
         }
     }

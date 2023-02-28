@@ -17,7 +17,7 @@ interface ImageApiService {
      * @param width 이미지 가로 길이
      * @param height 이미지 세로 길이
      */
-    @GET("id/{id}/{width}/{height}")
+    @GET("id/{id}/{width}/{height}.jpg")
     suspend fun getImage(
         @Path("id") id: String,
         @Path("width") width: Int,
