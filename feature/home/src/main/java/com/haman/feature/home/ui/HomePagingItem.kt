@@ -109,14 +109,14 @@ fun HomeImagePagingItem(
     image: ImageUiModel,
     listType: ListType,
     toDetail: (String, String) -> Unit,
-    loadImage: suspend (String) -> Bitmap?
+    loadImage: suspend (String, Int, Int) -> Bitmap?
 ) {
     when (listType) {
         ListType.GRID -> AsyncImage(
             modifier = Modifier
                 .aspectRatio(1f)
                 .clickable { toDetail(image.id, image.author) },
-            id = image.id,
+            image = image,
             load = loadImage,
             scaleType = ContentScale.Crop
         )
@@ -124,7 +124,7 @@ fun HomeImagePagingItem(
             modifier = Modifier.clickable {
                 toDetail(image.id, image.author)
             },
-            imageId = image.id,
+            image = image,
             author = image.author,
             loadImage = loadImage
         )

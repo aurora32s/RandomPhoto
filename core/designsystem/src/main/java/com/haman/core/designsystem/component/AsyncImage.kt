@@ -23,6 +23,7 @@ import androidx.compose.ui.unit.dp
 import com.haman.core.designsystem.icon.DaangnIcons
 import com.haman.core.designsystem.theme.Gray200
 import com.haman.core.designsystem.theme.Gray700
+import com.haman.core.model.ui.ImageUiModel
 
 /**
  * 서버로 부터 이미지 Bitmap 을 받으와 보여주는 Component
@@ -35,14 +36,14 @@ import com.haman.core.designsystem.theme.Gray700
 @Composable
 fun AsyncImage(
     modifier: Modifier = Modifier,
-    id: String,
+    image: ImageUiModel,
     cornerRadius: Float = 4f,
     scaleType: ContentScale = ContentScale.FillWidth,
-    load: suspend (String) -> Bitmap?,
+    load: suspend (String, Int, Int) -> Bitmap?,
     isDarkTheme: Boolean = isSystemInDarkTheme(),
 ) {
     val bitmap = produceState<LoadImageState>(initialValue = LoadImageState.Loading) {
-        val result = load(id)
+        val result = load(image.id, image.width, image.height)
         value = result?.let { LoadImageState.Success(it) } ?: LoadImageState.Error
     }
 
@@ -67,13 +68,13 @@ fun AsyncImage(
                 modifier = imageModifier.value
                     .clip(RoundedCornerShape(cornerRadius.dp)),
                 bitmap = result.bitmap.asImageBitmap(),
-                contentDescription = "Image's id is $id",
+                contentDescription = "Image's id is ${image.id}",
                 contentScale = scaleType
             )
             is LoadImageState.Error -> Image(
                 modifier = Modifier.size(50.dp),
                 painter = painterResource(id = DaangnIcons.logo),
-                contentDescription = "Fail to load $id Image"
+                contentDescription = "Fail to load ${image.id} Image"
             )
             LoadImageState.Loading -> {}
         }
