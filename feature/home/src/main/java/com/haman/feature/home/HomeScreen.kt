@@ -45,7 +45,7 @@ private val maxHeightToolbar = 340.dp
  */
 @Composable
 fun HomeScreen(
-    toDetail: (String, String) -> Unit,
+    toDetail: (String, ImageUiModel) -> Unit,
     toast: (ToastPosition, Int) -> Unit,
     completeLoadInitData: () -> Unit,
     viewModel: HomeViewModel = hiltViewModel(),
@@ -67,7 +67,7 @@ fun HomeScreen(
     val toolbarState = rememberToolbarState(toolbarHeightRange = toolbarHeightRange)
     val listState = rememberLazyListState()
     val listType = rememberSaveable { mutableStateOf(ListType.GRID) }
-
+    
     val nestedScrollConnection = remember {
         object : NestedScrollConnection {
             // Scroll 이 발생하였을 떄
@@ -115,7 +115,7 @@ fun HomeBody(
     toolbarState: ToolbarState,
     listState: LazyListState,
     listType: ListType,
-    toDetail: (String, String) -> Unit,
+    toDetail: (String, ImageUiModel) -> Unit,
     loadImage: suspend (String, Int, Int, Int) -> Bitmap?
 ) {
     HomeToolbar(toolbarState = toolbarState)

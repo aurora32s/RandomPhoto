@@ -1,10 +1,12 @@
 package com.haman.core.model.ui
 
 import com.haman.core.model.domain.Image
+import kotlinx.serialization.Serializable
 
 /**
  * feature module 에서 사용되는 Image model
  */
+@Serializable
 data class ImageUiModel(
     override val id: String, // 이미지 id
     override val type: CellType, // 아이템 type

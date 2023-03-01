@@ -6,20 +6,24 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.haman.core.designsystem.theme.DaangnBlackTheme
+import com.haman.core.model.ui.ImageUiModel
 import com.haman.feature.detail.DetailScreen
+import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 
 const val DetailRoute = "detail"
 private const val ImageIdArgs = "image_id"
-private const val AuthorIdArgs = "author_name"
+private const val ImageArgs = "image"
 private val arguments = listOf(
-    navArgument(ImageIdArgs) { type = NavType.StringType },
-    navArgument(AuthorIdArgs) { type = NavType.StringType }
+    navArgument(ImageArgs) { type = NavType.StringType }
 )
-private const val DetailNavigationRoute = "${DetailRoute}/{${ImageIdArgs}}/{${AuthorIdArgs}}"
+private const val DetailNavigationRoute = "${DetailRoute}/{${ImageIdArgs}}/{${ImageArgs}}"
 
 
-fun NavController.navigateToDetail(imageId: String, author: String) {
-    this.navigate("${DetailRoute}/$imageId/$author")
+fun NavController.navigateToDetail(imageId: String, image: ImageUiModel) {
+    val jsonString = Json.encodeToString(image.copy(imageUrl = ""))
+    this.navigate("${DetailRoute}/${imageId}/${jsonString}")
 }
 
 /**
@@ -35,11 +39,12 @@ fun NavGraphBuilder.detailScreen(
     ) {
         // 이미지의 id 와 해당 이미지 작성자
         val imageId = it.arguments?.getString(ImageIdArgs)
-        val authorName = it.arguments?.getString(AuthorIdArgs)
+        val argument = it.arguments?.getString(ImageArgs)
+        val image = Json.decodeFromString<ImageUiModel>(argument ?: "")
         DaangnBlackTheme {
             DetailScreen(
                 imageId = imageId,
-                author = authorName,
+                image = image,
                 onBackPressed = onBackPressed
             )
         }

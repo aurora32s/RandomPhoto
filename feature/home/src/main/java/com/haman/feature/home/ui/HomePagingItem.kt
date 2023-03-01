@@ -110,7 +110,7 @@ fun HomeFloatingButton(
 fun HomeImagePagingItem(
     image: ImageUiModel,
     listType: ListType,
-    toDetail: (String, String) -> Unit,
+    toDetail: (String, ImageUiModel) -> Unit,
     loadImage: suspend (String, Int, Int, Int) -> Bitmap?
 ) {
     val localScreenWidth = LocalConfiguration.current.screenWidthDp.toFloat().fromDpToPx()
@@ -119,7 +119,7 @@ fun HomeImagePagingItem(
         ListType.GRID -> AsyncImage(
             modifier = Modifier
                 .aspectRatio(1f)
-                .clickable { toDetail(image.id, image.author) },
+                .clickable { toDetail(image.id, image) },
             image = image,
             width = imageWidth.value,
             loadImage = loadImage,
@@ -127,7 +127,7 @@ fun HomeImagePagingItem(
         )
         ListType.LINEAR -> ImageLinearItem(
             modifier = Modifier.clickable {
-                toDetail(image.id, image.author)
+                toDetail(image.id, image)
             },
             image = image,
             author = image.author,
