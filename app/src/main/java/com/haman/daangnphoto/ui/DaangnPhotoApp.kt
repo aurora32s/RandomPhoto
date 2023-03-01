@@ -25,7 +25,7 @@ fun DaangnPhotoApp(
     viewModel: MainViewModel = hiltViewModel(),
     navController: NavHostController = rememberNavController()
 ) {
-    val uiEvent = viewModel.uiEvent.collectAsState()
+    val uiEvent = viewModel.uiEvent.collectAsState(UiEvent.Initialized)
     val timeOutSplashScreen = remember { mutableStateOf(false) }
 
     LaunchedEffect(key1 = null) {

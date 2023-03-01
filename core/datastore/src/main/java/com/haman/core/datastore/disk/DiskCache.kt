@@ -2,6 +2,10 @@ package com.haman.core.datastore.disk
 
 import android.graphics.Bitmap
 
+/**
+ * Disk 에 Cache 하는 공통 interface
+ * @implementation DiskLruCache Lru 방식의 Cache 제공
+ */
 interface DiskCache {
     /**
      * 이미지 id 를 이용해 Disk 에서 이미지(Bitmap) 요청

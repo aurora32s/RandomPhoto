@@ -16,13 +16,12 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.haman.core.designsystem.component.AsyncImage
 import com.haman.core.designsystem.component.SubTitle
 import com.haman.core.designsystem.icon.DaangnIcons
-import com.haman.core.model.ui.CellType
 import com.haman.core.model.ui.ImageUiModel
 
 /**
  * 이미지의 상세 정보를 보여줄 Screen
  * @param imageId 이미지 id
- * @param author 해당 이미지 작성자명
+ * @param image 해당 이미지 정보
  * @param onBackPressed 이전 화면으로 이동
  */
 @Composable
@@ -34,7 +33,7 @@ fun DetailScreen(
 ) {
     val imageState = remember { mutableStateOf(image) }
     LaunchedEffect(null) {
-        // 전달된 author 정보가 없는 경우에만 다시 서버로 요청하기
+        // 전달된 image 정보가 없는 경우 다시 서버에 요청
         if (image == null) {
             if (imageId != null) imageState.value = viewModel.getImageInfo(imageId = imageId)
             else onBackPressed()
@@ -64,17 +63,9 @@ fun DetailScreen(
                     text = "by ${imageState.value?.author}"
                 )
             }
-            // 이미지는 캐싱된 거 보여주기
-            if (imageId != null || imageState.value != null) {
+            imageState.value?.let {
                 AsyncImage(
-                    image = ImageUiModel(
-                        id = imageId ?: imageState.value!!.id,
-                        type = CellType.GridImage,
-                        author = imageState.value!!.author,
-                        width = imageState.value!!.width,
-                        height = imageState.value!!.height,
-                        imageUrl = ""
-                    ),
+                    image = it,
                     loadImage = viewModel::getImageByUrl,
                     scaleType = ContentScale.FillWidth
                 )

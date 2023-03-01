@@ -46,12 +46,18 @@ class ImageCacheInMemoryDataSource @Inject constructor(
         }
     }
 
+    /**
+     * 해당 id 와 가로 길이의 Bitmap 이미지가 없는 경우 Null 반환
+     */
     override suspend fun getImage(id: String, reqWidth: Int): Bitmap? {
         val response = CompletableDeferred<Bitmap?>()
         cacheActor.send(ActorMessage.GetImage("${id}_$reqWidth", response))
         return response.await()
     }
 
+    /**
+     * (image_id)_(image 가로 길이) 가 key 로 사용
+     */
     override suspend fun addImage(id: String, width: Int, bitmap: Bitmap) {
         cacheActor.send(ActorMessage.PutImage("${id}_$width", bitmap))
     }

@@ -36,6 +36,7 @@ private const val TAG = "com.haman.core.data.image.ImageRepositoryImpl"
 
 /**
  * 이미지와 관련된 Repository 동작 관리
+ * @param externalScope 외부 Scope
  * @param ioDispatcher Dispatchers.IO
  * @param imageCachedInMemoryDataSource 메모리 캐시
  * @param imageCachedInDiskDataSource Disk 캐시
@@ -50,53 +51,63 @@ class ImageRepositoryImpl @Inject constructor(
     private val imageApiService: ImageApiService,
     private val imageDataSource: ImageDataSource
 ) : ImageRepository {
+
+    /**
+     * 특정 이미지 요청
+     * @param id 이미지 id
+     */
     override suspend fun getImage(
         id: String,
         width: Int,
         height: Int,
         reqWidth: Int
-    ): Result<Bitmap?> =
-        withContext(ioDispatcher) {
-            tryCatching(tag = TAG, methodName = "getImage") {
-                val imageInMemory = imageCachedInMemoryDataSource.getImage(id, reqWidth)
-                if (imageInMemory != null) return@tryCatching imageInMemory
+    ): Result<Bitmap?> = withContext(ioDispatcher) {
+        tryCatching(tag = TAG, methodName = "getImage") {
+            // 1. 메모리 캐싱 확인
+            val imageInMemory = imageCachedInMemoryDataSource.getImage(id, reqWidth)
+            if (imageInMemory != null) return@tryCatching imageInMemory
 
-                // Sampling 된 Bitmap 반환
-                val imageInDisk = imageCachedInDiskDataSource.getImage(id, reqWidth)
-                if (imageInDisk != null) {
-                    // Sampling 된 상태로 Bitmap 을 Memory 에 Caching
-                    externalScope.launch {
-                        imageCachedInMemoryDataSource.addImage(
-                            id,
-                            reqWidth,
-                            imageInDisk
-                        )
-                    }
-                    return@tryCatching imageInDisk
+            // 2. Disk 캐싱 확인
+            val imageInDisk = imageCachedInDiskDataSource.getImage(id, reqWidth)
+            if (imageInDisk != null) {
+                // Sampling 된 상태로 Bitmap 을 Memory 에 캐싱
+                externalScope.launch {
+                    imageCachedInMemoryDataSource.addImage(
+                        id,
+                        reqWidth,
+                        imageInDisk
+                    )
                 }
-
-                val newWidth = if (width < height) {
-                    BASE_SIZE * width / height
-                } else BASE_SIZE
-                val newHeight = if (width > height) {
-                    BASE_SIZE * height / width
-                } else BASE_SIZE
-
-                val imageFromApi: ByteArray? =
-                    imageDataSource.getImage(id, newWidth, newHeight).getOrNull()
-                // 원본 사이즈 Bitmap
-                val bitmap = imageFromApi.decodeImage(newWidth)
-                if (bitmap != null) {
-                    externalScope.launch {
-                        // Disk 에는 원본 사이즈 Bitmap 저장
-                        imageCachedInDiskDataSource.addImage(id, newWidth, bitmap)
-                    }
-                }
-                // 실질적으로 반환은 Sampling 된 상태로 반환
-                return@tryCatching imageFromApi?.decodeImage(reqWidth)
+                return@tryCatching imageInDisk
             }
-        }
 
+            // width : height 과 동일한 비율의 보다 작은 가로/세로 길이 계산
+            val newWidth = if (width < height) {
+                BASE_SIZE * width / height
+            } else BASE_SIZE
+            val newHeight = if (width > height) {
+                BASE_SIZE * height / width
+            } else BASE_SIZE
+
+            // 3. 서버에 원본 이미지 요청
+            val imageFromApi: ByteArray? =
+                imageDataSource.getImage(id, newWidth, newHeight).getOrNull()
+            // 원본 사이즈 Bitmap
+            val bitmap = imageFromApi.decodeImage(newWidth)
+            if (bitmap != null) {
+                externalScope.launch {
+                    // Disk 에는 원본 사이즈 Bitmap 저장
+                    imageCachedInDiskDataSource.addImage(id, newWidth, bitmap)
+                }
+            }
+            // 실질적으로 반환은 Sampling 된 상태로 반환
+            return@tryCatching imageFromApi?.decodeImage(reqWidth)
+        }
+    }
+
+    /**
+     * 이미지 리스트 요청
+     */
     override fun getImagesInfo(): Flow<PagingData<ImageEntity>> =
         Pager(
             config = PagingConfig(
@@ -110,6 +121,10 @@ class ImageRepositoryImpl @Inject constructor(
             it.map { image -> image.toEntity() }
         }
 
+    /**
+     * 특정 이미지 정보 요청
+     * @param id 이미지 id
+     */
     override suspend fun getImageInfo(id: String): Result<ImageEntity?> =
         withContext(ioDispatcher) {
             tryCatching(TAG, "getImageInfo") {
@@ -117,6 +132,10 @@ class ImageRepositoryImpl @Inject constructor(
             }
         }
 
+    /**
+     * 랜덤 이미지 정보 요청
+     * @param seed 랜덤에 사용될 seed 정보
+     */
     override suspend fun getRandomImageInfo(seed: String): Result<ImageEntity?> =
         withContext(ioDispatcher) {
             tryCatching(TAG, "getRandomImageInfo") {
