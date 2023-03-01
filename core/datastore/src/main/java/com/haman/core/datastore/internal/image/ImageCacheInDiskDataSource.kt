@@ -28,7 +28,7 @@ class ImageCacheInDiskDataSource @Inject constructor(
         return diskLruCache.getBitmapFromDisk(id, reqWidth)
     }
 
-    override suspend fun addImage(id: String, bitmap: Bitmap) {
+    override suspend fun addImage(id: String, width: Int, bitmap: Bitmap) {
         diskLruCache.putBitmapInDisk(id, bitmap)
     }
 }
