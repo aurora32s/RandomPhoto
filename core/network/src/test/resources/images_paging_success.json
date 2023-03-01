@@ -1,0 +1,16 @@
+[
+  {
+    "id": "1",
+    "author": "seomseom",
+    "width": 1000,
+    "height": 1000,
+    "download_url": "image_1"
+  },
+  {
+    "id": "2",
+    "author": "seomseom",
+    "width": 2000,
+    "height": 2000,
+    "download_url": "image_2"
+  }
+]
