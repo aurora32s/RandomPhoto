@@ -50,8 +50,13 @@ class TestImageDataSourceImpl {
         imageDataSource = ImageDataSourceImpl(imageApiService)
     }
 
+    @After
+    fun clear() {
+        mockWebServer.shutdown()
+    }
+
     @Test
-    fun `getImageInfo_Success`() = runTest {
+    fun getImageInfo_Success() = runTest {
         // 1. Given
         val response = MockResponse()
             .setResponseCode(HttpURLConnection.HTTP_OK)
@@ -66,7 +71,7 @@ class TestImageDataSourceImpl {
     }
 
     @Test
-    fun `getImageInfo_Fail_Response_error`() = runTest {
+    fun getImageInfo_Fail_Response_error() = runTest {
         // 1. Given
         val response = MockResponse()
             .setResponseCode(HttpURLConnection.HTTP_NO_CONTENT)
@@ -76,11 +81,6 @@ class TestImageDataSourceImpl {
         val image = imageDataSource.getImageInfo("1")
         val result = image.exceptionOrNull()
         // 3. Then
-        assertThat(result, `IsInstanceOf`(ImageRequestNetworkException::class.java))
-    }
-
-    @After
-    fun clear() {
-        mockWebServer.shutdown()
+        assertThat(result, IsInstanceOf(ImageRequestNetworkException::class.java))
     }
 }
