@@ -15,4 +15,8 @@ dependencies {
 
     implementation(libs.bundles.kotlin.coroutine)
     implementation(libs.bundles.paging)
+
+    testImplementation(libs.bundles.test)
+    testImplementation(libs.okhttp.mock.server)
+    testImplementation(libs.bundles.retrofit)
 }
