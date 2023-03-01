@@ -1,5 +1,6 @@
 package com.haman.core.network.image
 
+import com.haman.core.common.exception.ImageRequestNetworkException
 import com.haman.core.network.response.MockResponseFileReader
 import com.haman.core.network.source.ImageDataSource
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
@@ -13,6 +14,7 @@ import okhttp3.mockwebserver.MockWebServer
 import org.hamcrest.CoreMatchers.`is`
 import org.hamcrest.CoreMatchers.notNullValue
 import org.hamcrest.MatcherAssert.assertThat
+import org.hamcrest.core.IsInstanceOf
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
@@ -49,7 +51,7 @@ class TestImageDataSourceImpl {
     }
 
     @Test
-    fun `특정_이미지_정보_요청에_성공`() = runTest {
+    fun `특정_이미지_정보_요청_성공`() = runTest {
         // 1. Given
         val response = MockResponse()
             .setResponseCode(HttpURLConnection.HTTP_OK)
@@ -61,6 +63,20 @@ class TestImageDataSourceImpl {
 
         // 3. Them
         assertThat(image, `is`(notNullValue()))
+    }
+
+    @Test
+    fun `특정_이미지_정보_요청_실패_Response_error`() = runTest {
+        // 1. Given
+        val response = MockResponse()
+            .setResponseCode(HttpURLConnection.HTTP_NO_CONTENT)
+        mockWebServer.enqueue(response)
+
+        // 2. When
+        val image = imageDataSource.getImageInfo("1")
+        val result = image.exceptionOrNull()
+        // 3. Then
+        assertThat(result, `IsInstanceOf`(ImageRequestNetworkException::class.java))
     }
 
     @After
