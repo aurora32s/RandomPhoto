@@ -8,16 +8,19 @@ import com.haman.core.data.repository.ImageRepository
 import com.haman.core.datastore.internal.image.ImageCacheInDiskDataSource
 import com.haman.core.datastore.memory.image.ImageCacheInMemoryDataSource
 import com.haman.core.datastore.source.ImageCacheDataSource
+import com.haman.core.model.entity.ImageEntity
 import com.haman.core.network.source.ImageDataSource
 import kotlinx.coroutines.*
 import kotlinx.coroutines.test.*
 import org.hamcrest.CoreMatchers.*
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.Matchers.lessThan
+import org.hamcrest.core.IsInstanceOf
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
+import kotlin.random.Random
 
 @OptIn(ExperimentalCoroutinesApi::class)
 @RunWith(AndroidJUnit4::class)
@@ -94,6 +97,16 @@ class TestImageRepositoryImpl {
     }
 
     @Test
+    fun getImage_Success_Max_from_Disk() = externalScope.runTest {
+        (0..1000).map {
+            launch {
+                val i = Random.nextInt(1, 10)
+                imageRepository.getImage("$i", width = 500, 300, 100)
+            }
+        }.joinAll()
+    }
+
+    @Test
     fun getImage_Success_from_Memory() = runTest {
         // 1. Given: 서버와 Disk 에서 데이터 요청
         val reqWidth = 10
@@ -116,8 +129,24 @@ class TestImageRepositoryImpl {
     }
 
     @Test
-    fun getImageInfo_Success() {
-        // 1. 
+    fun getImageInfo_Success() = runTest {
+        // 1. When
+        val image = imageRepository.getImageInfo("4").getOrNull()
+
+        // 2. Then
+        assertThat(image, `is`(notNullValue()))
+        image?.let {
+            assertThat(it.id, `is`("4"))
+            assertThat(it, IsInstanceOf(ImageEntity::class.java))
+        }
+    }
+
+    @Test
+    fun getImageInfo_Fail_Image_Not_Found() = runTest {
+        // 1. When
+        val image = imageRepository.getImageInfo("12").getOrNull()
+        //2. Then
+        assertThat(image, `is`(nullValue()))
     }
 
 }
