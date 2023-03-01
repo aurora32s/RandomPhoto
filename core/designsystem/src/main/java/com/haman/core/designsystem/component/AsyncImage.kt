@@ -18,8 +18,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import com.haman.core.common.extension.fromDpToPx
 import com.haman.core.designsystem.icon.DaangnIcons
 import com.haman.core.designsystem.theme.Gray200
 import com.haman.core.designsystem.theme.Gray700
@@ -38,12 +40,13 @@ fun AsyncImage(
     modifier: Modifier = Modifier,
     image: ImageUiModel,
     cornerRadius: Float = 4f,
+    width: Int = LocalConfiguration.current.screenWidthDp.toFloat().fromDpToPx(),
     scaleType: ContentScale = ContentScale.FillWidth,
-    load: suspend (String, Int, Int) -> Bitmap?,
+    loadImage: suspend (String, Int, Int, Int) -> Bitmap?,
     isDarkTheme: Boolean = isSystemInDarkTheme(),
 ) {
     val bitmap = produceState<LoadImageState>(initialValue = LoadImageState.Loading, key1 = Unit) {
-        val result = load(image.id, image.width, image.height)
+        val result = loadImage(image.id, image.width, image.height, width)
         value = result?.let { LoadImageState.Success(it) } ?: LoadImageState.Error
     }
 
@@ -63,6 +66,7 @@ fun AsyncImage(
             .background(if (isDarkTheme) Gray700 else Gray200),
         contentAlignment = Alignment.Center
     ) {
+
         when (val result = bitmap.value) {
             is LoadImageState.Success -> Image(
                 modifier = imageModifier.value

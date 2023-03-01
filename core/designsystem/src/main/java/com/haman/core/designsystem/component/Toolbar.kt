@@ -41,7 +41,7 @@ fun CollapsingToolbar(
                     contentDescription = ""
                 )
                 is ImageType.AsyncImage -> imageType.image.let {
-                    AsyncImage(image = it, load = imageType.load)
+                    AsyncImage(image = it, loadImage = imageType.load)
                 }
             }
             content()

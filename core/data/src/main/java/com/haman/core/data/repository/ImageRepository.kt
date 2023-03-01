@@ -14,8 +14,7 @@ interface ImageRepository {
         id: String,
         width: Int,
         height: Int,
-        reqWidth: Int,
-        reqHeight: Int
+        reqWidth: Int
     ): Result<Bitmap?>
 
     /**
