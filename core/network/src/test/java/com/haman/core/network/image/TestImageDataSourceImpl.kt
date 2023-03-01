@@ -11,6 +11,7 @@ import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
+import okhttp3.mockwebserver.SocketPolicy
 import org.hamcrest.CoreMatchers.`is`
 import org.hamcrest.CoreMatchers.notNullValue
 import org.hamcrest.MatcherAssert.assertThat
@@ -19,6 +20,7 @@ import org.junit.After
 import org.junit.Before
 import org.junit.Test
 import retrofit2.Retrofit
+import java.net.ConnectException
 import java.net.HttpURLConnection
 
 /**
@@ -82,5 +84,20 @@ class TestImageDataSourceImpl {
         val result = image.exceptionOrNull()
         // 3. Then
         assertThat(result, IsInstanceOf(ImageRequestNetworkException::class.java))
+    }
+
+    @Test
+    fun getImageInfo_Fail_Network_Disconnect() = runTest {
+        // 1. Given
+        val response = MockResponse()
+            .setSocketPolicy(SocketPolicy.DISCONNECT_AT_START)
+        mockWebServer.enqueue(response)
+
+        // 2. When
+        val image = imageDataSource.getImageInfo("1")
+        val result = image.exceptionOrNull()
+
+        // 3. Then
+        assertThat(result, IsInstanceOf(ConnectException::class.java))
     }
 }
