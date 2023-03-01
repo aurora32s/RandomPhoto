@@ -35,8 +35,7 @@ class ImageDataSourceImpl @Inject constructor(
         return tryCatching(TAG, "getImageInfo") {
             val response = imageApiService.getImageInfo(id)
             if (response.isSuccessful && response.body() != null) {
-                val image = response.body()
-                image ?: throw NoneImageResponseException()
+                response.body()!!
             } else throw ImageRequestNetworkException(response.message())
         }
     }
