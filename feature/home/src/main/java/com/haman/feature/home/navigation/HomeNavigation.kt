@@ -4,6 +4,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import com.haman.core.common.state.ToastPosition
+import com.haman.core.model.ui.ImageUiModel
 import com.haman.feature.home.HomeScreen
 
 const val HomeRoute = "home"
@@ -19,7 +20,7 @@ fun NavController.navigateToHome() {
  * @param completeLoadInitData 초기 데이터 요청 성공 시의 Event
  */
 fun NavGraphBuilder.homeScreen(
-    toDetail: (String, String) -> Unit,
+    toDetail: (String, ImageUiModel) -> Unit,
     toast: (ToastPosition, Int) -> Unit,
     completeLoadInitData: () -> Unit
 ) {
