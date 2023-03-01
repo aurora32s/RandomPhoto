@@ -2,13 +2,31 @@ package com.haman.core.common.extension
 
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.graphics.BitmapFactory.Options
-import java.io.InputStream
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
-fun InputStream?.decodeImage(): Bitmap? =
-    BitmapFactory.decodeStream(this@decodeImage)
+/**
+ * Bitmap Sampling
+ * @param width sampling width
+ * @param height sampling height
+ */
+suspend fun ByteArray?.decodeImage(width: Int, height: Int): Bitmap? =
+    withContext(Dispatchers.Default) {
+        this@decodeImage ?: return@withContext null
+        val option = BitmapFactory.Options()
+        option.inJustDecodeBounds = true
+        BitmapFactory.decodeByteArray(this@decodeImage, 0, this@decodeImage.size, option)
+        option.inSampleSize = calculateSamplingSize(option, width, height)
+        option.inJustDecodeBounds = false
+        return@withContext BitmapFactory.decodeByteArray(
+            this@decodeImage,
+            0,
+            this@decodeImage.size,
+            option
+        )
+    }
 
-private fun calculateSamplingSize(options: Options, width: Int, height: Int): Int {
+private fun calculateSamplingSize(options: BitmapFactory.Options, width: Int, height: Int): Int {
     val (imageHeight, imageWidth) = options.run { outHeight to outWidth }
     var inSampleSize = 1
 

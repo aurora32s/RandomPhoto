@@ -46,7 +46,7 @@ class ImageCacheInMemoryDataSource @Inject constructor(
         }
     }
 
-    override suspend fun getImage(id: String): Bitmap? {
+    override suspend fun getImage(id: String, reqWidth: Int, reqHeight: Int): Bitmap? {
         val response = CompletableDeferred<Bitmap?>()
         cacheActor.send(ActorMessage.GetImage(id, response))
         return response.await()

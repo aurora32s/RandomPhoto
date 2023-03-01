@@ -8,7 +8,7 @@ interface DiskCache {
      * @param id 이미지 Id
      * @return Bitmap 이미지(Bitmap), Disk Cache 에 없을 경우 null 반환
      */
-    suspend fun getBitmapFromDisk(id: String): Bitmap?
+    suspend fun getBitmapFromDisk(id: String, reqWidth: Int, reqHeight: Int): Bitmap?
 
     /**
      * 이미지를 Disk 에 Caching

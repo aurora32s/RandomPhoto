@@ -8,6 +8,6 @@ class GetImageUseCase @Inject constructor(
     private val imageRepository: ImageRepository
 ) {
     suspend operator fun invoke(id: String, width: Int, height: Int): Bitmap? {
-        return imageRepository.getImage(id, width, height).getOrNull()
+        return imageRepository.getImage(id, width, height, 50, 50).getOrNull()
     }
 }
