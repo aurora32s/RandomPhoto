@@ -38,7 +38,7 @@ internal class DiskLruCache private constructor(
     /**
      * Sampling 된 Bitmap 반환
      */
-    override suspend fun getBitmapFromDisk(id: String, reqWidth: Int, reqHeight: Int): Bitmap? {
+    override suspend fun getBitmapFromDisk(id: String, reqWidth: Int): Bitmap? {
         checkNotClosed()
         val entry = lruEntries[id]
         mutex.withLock(entry) {
@@ -50,7 +50,7 @@ internal class DiskLruCache private constructor(
                 historyWriter?.write("${HistoryType.READ.ordinal} $id")
 
                 return if (file.exists()) file.readBytes()
-                    .decodeImage(reqWidth, reqHeight) else null
+                    .decodeImage(reqWidth) else null
             }.getOrNull()
         }
     }

@@ -54,16 +54,15 @@ class ImageRepositoryImpl @Inject constructor(
         id: String,
         width: Int,
         height: Int,
-        reqWidth: Int,
-        reqHeight: Int
+        reqWidth: Int
     ): Result<Bitmap?> =
         withContext(ioDispatcher) {
             tryCatching(tag = TAG, methodName = "getImage") {
-                val imageInMemory = imageCachedInMemoryDataSource.getImage(id, reqWidth, reqHeight)
+                val imageInMemory = imageCachedInMemoryDataSource.getImage(id, reqWidth)
                 if (imageInMemory != null) return@tryCatching imageInMemory
 
                 // Sampling 된 Bitmap 반환
-                val imageInDisk = imageCachedInDiskDataSource.getImage(id, reqWidth, reqHeight)
+                val imageInDisk = imageCachedInDiskDataSource.getImage(id, reqWidth)
                 if (imageInDisk != null) {
                     // Sampling 된 상태로 Bitmap 을 Memory 에 Caching
                     externalScope.launch { imageCachedInMemoryDataSource.addImage(id, imageInDisk) }
@@ -80,7 +79,7 @@ class ImageRepositoryImpl @Inject constructor(
                 val imageFromApi: ByteArray? =
                     imageDataSource.getImage(id, newWidth, newHeight).getOrNull()
                 // 원본 사이즈 Bitmap
-                val bitmap = imageFromApi.decodeImage(newWidth, newHeight)
+                val bitmap = imageFromApi.decodeImage(newWidth)
                 if (bitmap != null) {
                     externalScope.launch {
                         // Disk 에는 원본 사이즈 Bitmap 저장
@@ -88,7 +87,7 @@ class ImageRepositoryImpl @Inject constructor(
                     }
                 }
                 // 실질적으로 반환은 Sampling 된 상태로 반환
-                return@tryCatching imageFromApi?.decodeImage(reqWidth, reqHeight)
+                return@tryCatching imageFromApi?.decodeImage(reqWidth)
             }
         }
 

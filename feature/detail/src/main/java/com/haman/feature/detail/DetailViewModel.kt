@@ -33,7 +33,7 @@ class DetailViewModel @Inject constructor(
      * 이미지 id 를 이용해 이미지 Bitmap 요청
      * @param imageId 이미지 Id
      */
-    suspend fun getImageByUrl(imageId: String, width: Int, height: Int): Bitmap? {
-        return getImageUseCase(imageId, width, height)
+    suspend fun getImageByUrl(imageId: String, width: Int, height: Int, reqWidth: Int): Bitmap? {
+        return getImageUseCase(imageId, width, height, reqWidth)
     }
 }

@@ -73,7 +73,7 @@ fun DetailScreen(
                         height = 200,
                         imageUrl = ""
                     ),
-                    load = viewModel::getImageByUrl
+                    loadImage = viewModel::getImageByUrl
                 )
             }
         }
