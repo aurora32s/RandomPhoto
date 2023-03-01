@@ -51,7 +51,7 @@ class TestImageDataSourceImpl {
     }
 
     @Test
-    fun `특정_이미지_정보_요청_성공`() = runTest {
+    fun `getImageInfo_Success`() = runTest {
         // 1. Given
         val response = MockResponse()
             .setResponseCode(HttpURLConnection.HTTP_OK)
@@ -66,7 +66,7 @@ class TestImageDataSourceImpl {
     }
 
     @Test
-    fun `특정_이미지_정보_요청_실패_Response_error`() = runTest {
+    fun `getImageInfo_Fail_Response_error`() = runTest {
         // 1. Given
         val response = MockResponse()
             .setResponseCode(HttpURLConnection.HTTP_NO_CONTENT)
