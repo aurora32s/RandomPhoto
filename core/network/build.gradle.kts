@@ -13,4 +13,7 @@ dependencies {
 
     implementation(libs.bundles.retrofit)
     implementation(libs.bundles.paging)
+
+    testImplementation(libs.bundles.test)
+    testImplementation(libs.okhttp.mock.server)
 }
