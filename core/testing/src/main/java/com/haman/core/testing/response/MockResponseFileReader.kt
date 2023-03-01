@@ -1,4 +1,4 @@
-package com.haman.core.network.response
+package com.haman.core.testing.response
 
 import java.io.InputStreamReader
 

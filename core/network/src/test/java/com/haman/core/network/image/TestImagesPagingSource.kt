@@ -4,7 +4,7 @@ import androidx.paging.PagingSource
 import com.haman.core.common.exception.ImageIOException
 import com.haman.core.common.exception.NoneImageResponseException
 import com.haman.core.model.response.ImageResponse
-import com.haman.core.network.response.MockResponseFileReader
+import com.haman.core.common.response.MockResponseFileReader
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
@@ -69,7 +69,7 @@ class TestImagesPagingSource {
         // 1. Given
         val response = MockResponse()
             .setResponseCode(HttpURLConnection.HTTP_OK)
-            .setBody(MockResponseFileReader("images_paging_success.json").content)
+            .setBody(com.haman.core.common.response.MockResponseFileReader("images_paging_success.json").content)
         mockWebServer.enqueue(response)
 
         // 2. When
@@ -99,7 +99,7 @@ class TestImagesPagingSource {
         // 1. Given
         val response = MockResponse()
             .setResponseCode(HttpURLConnection.HTTP_OK)
-            .setBody(MockResponseFileReader("images_paging_success.json").content)
+            .setBody(com.haman.core.common.response.MockResponseFileReader("images_paging_success.json").content)
         mockWebServer.enqueue(response)
 
         // 2. When

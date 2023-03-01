@@ -1,50 +1,34 @@
 package com.haman.core.data.image
 
+import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.haman.core.data.fake.FakeImageApiService
 import com.haman.core.data.fake.FakeImageCacheDataSource
 import com.haman.core.data.fake.FakeImageDataSource
-import com.haman.core.data.image.ImageRepositoryImpl
 import com.haman.core.data.repository.ImageRepository
-import com.haman.core.datastore.internal.image.ImageCacheInDiskDataSource
 import com.haman.core.datastore.source.ImageCacheDataSource
-import com.haman.core.network.image.ImageApiService
 import com.haman.core.network.source.ImageDataSource
-import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.serialization.json.Json
-import okhttp3.MediaType.Companion.toMediaType
-import okhttp3.OkHttpClient
-import okhttp3.mockwebserver.MockWebServer
-import org.junit.After
+import kotlinx.coroutines.test.runTest
+import org.hamcrest.CoreMatchers.`is`
+import org.hamcrest.CoreMatchers.notNullValue
+import org.hamcrest.MatcherAssert.assertThat
+import org.hamcrest.Matchers.lessThan
+import org.hamcrest.core.IsNot
 import org.junit.Before
-import retrofit2.Retrofit
+import org.junit.Test
+import org.junit.runner.RunWith
 
+@RunWith(AndroidJUnit4::class)
 class TestImageRepositoryImpl {
 
     private lateinit var imageCachedInMemoryDataSource: ImageCacheDataSource
     private lateinit var imageCachedInDiskDataSource: ImageCacheDataSource
     private lateinit var imageDataSource: ImageDataSource
-
     private lateinit var imageRepository: ImageRepository
-    private lateinit var mockWebServer: MockWebServer
 
     @Before
     fun setup() {
-        mockWebServer = MockWebServer()
-        mockWebServer.start()
-
-        val imageApiService = Retrofit.Builder()
-            .baseUrl(mockWebServer.url("/"))
-            .addConverterFactory(
-                Json {
-                    coerceInputValues = true
-                    ignoreUnknownKeys = true
-                }.asConverterFactory("application/json".toMediaType())
-            )
-            .client(OkHttpClient())
-            .build()
-            .create(ImageApiService::class.java)
-
         imageCachedInMemoryDataSource = FakeImageCacheDataSource()
         imageCachedInDiskDataSource = FakeImageCacheDataSource()
         imageDataSource = FakeImageDataSource()
@@ -54,13 +38,28 @@ class TestImageRepositoryImpl {
             ioDispatcher = Dispatchers.IO,
             imageCachedInMemoryDataSource,
             imageCachedInDiskDataSource,
-            imageApiService,
+            FakeImageApiService(),
             imageDataSource
         )
     }
 
-    @After
-    fun clear() {
-        mockWebServer.shutdown()
+    @Test
+    fun getImage_Success_from_Server() = runTest {
+        // 2. When
+        val bitmap = imageRepository.getImage(
+            id = "0",
+            width = 100,
+            height = 200,
+            reqWidth = 10
+        ).getOrNull()
+
+        // 3. Then
+        assertThat(bitmap, `is`(notNullValue()))
+        bitmap?.let {
+            // Sampling 동작 확인
+            assertThat(it.width, `is`(lessThan(100)))
+            assertThat(it.height, `is`(lessThan(200)))
+        }
     }
+
 }
