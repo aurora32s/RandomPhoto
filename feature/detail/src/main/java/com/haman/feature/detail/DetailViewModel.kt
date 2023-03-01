@@ -31,6 +31,9 @@ class DetailViewModel @Inject constructor(
     /**
      * 이미지 id 를 이용해 이미지 Bitmap 요청
      * @param imageId 이미지 Id
+     * @param width 이미지 원본 가로길이
+     * @param height 이미지 원본 세로 길이
+     * @param reqWidth 화면에 보여줄 아마자의 가로 길이
      */
     suspend fun getImageByUrl(imageId: String, width: Int, height: Int, reqWidth: Int): Bitmap? {
         return getImageUseCase(imageId, width, height, reqWidth)

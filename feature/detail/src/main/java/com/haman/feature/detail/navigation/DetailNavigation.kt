@@ -20,7 +20,11 @@ private val arguments = listOf(
 )
 private const val DetailNavigationRoute = "${DetailRoute}/{${ImageIdArgs}}/{${ImageArgs}}"
 
-
+/**
+ * Detail Screen 으로 이동
+ * @param imageId 이미지의 id
+ * @param image 이미지 정보
+ */
 fun NavController.navigateToDetail(imageId: String, image: ImageUiModel) {
     val jsonString = Json.encodeToString(image.copy(imageUrl = ""))
     this.navigate("${DetailRoute}/${imageId}/${jsonString}")
@@ -37,7 +41,7 @@ fun NavGraphBuilder.detailScreen(
         route = DetailNavigationRoute,
         arguments = arguments
     ) {
-        // 이미지의 id 와 해당 이미지 작성자
+        // 이미지의 id 와 해당 이미지 정보
         val imageId = it.arguments?.getString(ImageIdArgs)
         val argument = it.arguments?.getString(ImageArgs)
         val image = Json.decodeFromString<ImageUiModel>(argument ?: "")

@@ -20,6 +20,7 @@ internal class DiskLruCache private constructor(
     private val directory: File,
     private val maxSize: Long
 ) : DiskCache {
+
     private val mutex = Mutex()
 
     // 실제 기록 파일
@@ -36,7 +37,7 @@ internal class DiskLruCache private constructor(
     private var redundantOpCount = 0
 
     /**
-     * Sampling 된 Bitmap 반환
+     * 전달된 reqWidth 만큼 Sampling 된 Bitmap 반환
      */
     override suspend fun getBitmapFromDisk(id: String, reqWidth: Int): Bitmap? {
         checkNotClosed()
@@ -49,8 +50,7 @@ internal class DiskLruCache private constructor(
                 redundantOpCount++
                 historyWriter?.write("${HistoryType.READ.ordinal} $id")
 
-                return if (file.exists()) file.readBytes()
-                    .decodeImage(reqWidth) else null
+                return if (file.exists()) file.readBytes().decodeImage(reqWidth) else null
             }.getOrNull()
         }
     }

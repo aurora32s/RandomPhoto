@@ -30,10 +30,11 @@ import com.haman.core.model.ui.ImageUiModel
 /**
  * 서버로 부터 이미지 Bitmap 을 받으와 보여주는 Component
  * (캐시가 있다면 캐시 사용)
- * @param id 이미지 id
+ * @param image 이미지 정보
  * @param cornerRadius 모서리 Radius
+ * @param width 화면에 보여줄 이미지의 가로 길이(default 는 화면 전체 가로 길이)
  * @param scaleType Image ContentScaleType
- * @param load 이미지 로드 메서드
+ * @param loadImage 이미지 로드 메서드
  */
 @Composable
 fun AsyncImage(

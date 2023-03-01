@@ -8,7 +8,6 @@ import kotlinx.coroutines.withContext
 /**
  * Bitmap Sampling
  * @param width sampling width
- * @param height sampling height
  */
 suspend fun ByteArray?.decodeImage(width: Int): Bitmap? =
     withContext(Dispatchers.Default) {
