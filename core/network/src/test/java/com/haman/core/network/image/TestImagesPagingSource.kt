@@ -95,6 +95,37 @@ class TestImagesPagingSource {
     }
 
     @Test
+    fun pagingSource_load_Success_lastPage() = runTest {
+        // 1. Given
+        val response = MockResponse()
+            .setResponseCode(HttpURLConnection.HTTP_OK)
+            .setBody(MockResponseFileReader("images_paging_success.json").content)
+        mockWebServer.enqueue(response)
+
+        // 2. When
+        val loadResult = imagePagingSource.load(
+            PagingSource.LoadParams.Refresh(
+                key = null,
+                loadSize = 5,
+                placeholdersEnabled = false
+            )
+        )
+
+        // 3. Then
+        assertThat(
+            loadResult,
+            `is`(
+                PagingSource.LoadResult.Page(
+                    data = firstResponse,
+                    prevKey = null,
+                    nextKey = null
+                )
+            )
+        )
+    }
+
+
+    @Test
     fun pagingSource_Fail_Network_Disconnect() = runTest {
         // 1. Given
         val response = MockResponse()
