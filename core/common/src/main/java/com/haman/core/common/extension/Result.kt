@@ -1,7 +1,5 @@
 package com.haman.core.common.extension
 
-import android.util.Log
-
 inline fun <T, R> T.tryCatching(
     tag: String,
     methodName: String,
@@ -9,5 +7,5 @@ inline fun <T, R> T.tryCatching(
 ): Result<R> = runCatching {
     return@runCatching block()
 }.onFailure {
-    Log.e(tag, "> $methodName ${it.message ?: "Occur Unknown Error"}")
+    println("$tag > $methodName ${it.message ?: "Occur Unknown Error"}")
 }

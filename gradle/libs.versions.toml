@@ -67,7 +67,6 @@ paging-compose = { group = "androidx.paging", name = "paging-compose", version.r
 # test
 junit4 = { group = "junit", name = "junit", version.ref = "junit4" }
 kotlin-coroutine-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "kotlinxCoroutines" }
-test-core-ktx = { group = "androix.test", name = "core-ktx", version.ref = "kotlin" }
 hamcrest = { group = "org.hamcrest", name = "hamcrest-all", version.ref = "hamcrest" }
 
 # Splash Screen
@@ -79,4 +78,4 @@ androidx-compose = ["androidx-activity-compose", "androidx-compose-ui", "android
 retrofit = ["retrofit-core", "retrofit-kotlin-serialization", "okhttp-logging", "kotlinx-serialization-json"]
 kotlin-coroutine = ["kotlinx-coroutines-core", "kotlinx-coroutines-android"]
 paging = ["paging-runtime", "paging-compose"]
-test = ["junit4", "kotlin-coroutine-test", "test-core-ktx", "hamcrest"]
+test = ["junit4", "kotlin-coroutine-test", "hamcrest"]
