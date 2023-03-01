@@ -1,7 +1,12 @@
 package com.haman.core.data.image
 
+import androidx.paging.AsyncPagingDataDiffer
+import androidx.paging.PagingData
+import androidx.paging.map
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.haman.core.data.entity.ImageDiffCallback
+import com.haman.core.data.entity.ImagesPagingCallback
 import com.haman.core.data.fake.FakeImageApiService
 import com.haman.core.data.fake.FakeImageDataSource
 import com.haman.core.data.repository.ImageRepository
@@ -9,6 +14,8 @@ import com.haman.core.datastore.internal.image.ImageCacheInDiskDataSource
 import com.haman.core.datastore.memory.image.ImageCacheInMemoryDataSource
 import com.haman.core.datastore.source.ImageCacheDataSource
 import com.haman.core.model.entity.ImageEntity
+import com.haman.core.model.entity.toEntity
+import com.haman.core.model.response.ImageResponse
 import com.haman.core.network.source.ImageDataSource
 import kotlinx.coroutines.*
 import kotlinx.coroutines.test.*
@@ -147,6 +154,28 @@ class TestImageRepositoryImpl {
         val image = imageRepository.getImageInfo("12").getOrNull()
         //2. Then
         assertThat(image, `is`(nullValue()))
+    }
+
+    @Test
+    fun getImagesInfo_Success_Transform_From_ImageResponse_To_Entity() = externalScope.runTest {
+        val images = PagingData.from(
+            (0..10).map {
+                ImageResponse("$it", "author$it", it, it, "image_$it")
+            }
+        ).map { it.toEntity() }
+        val differ = AsyncPagingDataDiffer(
+            diffCallback = ImageDiffCallback(),
+            updateCallback = ImagesPagingCallback(),
+            workerDispatcher = dispatcher
+        )
+
+        differ.submitData(images)
+
+        advanceUntilIdle()
+        assertThat(
+            (0..10).map { ImageEntity("$it", "author$it", it, it, "image_$it") },
+            `is`(differ.snapshot().items)
+        )
     }
 
 }
