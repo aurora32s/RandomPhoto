@@ -11,11 +11,13 @@ import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
+import com.haman.core.common.extension.fromDpToPx
 import com.haman.core.designsystem.R
 import com.haman.core.designsystem.component.AsyncImage
 import com.haman.core.designsystem.component.ContentText
@@ -109,15 +111,18 @@ fun HomeImagePagingItem(
     image: ImageUiModel,
     listType: ListType,
     toDetail: (String, String) -> Unit,
-    loadImage: suspend (String, Int, Int) -> Bitmap?
+    loadImage: suspend (String, Int, Int, Int) -> Bitmap?
 ) {
+    val localScreenWidth = LocalConfiguration.current.screenWidthDp.toFloat().fromDpToPx()
+    val imageWidth = remember { derivedStateOf { localScreenWidth / listType.column } }
     when (listType) {
         ListType.GRID -> AsyncImage(
             modifier = Modifier
                 .aspectRatio(1f)
                 .clickable { toDetail(image.id, image.author) },
             image = image,
-            load = loadImage,
+            width = imageWidth.value,
+            loadImage = loadImage,
             scaleType = ContentScale.Crop
         )
         ListType.LINEAR -> ImageLinearItem(

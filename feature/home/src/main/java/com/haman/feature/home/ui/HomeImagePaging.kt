@@ -28,7 +28,7 @@ fun HomeImagePaging(
     listState: LazyListState = rememberLazyListState(),
     listType: ListType,
     toDetail: (String, String) -> Unit,
-    loadImage: suspend (String,Int,Int) -> Bitmap?
+    loadImage: suspend (String, Int, Int, Int) -> Bitmap?
 ) {
     if (images.itemCount != 0) {
         LazyVerticalGrid(

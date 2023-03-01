@@ -25,7 +25,7 @@ fun ImageLinearItem(
     modifier: Modifier = Modifier,
     image: ImageUiModel,
     author: String,
-    loadImage: suspend (String, Int, Int) -> Bitmap?
+    loadImage: suspend (String, Int, Int, Int) -> Bitmap?
 ) {
     Column(
         modifier = modifier.fillMaxWidth(),
@@ -36,7 +36,7 @@ fun ImageLinearItem(
                 .fillMaxWidth()
                 .aspectRatio(5f / 3f),
             image = image,
-            load = loadImage
+            loadImage = loadImage
         )
         ContentText(
             modifier = Modifier.padding(8.dp),

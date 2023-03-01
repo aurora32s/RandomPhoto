@@ -10,13 +10,13 @@ import kotlinx.coroutines.withContext
  * @param width sampling width
  * @param height sampling height
  */
-suspend fun ByteArray?.decodeImage(width: Int, height: Int): Bitmap? =
+suspend fun ByteArray?.decodeImage(width: Int): Bitmap? =
     withContext(Dispatchers.Default) {
         this@decodeImage ?: return@withContext null
         val option = BitmapFactory.Options()
         option.inJustDecodeBounds = true
         BitmapFactory.decodeByteArray(this@decodeImage, 0, this@decodeImage.size, option)
-        option.inSampleSize = calculateSamplingSize(option, width, height)
+        option.inSampleSize = calculateSamplingSize(option, width)
         option.inJustDecodeBounds = false
         return@withContext BitmapFactory.decodeByteArray(
             this@decodeImage,
@@ -26,14 +26,13 @@ suspend fun ByteArray?.decodeImage(width: Int, height: Int): Bitmap? =
         )
     }
 
-private fun calculateSamplingSize(options: BitmapFactory.Options, width: Int, height: Int): Int {
-    val (imageHeight, imageWidth) = options.run { outHeight to outWidth }
+private fun calculateSamplingSize(options: BitmapFactory.Options, width: Int): Int {
+    val imageWidth = options.outWidth
     var inSampleSize = 1
 
-    if (imageHeight > height || imageWidth > width) {
-        val halfHeight = imageHeight / 2
+    if (imageWidth > width) {
         val halfWidth = imageWidth / 2
-        while (halfHeight / inSampleSize >= height && halfWidth / inSampleSize >= width) {
+        while (halfWidth / inSampleSize >= width) {
             inSampleSize++
         }
     }
