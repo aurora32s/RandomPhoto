@@ -31,7 +31,7 @@ import javax.inject.Inject
  * 자세한 설명은 PR 참고
  * https://github.com/aurora32s/Daangn_Test/pull/43
  */
-private const val BASE_SIZE = 450
+private const val BASE_SIZE = 500
 private const val TAG = "com.haman.core.data.image.ImageRepositoryImpl"
 
 /**
@@ -65,7 +65,13 @@ class ImageRepositoryImpl @Inject constructor(
                 val imageInDisk = imageCachedInDiskDataSource.getImage(id, reqWidth)
                 if (imageInDisk != null) {
                     // Sampling 된 상태로 Bitmap 을 Memory 에 Caching
-                    externalScope.launch { imageCachedInMemoryDataSource.addImage(id, imageInDisk) }
+                    externalScope.launch {
+                        imageCachedInMemoryDataSource.addImage(
+                            id,
+                            reqWidth,
+                            imageInDisk
+                        )
+                    }
                     return@tryCatching imageInDisk
                 }
 
@@ -83,7 +89,7 @@ class ImageRepositoryImpl @Inject constructor(
                 if (bitmap != null) {
                     externalScope.launch {
                         // Disk 에는 원본 사이즈 Bitmap 저장
-                        imageCachedInDiskDataSource.addImage(id, bitmap)
+                        imageCachedInDiskDataSource.addImage(id, newWidth, bitmap)
                     }
                 }
                 // 실질적으로 반환은 Sampling 된 상태로 반환
