@@ -97,7 +97,7 @@ class ImageRepositoryImpl @Inject constructor(
             if (bitmap != null) {
                 externalScope.launch {
                     // Disk 에는 원본 사이즈 Bitmap 저장
-                    imageCachedInDiskDataSource.addImage(id, newWidth, bitmap)
+                    imageCachedInDiskDataSource.addImage(id, reqWidth, bitmap)
                 }
             }
             // 실질적으로 반환은 Sampling 된 상태로 반환
