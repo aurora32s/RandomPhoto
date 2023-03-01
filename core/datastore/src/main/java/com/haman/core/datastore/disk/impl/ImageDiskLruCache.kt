@@ -1,7 +1,6 @@
 package com.haman.core.datastore.disk.impl
 
 import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import com.haman.core.common.extension.decodeImage
 import com.haman.core.common.extension.tryCatching
 import com.haman.core.datastore.disk.DiskCache
@@ -36,7 +35,10 @@ internal class DiskLruCache private constructor(
     @Volatile
     private var redundantOpCount = 0
 
-    override suspend fun getBitmapFromDisk(id: String): Bitmap? {
+    /**
+     * Sampling 된 Bitmap 반환
+     */
+    override suspend fun getBitmapFromDisk(id: String, reqWidth: Int, reqHeight: Int): Bitmap? {
         checkNotClosed()
         val entry = lruEntries[id]
         mutex.withLock(entry) {
@@ -47,7 +49,8 @@ internal class DiskLruCache private constructor(
                 redundantOpCount++
                 historyWriter?.write("${HistoryType.READ.ordinal} $id")
 
-                return if (file.exists()) file.inputStream().decodeImage() else null
+                return if (file.exists()) file.readBytes()
+                    .decodeImage(reqWidth, reqHeight) else null
             }.getOrNull()
         }
     }
@@ -67,8 +70,9 @@ internal class DiskLruCache private constructor(
                     it.write("${HistoryType.DIRTY.ordinal} $id")
                     it.flush()
                 }
-                editor.newOutputStream()?.let {
-                    bitmap.compress(Bitmap.CompressFormat.JPEG, 100, it)
+                editor.newOutputStream()?.use {
+                    bitmap.copy(Bitmap.Config.RGB_565, false)
+                        .compress(Bitmap.CompressFormat.JPEG, 100, it)
                     editor.commit()
                 }
             }

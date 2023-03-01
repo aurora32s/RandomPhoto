@@ -2,6 +2,7 @@ package com.haman.core.network.source
 
 import android.graphics.Bitmap
 import com.haman.core.model.response.ImageResponse
+import java.io.InputStream
 
 interface ImageDataSource {
     /**
@@ -10,7 +11,7 @@ interface ImageDataSource {
      * @param width 이미지 가로 길이
      * @param height 이미지 세로 길이
      */
-    suspend fun getImage(id: String, width: Int, height: Int): Result<Bitmap>
+    suspend fun getImage(id: String, width: Int, height: Int): Result<ByteArray?>
 
     /**
      * 특정 이미지의 정보 요청

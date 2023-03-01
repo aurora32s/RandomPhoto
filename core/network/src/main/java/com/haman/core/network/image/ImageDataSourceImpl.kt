@@ -1,9 +1,7 @@
 package com.haman.core.network.image
 
-import android.graphics.Bitmap
 import com.haman.core.common.exception.ImageRequestNetworkException
 import com.haman.core.common.exception.NoneImageResponseException
-import com.haman.core.common.extension.decodeImage
 import com.haman.core.common.extension.tryCatching
 import com.haman.core.model.response.ImageResponse
 import com.haman.core.network.source.ImageDataSource
@@ -14,13 +12,11 @@ private const val TAG = "com.haman.core.network.image.ImageDataSourceImpl"
 class ImageDataSourceImpl @Inject constructor(
     private val imageApiService: ImageApiService
 ) : ImageDataSource {
-    override suspend fun getImage(id: String, width: Int, height: Int): Result<Bitmap> {
+    override suspend fun getImage(id: String, width: Int, height: Int): Result<ByteArray> {
         return tryCatching(TAG, "getImage") {
             val response = imageApiService.getImage(id, width, height)
             if (response.isSuccessful && response.body() != null) {
-                val stream = response.body()?.byteStream()
-                stream.decodeImage()
-                    ?: throw NoneImageResponseException(response.message())
+                response.body()!!.bytes()
             } else throw ImageRequestNetworkException(response.message())
         }
     }
