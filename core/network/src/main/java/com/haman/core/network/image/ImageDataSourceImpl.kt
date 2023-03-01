@@ -12,6 +12,12 @@ private const val TAG = "com.haman.core.network.image.ImageDataSourceImpl"
 class ImageDataSourceImpl @Inject constructor(
     private val imageApiService: ImageApiService
 ) : ImageDataSource {
+    /**
+     * 특정 이미지 요청
+     * @param id 이미지 id
+     * @param width 이미지 가로 길이
+     * @param height 이미지 세로 길이
+     */
     override suspend fun getImage(id: String, width: Int, height: Int): Result<ByteArray> {
         return tryCatching(TAG, "getImage") {
             val response = imageApiService.getImage(id, width, height)
@@ -21,6 +27,10 @@ class ImageDataSourceImpl @Inject constructor(
         }
     }
 
+    /**
+     * 특정 이미지의 정보 요청
+     * @param id 이미지 id
+     */
     override suspend fun getImageInfo(id: String): Result<ImageResponse> {
         return tryCatching(TAG, "getImageInfo") {
             val response = imageApiService.getImageInfo(id)
@@ -31,6 +41,10 @@ class ImageDataSourceImpl @Inject constructor(
         }
     }
 
+    /**
+     * 랜덤 이미지 정보 요청
+     * @param seed 랜덤에 사용될 seed 정보
+     */
     override suspend fun getRandomImageInfo(seed: String): Result<ImageResponse> {
         return tryCatching(TAG, "getRandomImageInfo") {
             val response = imageApiService.getRandomImageInfo(seed)

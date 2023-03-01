@@ -23,9 +23,8 @@ fun DaangnNavHost(
         startDestination = startDestination
     ) {
         homeScreen(
-            navController::navigateToDetail,
-            mainViewModel::toast,
-            mainViewModel::completeLoadInitData
+            mainViewModel.uiEvent,
+            navController::navigateToDetail
         )
         detailScreen(
             navController::popBackStack

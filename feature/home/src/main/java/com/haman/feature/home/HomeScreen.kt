@@ -4,10 +4,7 @@ import android.graphics.Bitmap
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.Scaffold
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
@@ -21,7 +18,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
-import com.haman.core.common.state.ToastPosition
+import com.haman.core.common.state.UiEvent
 import com.haman.core.designsystem.R
 import com.haman.core.model.ui.ImageUiModel
 import com.haman.core.ui.list.PagingList
@@ -30,6 +27,8 @@ import com.haman.core.ui.state.rememberToolbarState
 import com.haman.feature.home.ui.HomeFloatingButton
 import com.haman.feature.home.ui.HomeImagePaging
 import com.haman.feature.home.ui.HomeToolbar
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.launch
 
 /**
  * Toolbar 높이 범위
@@ -39,23 +38,22 @@ private val maxHeightToolbar = 340.dp
 
 /**
  * Home(Main) 화면
+ * @param uiEvent MainViewModel 에 있는 전체 Ui Event Flow 관리
  * @param toDetail 이미지 클릭 시, 상세 화면으로 이동
- * @param toast Toast 띄우기 Event
- * @param completeLoadInitData 초기 데이터 요청 성공 시의 Event
  */
 @Composable
 fun HomeScreen(
+    uiEvent: MutableSharedFlow<UiEvent>,
     toDetail: (String, ImageUiModel) -> Unit,
-    toast: (ToastPosition, Int) -> Unit,
-    completeLoadInitData: () -> Unit,
     viewModel: HomeViewModel = hiltViewModel(),
 ) {
     val images = viewModel.imagesInfo.collectAsLazyPagingItems()
+    val coroutine = rememberCoroutineScope()
 
     LaunchedEffect(key1 = images.loadState.refresh) {
         // 최초의 데이터 요청
         if (images.loadState.refresh != LoadState.Loading) {
-            completeLoadInitData()
+            uiEvent.emit(UiEvent.CompleteLoadInitData)
         }
     }
 
@@ -67,7 +65,7 @@ fun HomeScreen(
     val toolbarState = rememberToolbarState(toolbarHeightRange = toolbarHeightRange)
     val listState = rememberLazyListState()
     val listType = rememberSaveable { mutableStateOf(ListType.GRID) }
-    
+
     val nestedScrollConnection = remember {
         object : NestedScrollConnection {
             // Scroll 이 발생하였을 떄
@@ -95,7 +93,11 @@ fun HomeScreen(
             data = images,
             errorMsg = R.string.fail_to_load_page,
             loadingMsg = R.string.loading_msg,
-            toast = toast
+            toast = { position, message ->
+                coroutine.launch {
+                    uiEvent.emit(UiEvent.Toast(position = position, message = message))
+                }
+            }
         ) {
             HomeBody(
                 images = images,
