@@ -24,7 +24,6 @@ class ImagesPagingSource(
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, ImageResponse> {
         val page = params.key ?: INIT_KEY
-
         return try {
             val response = imageApiService.getImagesInfo(page = page, limit = LIMIT_PER_PAGE)
             if (response.isSuccessful && response.body() != null) {
@@ -32,7 +31,7 @@ class ImagesPagingSource(
                 LoadResult.Page(
                     data = images,
                     prevKey = if (page == INIT_KEY) null else page - 1,
-                    nextKey = if (images.size < LIMIT_PER_PAGE) null else page + 1
+                    nextKey = if (images.size < params.loadSize) null else page + 1
                 )
             } else {
                 throw NoneImageResponseException()
