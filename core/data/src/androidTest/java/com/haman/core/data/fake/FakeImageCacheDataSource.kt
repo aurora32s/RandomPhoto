@@ -8,7 +8,7 @@ import com.haman.core.datastore.source.ImageCacheDataSource
  */
 class FakeImageCacheDataSource : ImageCacheDataSource {
 
-    private val cache = hashMapOf<String, Bitmap>()
+    val cache = hashMapOf<String, Bitmap>()
 
     override suspend fun getImage(id: String, reqWidth: Int): Bitmap? {
         return cache["${id}_$reqWidth"]

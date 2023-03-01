@@ -4,7 +4,10 @@ androidGradlePlugin = "7.2.0"
 androidxActivity = "1.6.1"
 androidxComposeCompiler = "1.1.0"
 androidxCore = "1.8.0"
+androidTestjunit = "1.1.5"
+androidTestJunit4 = "1.1.1"
 composeUi = "1.1.1"
+espresso = "3.5.1"
 hamcrest = "1.1"
 hilt = "2.41"
 junit4 = "4.13.2"
@@ -69,6 +72,10 @@ junit4 = { group = "junit", name = "junit", version.ref = "junit4" }
 kotlin-coroutine-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "kotlinxCoroutines" }
 hamcrest = { group = "org.hamcrest", name = "hamcrest-all", version.ref = "hamcrest" }
 
+# insrument test
+test-ext-junit = { group = "androidx.test.ext", name = "junit", version.ref = "androidTestjunit" }
+espresso = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espresso" }
+
 # Splash Screen
 splash-screen = { group = "androidx.core", name = "core-splashscreen", version.ref = "splashscreen" }
 
@@ -78,4 +85,5 @@ androidx-compose = ["androidx-activity-compose", "androidx-compose-ui", "android
 retrofit = ["retrofit-core", "retrofit-kotlin-serialization", "okhttp-logging", "kotlinx-serialization-json"]
 kotlin-coroutine = ["kotlinx-coroutines-core", "kotlinx-coroutines-android"]
 paging = ["paging-runtime", "paging-compose"]
-test = ["junit4", "kotlin-coroutine-test", "hamcrest"]
+test = ["junit4", "kotlin-coroutine-test"]
+instrument-test = ["test-ext-junit", "espresso"]

@@ -5,6 +5,9 @@ plugins {
 
 android {
     namespace = "com.haman.core.data"
+    defaultConfig {
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+    }
 }
 
 dependencies {
@@ -12,11 +15,13 @@ dependencies {
     implementation(project(":core:datastore"))
     implementation(project(":core:common"))
     implementation(project(":core:model"))
+    implementation(project(":core:testing"))
 
     implementation(libs.bundles.kotlin.coroutine)
     implementation(libs.bundles.paging)
 
-    testImplementation(libs.bundles.test)
-    testImplementation(libs.okhttp.mock.server)
-    testImplementation(libs.bundles.retrofit)
+    androidTestImplementation(libs.bundles.test)
+    androidTestImplementation(libs.okhttp.mock.server)
+    androidTestImplementation(libs.bundles.retrofit)
+    androidTestImplementation(libs.bundles.instrument.test)
 }
