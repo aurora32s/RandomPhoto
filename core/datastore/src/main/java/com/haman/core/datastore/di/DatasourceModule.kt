@@ -11,24 +11,23 @@ import javax.inject.Qualifier
 import javax.inject.Singleton
 
 @Qualifier
-annotation class Disk
-
+annotation class MemoryCache
 @Qualifier
-annotation class Memory
+annotation class DiskCache
 
 @Module
 @InstallIn(SingletonComponent::class)
 interface DatasourceModule {
-    @Memory
     @Binds
     @Singleton
+    @MemoryCache
     fun bindImageCacheInMemory(
         imageCacheInMemoryDataSource: ImageCacheInMemoryDataSource
     ): ImageCacheDataSource
 
-    @Disk
     @Binds
     @Singleton
+    @DiskCache
     fun bindImageCacheInDisk(
         imageCacheInDiskDataSource: ImageCacheInDiskDataSource
     ): ImageCacheDataSource

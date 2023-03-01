@@ -24,8 +24,8 @@ class ImageCacheInDiskDataSource @Inject constructor(
         }
     }
 
-    override suspend fun getImage(id: String): Bitmap? {
-        return diskLruCache.getBitmapFromDisk(id)
+    override suspend fun getImage(id: String, reqWidth: Int, reqHeight: Int): Bitmap? {
+        return diskLruCache.getBitmapFromDisk(id, reqWidth, reqHeight)
     }
 
     override suspend fun addImage(id: String, bitmap: Bitmap) {
