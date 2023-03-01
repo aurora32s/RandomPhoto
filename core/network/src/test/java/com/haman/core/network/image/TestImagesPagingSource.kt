@@ -1,6 +1,8 @@
 package com.haman.core.network.image
 
 import androidx.paging.PagingSource
+import com.haman.core.common.exception.ImageIOException
+import com.haman.core.common.exception.NoneImageResponseException
 import com.haman.core.model.response.ImageResponse
 import com.haman.core.network.response.MockResponseFileReader
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
@@ -11,8 +13,10 @@ import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
+import okhttp3.mockwebserver.SocketPolicy
 import org.hamcrest.CoreMatchers.`is`
 import org.hamcrest.MatcherAssert.assertThat
+import org.hamcrest.core.IsInstanceOf
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
@@ -87,6 +91,51 @@ class TestImagesPagingSource {
                     nextKey = 2
                 )
             )
+        )
+    }
+
+    @Test
+    fun pagingSource_Fail_Network_Disconnect() = runTest {
+        // 1. Given
+        val response = MockResponse()
+            .setSocketPolicy(SocketPolicy.DISCONNECT_AT_START)
+        mockWebServer.enqueue(response)
+
+        // 2. When
+        val loadResult = imagePagingSource.load(
+            PagingSource.LoadParams.Refresh(
+                key = null,
+                loadSize = 2,
+                placeholdersEnabled = false
+            )
+        )
+
+        assertThat(
+            (loadResult as PagingSource.LoadResult.Error).throwable,
+            IsInstanceOf(ImageIOException::class.java)
+        )
+    }
+
+
+    @Test
+    fun pagingSource_Fail_Response_error() = runTest {
+        // 1. Given
+        val response = MockResponse()
+            .setResponseCode(HttpURLConnection.HTTP_NO_CONTENT)
+        mockWebServer.enqueue(response)
+
+        // 2. When
+        val loadResult = imagePagingSource.load(
+            PagingSource.LoadParams.Refresh(
+                key = null,
+                loadSize = 2,
+                placeholdersEnabled = false
+            )
+        )
+
+        assertThat(
+            (loadResult as PagingSource.LoadResult.Error).throwable.cause,
+            IsInstanceOf(NoneImageResponseException::class.java)
         )
     }
 }
