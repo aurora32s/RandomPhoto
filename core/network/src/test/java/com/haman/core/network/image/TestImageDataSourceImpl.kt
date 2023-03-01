@@ -1,8 +1,8 @@
 package com.haman.core.network.image
 
 import com.haman.core.common.exception.ImageRequestNetworkException
-import com.haman.core.network.response.MockResponseFileReader
 import com.haman.core.network.source.ImageDataSource
+import com.haman.core.testing.response.MockResponseFileReader
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
