@@ -27,7 +27,7 @@ fun HomeImagePaging(
     images: LazyPagingItems<ImageUiModel>,
     listState: LazyListState = rememberLazyListState(),
     listType: ListType,
-    toDetail: (String, String) -> Unit,
+    toDetail: (String, ImageUiModel) -> Unit,
     loadImage: suspend (String, Int, Int, Int) -> Bitmap?
 ) {
     if (images.itemCount != 0) {

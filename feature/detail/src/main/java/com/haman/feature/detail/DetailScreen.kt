@@ -1,6 +1,5 @@
 package com.haman.feature.detail
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Icon
@@ -10,7 +9,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -29,14 +28,17 @@ import com.haman.core.model.ui.ImageUiModel
 @Composable
 fun DetailScreen(
     imageId: String?,
-    author: String?,
+    image: ImageUiModel?,
     onBackPressed: () -> Unit,
     viewModel: DetailViewModel = hiltViewModel()
 ) {
-    val authorState = remember { mutableStateOf(author) }
+    val imageState = remember { mutableStateOf(image) }
     LaunchedEffect(null) {
         // 전달된 author 정보가 없는 경우에만 다시 서버로 요청하기
-        if (author == null) authorState.value = viewModel.getImageInfo(imageId = imageId)
+        if (image == null) {
+            if (imageId != null) imageState.value = viewModel.getImageInfo(imageId = imageId)
+            else onBackPressed()
+        }
     }
 
     Box(
@@ -56,24 +58,25 @@ fun DetailScreen(
                 .padding(vertical = 24.dp),
             verticalArrangement = Arrangement.Center
         ) {
-            if (authorState.value != null) {
+            if (imageState.value?.author != null) {
                 SubTitle(
                     modifier = Modifier.padding(8.dp),
-                    text = "by ${authorState.value}"
+                    text = "by ${imageState.value?.author}"
                 )
             }
             // 이미지는 캐싱된 거 보여주기
-            if (imageId != null) {
+            if (imageId != null || imageState.value != null) {
                 AsyncImage(
                     image = ImageUiModel(
-                        id = imageId,
+                        id = imageId ?: imageState.value!!.id,
                         type = CellType.GridImage,
-                        author = author ?: "",
-                        width = 200,
-                        height = 200,
+                        author = imageState.value!!.author,
+                        width = imageState.value!!.width,
+                        height = imageState.value!!.height,
                         imageUrl = ""
                     ),
-                    loadImage = viewModel::getImageByUrl
+                    loadImage = viewModel::getImageByUrl,
+                    scaleType = ContentScale.FillWidth
                 )
             }
         }

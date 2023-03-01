@@ -5,6 +5,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.haman.core.domain.GetImageInfoUseCase
 import com.haman.core.domain.GetImageUseCase
+import com.haman.core.model.ui.ImageUiModel
+import com.haman.core.model.ui.toUiModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.async
 import javax.inject.Inject
@@ -18,12 +20,9 @@ class DetailViewModel @Inject constructor(
      * 이미지 상세 정보 요청
      * @param imageId 요청할 이미지의 Id
      */
-    suspend fun getImageInfo(imageId: String?): String? {
+    suspend fun getImageInfo(imageId: String?): ImageUiModel? {
         return imageId?.let {
-            viewModelScope.async {
-                val image = getImageInfoUseCase(imageId)
-                image?.author
-            }.await()
+            viewModelScope.async { getImageInfoUseCase(imageId)?.toUiModel() }.await()
         } ?: run {
             null
         }
