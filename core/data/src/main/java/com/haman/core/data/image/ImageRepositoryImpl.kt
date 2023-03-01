@@ -81,13 +81,7 @@ class ImageRepositoryImpl @Inject constructor(
                 return@tryCatching imageInDisk
             }
 
-            // width : height 과 동일한 비율의 보다 작은 가로/세로 길이 계산
-            val newWidth = if (width < height) {
-                BASE_SIZE * width / height
-            } else BASE_SIZE
-            val newHeight = if (width > height) {
-                BASE_SIZE * height / width
-            } else BASE_SIZE
+            val (newWidth, newHeight) = getNewSize(width, height)
 
             // 3. 서버에 원본 이미지 요청
             val imageFromApi: ByteArray? =
@@ -97,12 +91,26 @@ class ImageRepositoryImpl @Inject constructor(
             if (bitmap != null) {
                 externalScope.launch {
                     // Disk 에는 원본 사이즈 Bitmap 저장
-                    imageCachedInDiskDataSource.addImage(id, reqWidth, bitmap)
+                    imageCachedInDiskDataSource.addImage(id, newWidth, bitmap)
                 }
             }
             // 실질적으로 반환은 Sampling 된 상태로 반환
             return@tryCatching imageFromApi?.decodeImage(reqWidth)
         }
+    }
+
+    /**
+     * width : height 과 동일한 비율의 보다 작은 가로/세로 길이 계산
+     */
+    private fun getNewSize(width: Int, height: Int): Pair<Int, Int> {
+        val newWidth = if (width < height) {
+            BASE_SIZE * width / height
+        } else BASE_SIZE
+        val newHeight = if (width > height) {
+            BASE_SIZE * height / width
+        } else BASE_SIZE
+
+        return newWidth to newHeight
     }
 
     /**
