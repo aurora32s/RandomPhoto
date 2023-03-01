@@ -21,6 +21,7 @@ paging = "3.1.1"
 pagingCompose = "1.0.0-alpha14"
 retrofit = "2.9.0"
 retrofitKotlinxSerializationJson = "0.8.0"
+robolectric = "4.9.2"
 splashscreen = "1.0.0-beta01"
 
 [plugins]
@@ -75,6 +76,7 @@ hamcrest = { group = "org.hamcrest", name = "hamcrest-all", version.ref = "hamcr
 # insrument test
 test-ext-junit = { group = "androidx.test.ext", name = "junit", version.ref = "androidTestjunit" }
 espresso = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espresso" }
+robolectric = { group = "org.robolectric", name = "robolectric", version.ref = "robolectric" }
 
 # Splash Screen
 splash-screen = { group = "androidx.core", name = "core-splashscreen", version.ref = "splashscreen" }
@@ -86,4 +88,4 @@ retrofit = ["retrofit-core", "retrofit-kotlin-serialization", "okhttp-logging", 
 kotlin-coroutine = ["kotlinx-coroutines-core", "kotlinx-coroutines-android"]
 paging = ["paging-runtime", "paging-compose"]
 test = ["junit4", "kotlin-coroutine-test"]
-instrument-test = ["test-ext-junit", "espresso"]
+instrument-test = ["test-ext-junit", "espresso", "robolectric"]
