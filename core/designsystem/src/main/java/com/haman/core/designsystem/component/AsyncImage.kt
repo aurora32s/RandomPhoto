@@ -41,7 +41,7 @@ fun AsyncImage(
     image: ImageUiModel,
     cornerRadius: Float = 4f,
     width: Int = LocalConfiguration.current.screenWidthDp.toFloat().fromDpToPx(),
-    scaleType: ContentScale = ContentScale.FillWidth,
+    scaleType: ContentScale = ContentScale.Crop,
     loadImage: suspend (String, Int, Int, Int) -> Bitmap?,
     isDarkTheme: Boolean = isSystemInDarkTheme(),
 ) {

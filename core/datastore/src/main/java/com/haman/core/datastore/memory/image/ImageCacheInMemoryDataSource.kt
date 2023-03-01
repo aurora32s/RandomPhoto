@@ -48,12 +48,12 @@ class ImageCacheInMemoryDataSource @Inject constructor(
 
     override suspend fun getImage(id: String, reqWidth: Int): Bitmap? {
         val response = CompletableDeferred<Bitmap?>()
-        cacheActor.send(ActorMessage.GetImage(id, response))
+        cacheActor.send(ActorMessage.GetImage("${id}_$reqWidth", response))
         return response.await()
     }
 
-    override suspend fun addImage(id: String, bitmap: Bitmap) {
-        cacheActor.send(ActorMessage.PutImage(id, bitmap))
+    override suspend fun addImage(id: String, width: Int, bitmap: Bitmap) {
+        cacheActor.send(ActorMessage.PutImage("${id}_$width", bitmap))
     }
 }
 
