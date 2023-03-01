@@ -1,16 +1,17 @@
 package com.haman.core.data.image
 
+import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.haman.core.data.fake.FakeImageApiService
-import com.haman.core.data.fake.FakeImageCacheDataSource
 import com.haman.core.data.fake.FakeImageDataSource
 import com.haman.core.data.repository.ImageRepository
+import com.haman.core.datastore.internal.image.ImageCacheInDiskDataSource
+import com.haman.core.datastore.memory.image.ImageCacheInMemoryDataSource
 import com.haman.core.datastore.source.ImageCacheDataSource
 import com.haman.core.network.source.ImageDataSource
 import kotlinx.coroutines.*
 import kotlinx.coroutines.test.*
-import org.hamcrest.CoreMatchers.`is`
-import org.hamcrest.CoreMatchers.notNullValue
+import org.hamcrest.CoreMatchers.*
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.Matchers.lessThan
 import org.junit.After
@@ -21,22 +22,29 @@ import org.junit.runner.RunWith
 @OptIn(ExperimentalCoroutinesApi::class)
 @RunWith(AndroidJUnit4::class)
 class TestImageRepositoryImpl {
+    private lateinit var superJob: Job
+    private lateinit var externalScope: TestScope
+    private lateinit var dispatcher: TestDispatcher
 
     private lateinit var imageCachedInMemoryDataSource: ImageCacheDataSource
     private lateinit var imageCachedInDiskDataSource: ImageCacheDataSource
     private lateinit var imageDataSource: ImageDataSource
     private lateinit var imageRepository: ImageRepository
 
-    private val superJob = SupervisorJob()
-    private val externalScope = TestScope(superJob)
-    private val dispatcher = StandardTestDispatcher(externalScope.testScheduler)
-
     @Before
     fun setup() {
-        imageCachedInMemoryDataSource = FakeImageCacheDataSource()
-        imageCachedInDiskDataSource = FakeImageCacheDataSource()
-        imageDataSource = FakeImageDataSource()
+        superJob = SupervisorJob()
+        externalScope = TestScope(superJob)
+        dispatcher = StandardTestDispatcher(externalScope.testScheduler)
         Dispatchers.setMain(dispatcher)
+
+        imageCachedInMemoryDataSource = ImageCacheInMemoryDataSource(dispatcher)
+        imageCachedInDiskDataSource = ImageCacheInDiskDataSource(
+            ApplicationProvider.getApplicationContext(),
+            dispatcher
+        )
+
+        imageDataSource = FakeImageDataSource()
 
         imageRepository = ImageRepositoryImpl(
             externalScope,
@@ -83,6 +91,33 @@ class TestImageRepositoryImpl {
 
         // 3. Then
         assertThat(bitmap, `is`(notNullValue()))
+    }
+
+    @Test
+    fun getImage_Success_from_Memory() = runTest {
+        // 1. Given: 서버와 Disk 에서 데이터 요청
+        val reqWidth = 10
+        val width = 100
+        imageRepository.getImage(id = "0", width, height = 200, reqWidth).getOrNull()
+        imageRepository.getImage(id = "0", width, height = 200, reqWidth).getOrNull()
+
+        // 2. Disk 에 캐싱된 정보
+        val bitmapOfExactWidth = imageCachedInMemoryDataSource.getImage("0", reqWidth)
+        val bitmapOfDiffWidth = imageCachedInMemoryDataSource.getImage("0", width)
+
+        // 3. Then
+        // 원본과 동일한 이미지
+        assertThat(bitmapOfExactWidth, `is`(notNullValue()))
+        assertThat(bitmapOfDiffWidth, `is`(nullValue()))
+        bitmapOfExactWidth?.let {
+            // 메모리 캐싱은 Sampling 된 상태로 저장
+            assertThat(it.width, `is`(lessThan(width)))
+        }
+    }
+
+    @Test
+    fun getImageInfo_Success() {
+        // 1. 
     }
 
 }
