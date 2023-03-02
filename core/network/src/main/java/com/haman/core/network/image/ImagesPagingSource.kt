@@ -31,7 +31,7 @@ class ImagesPagingSource(
                 LoadResult.Page(
                     data = images,
                     prevKey = if (page == INIT_KEY) null else page - 1,
-                    nextKey = if (images.size < params.loadSize) null else page + 1
+                    nextKey = if (images.size < LIMIT_PER_PAGE) null else page + 1
                 )
             } else {
                 throw NoneImageResponseException()
