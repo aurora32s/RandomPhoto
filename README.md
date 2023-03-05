@@ -5,6 +5,7 @@
 |-------|---------------|
 | 과제 시작일 | 2023.02.20 월 |
 | 과제 마감일 | 2023.02.27 월 23:59 |
+| 실제 제출일 | 2023.03.02 목 09:00 |
 
 ### 🍿 2. 요구사항
 #### 2.1 갤러리 앱 구현
@@ -28,9 +29,21 @@ https://picsum.photos/
 |5|스크럼|[스크럼 노션 링크](https://seom-seom.notion.site/ede478dd358a4b37a016d58e6210f9e6)|
 |6|테스트버전 설치 링크|[Firebase 설치링크](https://appdistribution.firebase.dev/i/d4bfb118c5bc92aa)|
 
-### 🪴 5.프로젝트 구조 기획서
-#### (* 추후 변경될 수 있습니다.)
-<img width="840" alt="스크린샷 2023-02-21 오후 10 52 00" src="https://user-images.githubusercontent.com/22411296/220365200-17cd6cfc-ffcb-4f50-81c7-73ca2e87f5ca.png">
+### 🪴 5.프로젝트 구조
+<img width="1022" alt="스크린샷 2023-03-05 오후 3 57 55" src="https://user-images.githubusercontent.com/22411296/222946433-7a10949d-67a3-41d6-b8b4-f979b25aefe1.png">
+
+### 🍎 사용기술
+|분야|기술|
+|-----|----------|
+|UI|Jetpack Compose(100%)|
+|비동기|Kotlin Coroutine(+Flow)|
+|DI|Hilt|
+|네트워크|Retrofit2,OkHttp|
+|테스트|JUnit, Hamcrest, OkHttp mockserver|
+|gradle|toml, build-logic|
+|추가|Paging3|
+
+<br/>
 
 ### 🏠 6. Branch 전략
 ```
