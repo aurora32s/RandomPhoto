@@ -28,6 +28,7 @@ https://picsum.photos/
 |4|WBS 문서|[WBS 스프레드시트 링크](https://docs.google.com/spreadsheets/d/1eKU6OHMDxXxYqm6o-FdIEMV8gKxX7bSD43O3JEM-2nE/edit?usp=sharing)|
 |5|스크럼|[스크럼 노션 링크](https://seom-seom.notion.site/ede478dd358a4b37a016d58e6210f9e6)|
 |6|테스트버전 설치 링크|[Firebase 설치링크](https://appdistribution.firebase.dev/i/d4bfb118c5bc92aa)|
+|7|발표자료|[Google Drive DaangnPhoto_발표자료.pdf](https://drive.google.com/file/d/1iAibqwK9f_X6t_i5pDMKzq5w4j-whPr8/view?usp=sharing)|
 
 ### 🪴 5.프로젝트 구조
 <img width="1022" alt="스크린샷 2023-03-05 오후 3 57 55" src="https://user-images.githubusercontent.com/22411296/222946433-7a10949d-67a3-41d6-b8b4-f979b25aefe1.png">
