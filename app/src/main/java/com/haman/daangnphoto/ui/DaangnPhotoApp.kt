@@ -12,6 +12,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.haman.core.common.state.UiEvent
 import com.haman.core.designsystem.component.Toast
+import com.haman.core.designsystem.theme.DaangnPhotoTheme
 import com.haman.daangnphoto.MainViewModel
 import com.haman.daangnphoto.navigation.DaangnNavHost
 import kotlinx.coroutines.delay
@@ -39,13 +40,15 @@ fun DaangnPhotoApp(
         else timeOutSplashScreen.value.not()
     }
 
-    Scaffold {
-        Box(modifier = Modifier.fillMaxSize()) {
-            DaangnNavHost(
-                navController = navController,
-                mainViewModel = viewModel
-            )
-            Event(event = uiEvent.value)
+    DaangnPhotoTheme {
+        Scaffold {
+            Box(modifier = Modifier.fillMaxSize()) {
+                DaangnNavHost(
+                    navController = navController,
+                    mainViewModel = viewModel
+                )
+                Event(event = uiEvent.value)
+            }
         }
     }
 }
