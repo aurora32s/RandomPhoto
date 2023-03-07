@@ -78,6 +78,10 @@ test-ext-junit = { group = "androidx.test.ext", name = "junit", version.ref = "a
 espresso = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espresso" }
 robolectric = { group = "org.robolectric", name = "robolectric", version.ref = "robolectric" }
 
+# compose test
+compose-ui-test = { group = "androidx.compose.ui", name = "ui-test-junit4", version.ref = "composeUi" }
+compose-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest", version.ref = "composeUi" }
+
 # Splash Screen
 splash-screen = { group = "androidx.core", name = "core-splashscreen", version.ref = "splashscreen" }
 

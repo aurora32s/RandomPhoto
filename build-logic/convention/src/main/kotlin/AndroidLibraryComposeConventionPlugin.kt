@@ -16,6 +16,7 @@ class AndroidLibraryComposeConventionPlugin : Plugin<Project> {
             val libs = extensions.getByType<VersionCatalogsExtension>().named("libs")
             dependencies {
                 "implementation"(libs.findBundle("androidx-compose").get())
+                "androidTestImplementation"(libs.findLibrary("compose-ui-test").get())
             }
         }
     }
