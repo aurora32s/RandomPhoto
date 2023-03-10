@@ -8,9 +8,9 @@
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
-        android:icon="@mipmap/daangn"
+        android:icon="@mipmap/ic_launcher_random"
         android:label="@string/app_title"
-        android:roundIcon="@mipmap/daangn_round"
+        android:roundIcon="@mipmap/ic_launcher_random_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.DaangnPhoto.Splash">
         <activity
