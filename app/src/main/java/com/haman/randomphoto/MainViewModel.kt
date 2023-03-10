@@ -1,8 +1,6 @@
-package com.haman.daangnphoto
+package com.haman.randomphoto
 
-import androidx.annotation.StringRes
 import androidx.lifecycle.ViewModel
-import com.haman.core.common.state.ToastPosition
 import com.haman.core.common.state.UiEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.BufferOverflow
