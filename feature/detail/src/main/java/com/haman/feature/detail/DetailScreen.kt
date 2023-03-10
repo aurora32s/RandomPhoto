@@ -3,6 +3,7 @@ package com.haman.feature.detail
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Icon
+import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
@@ -40,35 +41,39 @@ fun DetailScreen(
         }
     }
 
-    Box(
-        modifier = Modifier.fillMaxSize()
-    ) {
-        Icon(
+    Surface {
+        Box(
             modifier = Modifier
-                .align(Alignment.TopEnd)
-                .size(24.dp)
-                .clickable { onBackPressed() },
-            painter = painterResource(id = DaangnIcons.close),
-            contentDescription = "close button"
-        )
-        Column(
-            modifier = Modifier
-                .align(Alignment.Center)
-                .padding(vertical = 24.dp),
-            verticalArrangement = Arrangement.Center
+                .fillMaxSize()
         ) {
-            if (imageState.value?.author != null) {
-                SubTitle(
-                    modifier = Modifier.padding(8.dp),
-                    text = "by ${imageState.value?.author}"
-                )
-            }
-            imageState.value?.let {
-                AsyncImage(
-                    image = it,
-                    loadImage = viewModel::getImageByUrl,
-                    scaleType = ContentScale.FillWidth
-                )
+            Icon(
+                modifier = Modifier
+                    .align(Alignment.TopEnd)
+                    .padding(12.dp)
+                    .size(24.dp)
+                    .clickable { onBackPressed() },
+                painter = painterResource(id = DaangnIcons.close),
+                contentDescription = "close button"
+            )
+            Column(
+                modifier = Modifier
+                    .align(Alignment.Center)
+                    .padding(vertical = 24.dp),
+                verticalArrangement = Arrangement.Center
+            ) {
+                if (imageState.value?.author != null) {
+                    SubTitle(
+                        modifier = Modifier.padding(8.dp),
+                        text = "by ${imageState.value?.author}"
+                    )
+                }
+                imageState.value?.let {
+                    AsyncImage(
+                        image = it,
+                        loadImage = viewModel::getImageByUrl,
+                        scaleType = ContentScale.FillWidth
+                    )
+                }
             }
         }
     }
