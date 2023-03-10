@@ -13,14 +13,14 @@ import androidx.navigation.compose.rememberNavController
 import com.haman.core.common.state.UiEvent
 import com.haman.core.designsystem.component.Toast
 import com.haman.randomphoto.MainViewModel
-import com.haman.randomphoto.navigation.DaangnNavHost
+import com.haman.randomphoto.navigation.RandomNavHost
 import kotlinx.coroutines.delay
 
 // Splash Screen 을 보여줘야 하는 최소 시간
 private const val splashTime = 2000L
 
 @Composable
-fun DaangnPhotoApp(
+fun RandomPhotoApp(
     splashScreen: SplashScreen,
     viewModel: MainViewModel = hiltViewModel(),
     navController: NavHostController = rememberNavController()
@@ -41,7 +41,7 @@ fun DaangnPhotoApp(
 
     Scaffold {
         Box(modifier = Modifier.fillMaxSize()) {
-            DaangnNavHost(
+            RandomNavHost(
                 navController = navController,
                 mainViewModel = viewModel
             )

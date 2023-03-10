@@ -11,7 +11,7 @@ import com.haman.feature.home.navigation.HomeRoute
 import com.haman.feature.home.navigation.homeScreen
 
 @Composable
-fun DaangnNavHost(
+fun RandomNavHost(
     modifier: Modifier = Modifier,
     navController: NavHostController,
     startDestination: String = HomeRoute,

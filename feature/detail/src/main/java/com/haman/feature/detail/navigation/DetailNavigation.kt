@@ -5,7 +5,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
-import com.haman.core.designsystem.theme.DaangnBlackTheme
+import com.haman.core.designsystem.theme.RandomBlackTheme
 import com.haman.core.model.ui.ImageUiModel
 import com.haman.feature.detail.DetailScreen
 import kotlinx.serialization.decodeFromString
@@ -45,7 +45,7 @@ fun NavGraphBuilder.detailScreen(
         val imageId = it.arguments?.getString(ImageIdArgs)
         val argument = it.arguments?.getString(ImageArgs)
         val image = Json.decodeFromString<ImageUiModel>(argument ?: "")
-        DaangnBlackTheme {
+        RandomBlackTheme {
             DetailScreen(
                 imageId = imageId,
                 image = image,
