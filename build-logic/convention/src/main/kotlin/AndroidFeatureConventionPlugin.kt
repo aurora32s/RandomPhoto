@@ -9,8 +9,8 @@ class AndroidFeatureConventionPlugin : Plugin<Project> {
     override fun apply(target: Project) {
         with(target) {
             pluginManager.apply {
-                apply("daangn.android.library")
-                apply("daangn.android.hilt")
+                apply("random.android.library")
+                apply("random.android.hilt")
             }
 
             // Feature Module 에서 공통적으로 사용되는 Module 추가

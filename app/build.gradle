@@ -1,7 +1,7 @@
 plugins {
-    id 'daangn.android.application'
-    id 'daangn.android.application.compose'
-    id 'daangn.android.hilt'
+    id 'random.android.application'
+    id 'random.android.application.compose'
+    id 'random.android.hilt'
 }
 
 android {

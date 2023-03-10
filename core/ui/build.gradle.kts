@@ -1,6 +1,6 @@
 plugins {
-    id("daangn.android.library")
-    id("daangn.android.library.compose")
+    id("random.android.library")
+    id("random.android.library.compose")
 }
 
 android {
