@@ -19,8 +19,8 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object NetworkModule {
-    @Singleton
     @Provides
+    @Singleton
     fun provideImageApiService(
         retrofit: Retrofit
     ): ImageApiService = retrofit.create(ImageApiService::class.java)
@@ -30,6 +30,7 @@ object NetworkModule {
 @InstallIn(SingletonComponent::class)
 object RetrofitModule {
     @Provides
+    @Singleton
     fun provideRetrofit(
         okHttpClient: OkHttpClient,
         converter: Converter.Factory
@@ -46,6 +47,7 @@ object RetrofitModule {
 @InstallIn(SingletonComponent::class)
 object ConvertFactoryModule {
     @Provides
+    @Singleton
     fun provideJsonConverter(): Converter.Factory {
         return Json {
             coerceInputValues = true // null 값으로 들어오면 default value로 처리
@@ -60,6 +62,7 @@ object HttpClientModule {
     private const val TIMEOUT = 3L
 
     @Provides
+    @Singleton
     fun provideHttpClient(): OkHttpClient {
         val interceptor = HttpLoggingInterceptor()
         interceptor.level = if (BuildConfig.DEBUG) {
