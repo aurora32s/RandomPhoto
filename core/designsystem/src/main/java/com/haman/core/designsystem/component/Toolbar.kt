@@ -10,6 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.graphics.lerp
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
@@ -28,22 +29,27 @@ fun CollapsingToolbar(
             .height(with(LocalDensity.current) { height.toDp() }),
         contentAlignment = Alignment.Center,
     ) {
-        Surface(
-            color = MaterialTheme.colors.surface.copy(alpha = progress)
-        ) {
-            when (imageType) {
-                is ImageType.DrawableImage -> Image(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .graphicsLayer { alpha = progress * 0.75f },
-                    contentScale = ContentScale.Crop,
-                    painter = painterResource(id = imageType.id),
-                    contentDescription = ""
-                )
-                is ImageType.AsyncImage -> imageType.image.let {
-                    AsyncImage(image = it, loadImage = imageType.load)
-                }
+        when (imageType) {
+            is ImageType.DrawableImage -> Image(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .graphicsLayer { alpha = progress * 0.75f },
+                contentScale = ContentScale.Crop,
+                painter = painterResource(id = imageType.id),
+                contentDescription = ""
+            )
+            is ImageType.AsyncImage -> imageType.image.let {
+                AsyncImage(image = it, loadImage = imageType.load)
             }
+        }
+        Surface(
+            color = MaterialTheme.colors.surface.copy(alpha = progress * 0.65f),
+            contentColor = lerp(
+                start = MaterialTheme.colors.onBackground,
+                stop = MaterialTheme.colors.onSurface,
+                fraction = progress
+            )
+        ) {
             content()
         }
     }
