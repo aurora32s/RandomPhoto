@@ -15,7 +15,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.haman.core.designsystem.component.AsyncImage
 import com.haman.core.designsystem.component.SubTitle
-import com.haman.core.designsystem.icon.DaangnIcons
+import com.haman.core.designsystem.icon.RandomIcons
 import com.haman.core.model.ui.ImageUiModel
 
 /**
@@ -48,7 +48,7 @@ fun DetailScreen(
                 .align(Alignment.TopEnd)
                 .size(24.dp)
                 .clickable { onBackPressed() },
-            painter = painterResource(id = DaangnIcons.close),
+            painter = painterResource(id = RandomIcons.close),
             contentDescription = "close button"
         )
         Column(

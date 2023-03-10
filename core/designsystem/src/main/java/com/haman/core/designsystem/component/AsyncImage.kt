@@ -22,7 +22,7 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.haman.core.common.extension.fromDpToPx
-import com.haman.core.designsystem.icon.DaangnIcons
+import com.haman.core.designsystem.icon.RandomIcons
 import com.haman.core.designsystem.theme.Gray200
 import com.haman.core.designsystem.theme.Gray700
 import com.haman.core.model.ui.ImageUiModel
@@ -79,7 +79,7 @@ fun AsyncImage(
             )
             is LoadImageState.Error -> Image(
                 modifier = Modifier.size(50.dp),
-                painter = painterResource(id = DaangnIcons.logo),
+                painter = painterResource(id = RandomIcons.logo),
                 contentDescription = "Fail to load ${image.id} Image"
             )
             LoadImageState.Loading -> {}

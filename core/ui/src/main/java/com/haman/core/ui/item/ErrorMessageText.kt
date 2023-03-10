@@ -32,8 +32,10 @@ fun BoxScope.ErrorMessageText(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Image(
-            modifier = Modifier.clip(RoundedCornerShape(99)),
-            painter = painterResource(id = R.drawable.profile_sample),
+            modifier = Modifier
+                .size(150.dp)
+                .clip(RoundedCornerShape(99)),
+            painter = painterResource(id = R.drawable.error),
             contentDescription = ""
         )
         Spacer(modifier = Modifier.height(8.dp))

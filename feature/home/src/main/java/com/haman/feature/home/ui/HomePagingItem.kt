@@ -21,7 +21,7 @@ import com.haman.core.common.extension.fromDpToPx
 import com.haman.core.designsystem.R
 import com.haman.core.designsystem.component.AsyncImage
 import com.haman.core.designsystem.component.ContentText
-import com.haman.core.designsystem.icon.DaangnIcons
+import com.haman.core.designsystem.icon.RandomIcons
 import com.haman.core.model.ui.ImageUiModel
 import com.haman.core.ui.item.ImageLinearItem
 import com.haman.feature.home.ListType
@@ -82,11 +82,11 @@ fun HomeFloatingButton(
         Icon(
             modifier = Modifier.size(20.dp),
             painter = painterResource(
-                if (isFailed.value) DaangnIcons.refresh
+                if (isFailed.value) RandomIcons.refresh
                 else {
                     when (listType) {
-                        ListType.LINEAR -> DaangnIcons.gridBtn
-                        ListType.GRID -> DaangnIcons.linearBtn
+                        ListType.LINEAR -> RandomIcons.gridBtn
+                        ListType.GRID -> RandomIcons.linearBtn
                     }
                 }
             ),
