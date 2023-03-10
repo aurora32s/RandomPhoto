@@ -5,9 +5,9 @@ plugins {
 }
 
 android {
-    namespace 'com.haman.daangnphoto'
+    namespace 'com.haman.randomphoto'
     defaultConfig {
-        applicationId "com.haman.daangnphoto"
+        applicationId "com.haman.randomphoto"
         versionCode 1
         versionName "1.0"
 

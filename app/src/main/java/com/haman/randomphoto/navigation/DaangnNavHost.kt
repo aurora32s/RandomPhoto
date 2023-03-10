@@ -1,10 +1,10 @@
-package com.haman.daangnphoto.navigation
+package com.haman.randomphoto.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
-import com.haman.daangnphoto.MainViewModel
+import com.haman.randomphoto.MainViewModel
 import com.haman.feature.detail.navigation.detailScreen
 import com.haman.feature.detail.navigation.navigateToDetail
 import com.haman.feature.home.navigation.HomeRoute
