@@ -1,8 +1,6 @@
 package com.haman.core.network.source
 
-import android.graphics.Bitmap
 import com.haman.core.model.response.ImageResponse
-import java.io.InputStream
 
 interface ImageDataSource {
     /**

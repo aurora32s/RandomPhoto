@@ -20,7 +20,7 @@ import androidx.compose.ui.unit.lerp
 import com.haman.core.designsystem.R
 import com.haman.core.designsystem.component.CollapsingToolbar
 import com.haman.core.designsystem.component.SubTitle
-import com.haman.core.designsystem.icon.DaangnIcons
+import com.haman.core.designsystem.icon.RandomIcons
 import com.haman.core.designsystem.util.ImageType
 import com.haman.core.ui.state.ToolbarState
 
@@ -55,7 +55,7 @@ fun HomeToolbar(
         ) {
             Image(
                 modifier = Modifier.size(50.dp),
-                painter = painterResource(id = DaangnIcons.logo),
+                painter = painterResource(id = RandomIcons.logo),
                 contentDescription = stringResource(id = R.string.home_toolbar_image)
             )
             SubTitle(text = stringResource(id = R.string.app_title))
