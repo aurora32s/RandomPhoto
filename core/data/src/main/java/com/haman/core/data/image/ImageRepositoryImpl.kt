@@ -28,8 +28,6 @@ import javax.inject.Inject
 
 /**
  * 이미지의 기준 사이즈
- * 자세한 설명은 PR 참고
- * https://github.com/aurora32s/Daangn_Test/pull/43
  */
 private const val BASE_SIZE = 500
 private const val TAG = "com.haman.core.data.image.ImageRepositoryImpl"
