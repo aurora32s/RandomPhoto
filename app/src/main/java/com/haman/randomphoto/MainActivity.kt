@@ -4,8 +4,8 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
-import com.haman.core.designsystem.theme.DaangnPhotoTheme
-import com.haman.randomphoto.ui.DaangnPhotoApp
+import com.haman.core.designsystem.theme.RandomPhotoTheme
+import com.haman.randomphoto.ui.RandomPhotoApp
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -15,8 +15,8 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         setContent {
-            DaangnPhotoTheme {
-                DaangnPhotoApp(splashScreen)
+            RandomPhotoTheme {
+                RandomPhotoApp(splashScreen)
             }
         }
     }
