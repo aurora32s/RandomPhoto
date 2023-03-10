@@ -16,27 +16,27 @@ dependencies {
 gradlePlugin {
     plugins {
         register("androidApplication") {
-            id = "daangn.android.application"
+            id = "random.android.application"
             implementationClass = "AndroidApplicationConventionPlugin"
         }
         register("androidApplicationCompose") {
-            id = "daangn.android.application.compose"
+            id = "random.android.application.compose"
             implementationClass = "AndroidApplicationComposeConventionPlugin"
         }
         register("androidHilt") {
-            id = "daangn.android.hilt"
+            id = "random.android.hilt"
             implementationClass = "AndroidHiltConventionPlugin"
         }
         register("androidLibrary") {
-            id = "daangn.android.library"
+            id = "random.android.library"
             implementationClass = "AndroidLibraryConventionPlugin"
         }
         register("androidLibraryCompose") {
-            id = "daangn.android.library.compose"
+            id = "random.android.library.compose"
             implementationClass = "AndroidLibraryComposeConventionPlugin"
         }
         register("androidFeature") {
-            id = "daangn.android.feature"
+            id = "random.android.feature"
             implementationClass = "AndroidFeatureConventionPlugin"
         }
     }

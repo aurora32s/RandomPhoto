@@ -1,6 +1,6 @@
 plugins {
-    id("daangn.android.library")
-    id("daangn.android.hilt")
+    id("random.android.library")
+    id("random.android.hilt")
     id("kotlinx-serialization")
 }
 

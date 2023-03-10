@@ -1,5 +1,5 @@
 plugins {
-    id("daangn.android.library")
+    id("random.android.library")
 }
 
 android {
