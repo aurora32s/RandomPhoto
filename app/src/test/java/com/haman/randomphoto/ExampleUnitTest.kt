@@ -1,4 +1,4 @@
-package com.haman.daangnphoto
+package com.haman.randomphoto
 
 import org.junit.Test
 

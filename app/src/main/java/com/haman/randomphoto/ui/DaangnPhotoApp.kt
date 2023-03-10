@@ -1,4 +1,4 @@
-package com.haman.daangnphoto.ui
+package com.haman.randomphoto.ui
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
@@ -12,8 +12,8 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.haman.core.common.state.UiEvent
 import com.haman.core.designsystem.component.Toast
-import com.haman.daangnphoto.MainViewModel
-import com.haman.daangnphoto.navigation.DaangnNavHost
+import com.haman.randomphoto.MainViewModel
+import com.haman.randomphoto.navigation.DaangnNavHost
 import kotlinx.coroutines.delay
 
 // Splash Screen 을 보여줘야 하는 최소 시간

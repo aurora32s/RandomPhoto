@@ -13,7 +13,7 @@ dependencyResolutionManagement {
         mavenCentral()
     }
 }
-rootProject.name = "DaangnPhoto"
+rootProject.name = "RandomPhoto"
 include ':app'
 include ':core:common'
 include ':core:data'
