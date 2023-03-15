@@ -53,4 +53,16 @@ class ImageDataSourceImpl @Inject constructor(
             } else throw ImageRequestNetworkException(response.message())
         }
     }
+
+    /**
+     * 이미지 정보 리스트 요청
+     */
+    override suspend fun getImagesInfo(page: Int, limit: Int): Result<List<ImageResponse>> {
+        return tryCatching(TAG, "getImagesInfo") {
+            val response = imageApiService.getImagesInfo(page = page, limit = limit)
+            if (response.isSuccessful) {
+                response.body() ?: throw NoneImageResponseException()
+            } else throw ImageRequestNetworkException(response.message())
+        }
+    }
 }

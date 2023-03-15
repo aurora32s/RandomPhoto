@@ -13,7 +13,7 @@ import com.haman.core.data.repository.ImageRepository
 import com.haman.core.datastore.internal.image.ImageCacheInDiskDataSource
 import com.haman.core.datastore.memory.image.ImageCacheInMemoryDataSource
 import com.haman.core.datastore.source.ImageCacheDataSource
-import com.haman.core.model.entity.ImageEntity
+import com.haman.core.model.entity.ImageData
 import com.haman.core.model.entity.toEntity
 import com.haman.core.model.response.ImageResponse
 import com.haman.core.network.source.ImageDataSource
@@ -144,7 +144,7 @@ class TestImageRepositoryImpl {
         assertThat(image, `is`(notNullValue()))
         image?.let {
             assertThat(it.id, `is`("4"))
-            assertThat(it, IsInstanceOf(ImageEntity::class.java))
+            assertThat(it, IsInstanceOf(ImageData::class.java))
         }
     }
 
@@ -173,7 +173,7 @@ class TestImageRepositoryImpl {
 
         advanceUntilIdle()
         assertThat(
-            (0..10).map { ImageEntity("$it", "author$it", it, it, "image_$it") },
+            (0..10).map { ImageData("$it", "author$it", it, it, "image_$it") },
             `is`(differ.snapshot().items)
         )
     }

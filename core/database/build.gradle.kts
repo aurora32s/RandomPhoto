@@ -1,14 +1,14 @@
 plugins {
     id("random.android.library")
     id("random.android.hilt")
-    id("kotlinx-serialization")
     id("random.android.room")
 }
 
 android {
-    namespace = "com.haman.core.model"
+    namespace = "com.haman.core.database"
 }
 
 dependencies {
-    implementation(libs.kotlinx.serialization.json)
+    implementation(project(":core:model"))
+    implementation(libs.room.paging)
 }

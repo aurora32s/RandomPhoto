@@ -1,6 +1,7 @@
 plugins {
     id("random.android.library")
     id("random.android.hilt")
+    id("random.android.room")
 }
 
 android {
@@ -13,6 +14,7 @@ android {
 dependencies {
     implementation(project(":core:network"))
     implementation(project(":core:datastore"))
+    implementation(project(":core:database"))
     implementation(project(":core:common"))
     implementation(project(":core:model"))
     implementation(project(":core:testing"))

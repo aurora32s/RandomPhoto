@@ -22,4 +22,9 @@ interface ImageDataSource {
      * @param seed 랜덤에 사용될 seed 정보
      */
     suspend fun getRandomImageInfo(seed: String): Result<ImageResponse>
+
+    /**
+     * 이미지 정보 리스트 요청
+     */
+    suspend fun getImagesInfo(page: Int, limit: Int): Result<List<ImageResponse>>
 }

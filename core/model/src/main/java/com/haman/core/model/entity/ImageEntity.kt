@@ -1,11 +1,12 @@
 package com.haman.core.model.entity
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import com.haman.core.model.response.ImageResponse
 
-/**
- * data module 의 이미지 정보 Model
- */
+@Entity(tableName = "image")
 data class ImageEntity(
+    @PrimaryKey
     val id: String, // 이미지 id
     val author: String, // 이미지 창작자 명
     val width: Int, // 이미지 가로 길이
@@ -14,7 +15,7 @@ data class ImageEntity(
 )
 
 /**
- * network module image -> data module image
+ * network module image -> database module image
  */
 fun ImageResponse.toEntity() = ImageEntity(
     id = id,
