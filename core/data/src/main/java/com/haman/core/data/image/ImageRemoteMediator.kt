@@ -39,7 +39,6 @@ class ImageRemoteMediator(
 
         return try {
             val response = imageDataSource.getImagesInfo(page = page, limit = state.config.pageSize)
-
             if (response.isSuccess) {
                 val images = response.getOrDefault(emptyList())
                 val endOfPaginationReached = images.size < state.config.pageSize
@@ -91,6 +90,6 @@ class ImageRemoteMediator(
 
     companion object {
         const val INIT_KEY = 1
-        const val LIMIT_PER_PAGE = 100
+        const val LIMIT_PER_PAGE = 60
     }
 }

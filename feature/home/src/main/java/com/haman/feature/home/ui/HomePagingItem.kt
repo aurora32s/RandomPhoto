@@ -108,6 +108,7 @@ fun HomeFloatingButton(
  */
 @Composable
 fun HomeImagePagingItem(
+    modifier: Modifier = Modifier,
     image: ImageUiModel,
     listType: ListType,
     toDetail: (String, ImageUiModel) -> Unit,
@@ -117,7 +118,7 @@ fun HomeImagePagingItem(
     val imageWidth = remember { derivedStateOf { localScreenWidth / listType.column } }
     when (listType) {
         ListType.GRID -> AsyncImage(
-            modifier = Modifier
+            modifier = modifier
                 .aspectRatio(1f)
                 .clickable { toDetail(image.id, image) },
             image = image,
@@ -126,7 +127,7 @@ fun HomeImagePagingItem(
             scaleType = ContentScale.Crop
         )
         ListType.LINEAR -> ImageLinearItem(
-            modifier = Modifier.clickable {
+            modifier = modifier.clickable {
                 toDetail(image.id, image)
             },
             image = image,
