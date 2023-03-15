@@ -1,20 +1,18 @@
 package com.haman.core.data.image
 
 import android.graphics.Bitmap
-import androidx.paging.Pager
-import androidx.paging.PagingConfig
-import androidx.paging.PagingData
-import androidx.paging.map
+import androidx.paging.*
 import com.haman.core.common.di.ApplicationScope
 import com.haman.core.common.di.IODispatcher
 import com.haman.core.common.extension.decodeImage
 import com.haman.core.common.extension.tryCatching
 import com.haman.core.data.repository.ImageRepository
+import com.haman.core.database.RandomPhotoDatabase
 import com.haman.core.datastore.di.DiskCache
 import com.haman.core.datastore.di.MemoryCache
 import com.haman.core.datastore.source.ImageCacheDataSource
-import com.haman.core.model.entity.ImageData
-import com.haman.core.model.entity.toEntity
+import com.haman.core.model.repository.ImageData
+import com.haman.core.model.repository.toData
 import com.haman.core.network.image.ImageApiService
 import com.haman.core.network.image.ImagesPagingSource
 import com.haman.core.network.source.ImageDataSource
@@ -41,12 +39,14 @@ private const val TAG = "com.haman.core.data.image.ImageRepositoryImpl"
  * @param imageApiService 서버로 이미지를 요청하는 Api(For Paging3)
  * @param imageDataSource 서버로부터 이미지 정보를 요청하는 Api
  */
+@OptIn(ExperimentalPagingApi::class)
 class ImageRepositoryImpl @Inject constructor(
     @ApplicationScope private val externalScope: CoroutineScope,
     @IODispatcher private val ioDispatcher: CoroutineDispatcher,
     @MemoryCache private val imageCachedInMemoryDataSource: ImageCacheDataSource,
     @DiskCache private val imageCachedInDiskDataSource: ImageCacheDataSource,
     private val imageApiService: ImageApiService,
+    private val randomPhotoDatabase: RandomPhotoDatabase,
     private val imageDataSource: ImageDataSource
 ) : ImageRepository {
 
@@ -120,11 +120,10 @@ class ImageRepositoryImpl @Inject constructor(
                 pageSize = ImagesPagingSource.LIMIT_PER_PAGE,
                 enablePlaceholders = true
             ),
-            pagingSourceFactory = {
-                ImagesPagingSource(imageApiService = imageApiService)
-            }
+            remoteMediator = ImageRemoteMediator(imageApiService, randomPhotoDatabase),
+            pagingSourceFactory = { randomPhotoDatabase.getImageDao().images() }
         ).flow.map {
-            it.map { image -> image.toEntity() }
+            it.map { image -> image.toData() }
         }
 
     /**
@@ -134,7 +133,7 @@ class ImageRepositoryImpl @Inject constructor(
     override suspend fun getImageInfo(id: String): Result<ImageData?> =
         withContext(ioDispatcher) {
             tryCatching(TAG, "getImageInfo") {
-                imageDataSource.getImageInfo(id).getOrNull()?.toEntity()
+                imageDataSource.getImageInfo(id).getOrNull()?.toData()
             }
         }
 
@@ -145,7 +144,7 @@ class ImageRepositoryImpl @Inject constructor(
     override suspend fun getRandomImageInfo(seed: String): Result<ImageData?> =
         withContext(ioDispatcher) {
             tryCatching(TAG, "getRandomImageInfo") {
-                imageDataSource.getRandomImageInfo(seed).getOrNull()?.toEntity()
+                imageDataSource.getRandomImageInfo(seed).getOrNull()?.toData()
             }
         }
 }

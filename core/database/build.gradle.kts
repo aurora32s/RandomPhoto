@@ -10,5 +10,5 @@ android {
 
 dependencies {
     implementation(project(":core:model"))
-    implementation(libs.bundles.paging)
+    implementation(libs.room.paging)
 }

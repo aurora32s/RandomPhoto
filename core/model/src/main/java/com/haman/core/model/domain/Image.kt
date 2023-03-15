@@ -1,6 +1,7 @@
 package com.haman.core.model.domain
 
-import com.haman.core.model.entity.ImageData
+import com.haman.core.model.repository.ImageData
+
 
 /**
  * domain module 의 이미지 정보 Model
