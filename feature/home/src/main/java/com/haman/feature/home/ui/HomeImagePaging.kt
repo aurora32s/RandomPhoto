@@ -3,8 +3,6 @@ package com.haman.feature.home.ui
 import android.graphics.Bitmap
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -14,7 +12,6 @@ import androidx.compose.ui.unit.dp
 import androidx.paging.compose.LazyPagingItems
 import com.haman.core.model.ui.ImageUiModel
 import com.haman.feature.home.ListType
-import kotlin.math.min
 
 /**
  * 실제 이미지 정보가 보이는 Paging List
@@ -43,55 +40,12 @@ fun HomeImagePaging(
             verticalArrangement = Arrangement.spacedBy(8f.dp)
         ) {
             item { HomeImagePagingTitle() }
-            items(count = images.itemCount / listType.column) { index ->
-                when (listType) {
-                    ListType.LINEAR -> {
-                        images[index]?.let {
-                            HomeImagePagingItem(
-                                image = it,
-                                listType = listType,
-                                toDetail = toDetail,
-                                loadImage = loadImage
-                            )
-                        }
-                    }
-                    ListType.GRID -> {
-                        GridImageItem(
-                            images = images,
-                            startIndex = index * 3,
-                            listType = listType,
-                            toDetail = toDetail,
-                            loadImage = loadImage
-                        )
-                    }
-                }
-            }
-        }
-    }
-}
-
-@Composable
-fun GridImageItem(
-    images: LazyPagingItems<ImageUiModel>,
-    startIndex: Int,
-    listType: ListType,
-    toDetail: (String, ImageUiModel) -> Unit,
-    loadImage: suspend (String, Int, Int, Int) -> Bitmap?
-) {
-    Row(
-        modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.spacedBy(8f.dp)
-    ) {
-        (startIndex until min(startIndex + 3, images.itemCount)).forEach {
-            images[it]?.let { image ->
-                HomeImagePagingItem(
-                    modifier = Modifier.weight(1f),
-                    image = image,
-                    listType = listType,
-                    toDetail = toDetail,
-                    loadImage = loadImage
-                )
-            }
+            imageItems(
+                items = images,
+                listType = listType,
+                toDetail = toDetail,
+                loadImage = loadImage
+            )
         }
     }
 }
