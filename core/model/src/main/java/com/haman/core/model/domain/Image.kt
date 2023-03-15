@@ -1,6 +1,6 @@
 package com.haman.core.model.domain
 
-import com.haman.core.model.entity.ImageEntity
+import com.haman.core.model.entity.ImageData
 
 /**
  * domain module 의 이미지 정보 Model
@@ -16,7 +16,7 @@ data class Image(
 /**
  * repository module image -> domain module image
  */
-fun ImageEntity.toModel() = Image(
+fun ImageData.toModel() = Image(
     id = id,
     author = author,
     width = width,
