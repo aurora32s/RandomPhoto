@@ -15,9 +15,9 @@ data class ImageData(
 )
 
 /**
- * network module image -> data module image
+ * database module image -> data module image
  */
-fun ImageResponse.toData() = ImageData(
+fun ImageEntity.toData() = ImageData(
     id = id,
     author = author,
     width = width,
@@ -26,9 +26,9 @@ fun ImageResponse.toData() = ImageData(
 )
 
 /**
- * database module image -> data module image
+ * network module image -> data module image
  */
-fun ImageEntity.toData() = ImageData(
+fun ImageResponse.toData() = ImageData(
     id = id,
     author = author,
     width = width,
