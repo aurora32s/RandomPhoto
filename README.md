@@ -45,6 +45,7 @@ https://picsum.photos/
 |비동기|Kotlin Coroutine(+Flow)|
 |DI|Hilt|
 |네트워크|Retrofit2,OkHttp,Kotlin Serialization|
+|데이터베이스|Room, room-paging|
 |테스트|JUnit, Hamcrest, OkHttp mockserver|
 |gradle|toml, build-logic|
 |추가|Paging3|
