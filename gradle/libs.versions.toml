@@ -22,6 +22,7 @@ pagingCompose = "1.0.0-alpha14"
 retrofit = "2.9.0"
 retrofitKotlinxSerializationJson = "0.8.0"
 robolectric = "4.9.2"
+room = "2.4.3"
 splashscreen = "1.0.0-beta01"
 
 [plugins]
@@ -80,6 +81,11 @@ robolectric = { group = "org.robolectric", name = "robolectric", version.ref = "
 
 # Splash Screen
 splash-screen = { group = "androidx.core", name = "core-splashscreen", version.ref = "splashscreen" }
+
+# room
+room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "room" }
+room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
+room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "room" }
 
 [bundles]
 androidx-compose = ["androidx-activity-compose", "androidx-compose-ui", "androidx-compose-preview",
