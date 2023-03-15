@@ -7,3 +7,8 @@ plugins {
 android {
     namespace = "com.haman.core.database"
 }
+
+dependencies {
+    implementation(project(":core:model"))
+    implementation(libs.bundles.paging)
+}
