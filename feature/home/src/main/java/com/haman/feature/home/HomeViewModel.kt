@@ -23,7 +23,6 @@ class HomeViewModel @Inject constructor(
     val imagesInfo: Flow<PagingData<ImageUiModel>> =
         getImagesInfoUseCase()
             .map { it.map { image -> image.toUiModel() } }
-            .cachedIn(viewModelScope)
 
     /**
      * 이미지 id 를 이용해 이미지 Bitmap 요청

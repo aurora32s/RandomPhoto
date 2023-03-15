@@ -13,11 +13,11 @@ import com.haman.core.datastore.di.MemoryCache
 import com.haman.core.datastore.source.ImageCacheDataSource
 import com.haman.core.model.repository.ImageData
 import com.haman.core.model.repository.toData
-import com.haman.core.network.image.ImageApiService
 import com.haman.core.network.source.ImageDataSource
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -116,13 +116,15 @@ class ImageRepositoryImpl @Inject constructor(
         Pager(
             config = PagingConfig(
                 pageSize = ImageRemoteMediator.LIMIT_PER_PAGE,
-                enablePlaceholders = true
+                enablePlaceholders = true,
+                maxSize = ImageRemoteMediator.LIMIT_PER_PAGE * 4
             ),
             remoteMediator = ImageRemoteMediator(imageDataSource, randomPhotoDatabase),
             pagingSourceFactory = { randomPhotoDatabase.getImageDao().images() }
-        ).flow.map {
-            it.map { image -> image.toData() }
-        }
+        ).flow
+            .flowOn(ioDispatcher).map {
+                it.map { image -> image.toData() }
+            }
 
     /**
      * 특정 이미지 정보 요청
