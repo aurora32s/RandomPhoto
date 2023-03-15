@@ -2,14 +2,14 @@ package com.haman.core.data.entity
 
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListUpdateCallback
-import com.haman.core.model.entity.ImageEntity
+import com.haman.core.model.entity.ImageData
 
-class ImageDiffCallback : DiffUtil.ItemCallback<ImageEntity>() {
-    override fun areItemsTheSame(oldItem: ImageEntity, newItem: ImageEntity): Boolean {
+class ImageDiffCallback : DiffUtil.ItemCallback<ImageData>() {
+    override fun areItemsTheSame(oldItem: ImageData, newItem: ImageData): Boolean {
         return oldItem.id == newItem.id
     }
 
-    override fun areContentsTheSame(oldItem: ImageEntity, newItem: ImageEntity): Boolean {
+    override fun areContentsTheSame(oldItem: ImageData, newItem: ImageData): Boolean {
         return oldItem == newItem
     }
 }
