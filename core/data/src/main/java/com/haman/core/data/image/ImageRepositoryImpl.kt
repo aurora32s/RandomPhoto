@@ -13,7 +13,7 @@ import com.haman.core.data.repository.ImageRepository
 import com.haman.core.datastore.di.DiskCache
 import com.haman.core.datastore.di.MemoryCache
 import com.haman.core.datastore.source.ImageCacheDataSource
-import com.haman.core.model.entity.ImageEntity
+import com.haman.core.model.entity.ImageData
 import com.haman.core.model.entity.toEntity
 import com.haman.core.network.image.ImageApiService
 import com.haman.core.network.image.ImagesPagingSource
@@ -114,7 +114,7 @@ class ImageRepositoryImpl @Inject constructor(
     /**
      * 이미지 리스트 요청
      */
-    override fun getImagesInfo(): Flow<PagingData<ImageEntity>> =
+    override fun getImagesInfo(): Flow<PagingData<ImageData>> =
         Pager(
             config = PagingConfig(
                 pageSize = ImagesPagingSource.LIMIT_PER_PAGE,
@@ -131,7 +131,7 @@ class ImageRepositoryImpl @Inject constructor(
      * 특정 이미지 정보 요청
      * @param id 이미지 id
      */
-    override suspend fun getImageInfo(id: String): Result<ImageEntity?> =
+    override suspend fun getImageInfo(id: String): Result<ImageData?> =
         withContext(ioDispatcher) {
             tryCatching(TAG, "getImageInfo") {
                 imageDataSource.getImageInfo(id).getOrNull()?.toEntity()
@@ -142,7 +142,7 @@ class ImageRepositoryImpl @Inject constructor(
      * 랜덤 이미지 정보 요청
      * @param seed 랜덤에 사용될 seed 정보
      */
-    override suspend fun getRandomImageInfo(seed: String): Result<ImageEntity?> =
+    override suspend fun getRandomImageInfo(seed: String): Result<ImageData?> =
         withContext(ioDispatcher) {
             tryCatching(TAG, "getRandomImageInfo") {
                 imageDataSource.getRandomImageInfo(seed).getOrNull()?.toEntity()
