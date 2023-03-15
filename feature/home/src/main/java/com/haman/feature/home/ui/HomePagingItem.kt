@@ -3,6 +3,7 @@ package com.haman.feature.home.ui
 import android.graphics.Bitmap
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.material.FloatingActionButton
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
@@ -10,19 +11,16 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
-import com.haman.core.common.extension.fromDpToPx
 import com.haman.core.designsystem.R
-import com.haman.core.designsystem.component.AsyncImage
 import com.haman.core.designsystem.component.ContentText
 import com.haman.core.designsystem.icon.RandomIcons
 import com.haman.core.model.ui.ImageUiModel
+import com.haman.core.ui.item.GridImageItem
 import com.haman.core.ui.item.ImageLinearItem
 import com.haman.feature.home.ListType
 
@@ -106,33 +104,34 @@ fun HomeFloatingButton(
  * @param toDetail 상세 화면으로 이동하는 Event
  * @param loadImage 서버로부터(또는 캐시) 이미지를 받아오는 Event
  */
-@Composable
-fun HomeImagePagingItem(
-    modifier: Modifier = Modifier,
-    image: ImageUiModel,
+fun LazyListScope.imageItems(
+    items: LazyPagingItems<ImageUiModel>,
     listType: ListType,
     toDetail: (String, ImageUiModel) -> Unit,
     loadImage: suspend (String, Int, Int, Int) -> Bitmap?
 ) {
-    val localScreenWidth = LocalConfiguration.current.screenWidthDp.toFloat().fromDpToPx()
-    val imageWidth = remember { derivedStateOf { localScreenWidth / listType.column } }
-    when (listType) {
-        ListType.GRID -> AsyncImage(
-            modifier = modifier
-                .aspectRatio(1f)
-                .clickable { toDetail(image.id, image) },
-            image = image,
-            width = imageWidth.value,
-            loadImage = loadImage,
-            scaleType = ContentScale.Crop
-        )
-        ListType.LINEAR -> ImageLinearItem(
-            modifier = modifier.clickable {
-                toDetail(image.id, image)
-            },
-            image = image,
-            author = image.author,
-            loadImage = loadImage
-        )
+    items(count = items.itemCount / listType.column) { index ->
+        when (listType) {
+            ListType.GRID -> GridImageItem(
+                modifier = Modifier.fillMaxWidth(),
+                images = items,
+                cell = listType.column,
+                startIndex = index * listType.column,
+                toDetail = toDetail,
+                loadImage = loadImage
+            )
+            ListType.LINEAR -> {
+                items[index]?.let { image ->
+                    ImageLinearItem(
+                        modifier = Modifier.clickable {
+                            toDetail(image.id, image)
+                        },
+                        image = image,
+                        author = image.author,
+                        loadImage = loadImage
+                    )
+                }
+            }
+        }
     }
 }
