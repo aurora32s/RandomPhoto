@@ -17,7 +17,6 @@ import com.haman.core.network.source.ImageDataSource
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -121,10 +120,9 @@ class ImageRepositoryImpl @Inject constructor(
             ),
             remoteMediator = ImageRemoteMediator(imageDataSource, randomPhotoDatabase),
             pagingSourceFactory = { randomPhotoDatabase.getImageDao().images() }
-        ).flow
-            .flowOn(ioDispatcher).map {
-                it.map { image -> image.toData() }
-            }
+        ).flow.map {
+            it.map { image -> image.toData() }
+        }
 
     /**
      * 특정 이미지 정보 요청
