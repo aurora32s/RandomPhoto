@@ -2,7 +2,7 @@ package com.haman.core.data.repository
 
 import android.graphics.Bitmap
 import androidx.paging.PagingData
-import com.haman.core.model.entity.ImageData
+import com.haman.core.model.repository.ImageData
 import kotlinx.coroutines.flow.Flow
 
 interface ImageRepository {
