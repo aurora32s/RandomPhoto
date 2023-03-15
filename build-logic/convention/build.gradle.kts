@@ -39,5 +39,9 @@ gradlePlugin {
             id = "random.android.feature"
             implementationClass = "AndroidFeatureConventionPlugin"
         }
+        register("androidRoom") {
+            id = "random.android.room"
+            implementationClass = "AndroidRoomConventionPlugin"
+        }
     }
 }
