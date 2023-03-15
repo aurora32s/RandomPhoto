@@ -14,7 +14,6 @@ import com.haman.core.datastore.source.ImageCacheDataSource
 import com.haman.core.model.repository.ImageData
 import com.haman.core.model.repository.toData
 import com.haman.core.network.image.ImageApiService
-import com.haman.core.network.image.ImagesPagingSource
 import com.haman.core.network.source.ImageDataSource
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
@@ -36,7 +35,7 @@ private const val TAG = "com.haman.core.data.image.ImageRepositoryImpl"
  * @param ioDispatcher Dispatchers.IO
  * @param imageCachedInMemoryDataSource 메모리 캐시
  * @param imageCachedInDiskDataSource Disk 캐시
- * @param imageApiService 서버로 이미지를 요청하는 Api(For Paging3)
+ * @param randomPhotoDatabase Database
  * @param imageDataSource 서버로부터 이미지 정보를 요청하는 Api
  */
 @OptIn(ExperimentalPagingApi::class)
@@ -45,7 +44,6 @@ class ImageRepositoryImpl @Inject constructor(
     @IODispatcher private val ioDispatcher: CoroutineDispatcher,
     @MemoryCache private val imageCachedInMemoryDataSource: ImageCacheDataSource,
     @DiskCache private val imageCachedInDiskDataSource: ImageCacheDataSource,
-    private val imageApiService: ImageApiService,
     private val randomPhotoDatabase: RandomPhotoDatabase,
     private val imageDataSource: ImageDataSource
 ) : ImageRepository {
@@ -117,10 +115,10 @@ class ImageRepositoryImpl @Inject constructor(
     override fun getImagesInfo(): Flow<PagingData<ImageData>> =
         Pager(
             config = PagingConfig(
-                pageSize = ImagesPagingSource.LIMIT_PER_PAGE,
+                pageSize = ImageRemoteMediator.LIMIT_PER_PAGE,
                 enablePlaceholders = true
             ),
-            remoteMediator = ImageRemoteMediator(imageApiService, randomPhotoDatabase),
+            remoteMediator = ImageRemoteMediator(imageDataSource, randomPhotoDatabase),
             pagingSourceFactory = { randomPhotoDatabase.getImageDao().images() }
         ).flow.map {
             it.map { image -> image.toData() }
