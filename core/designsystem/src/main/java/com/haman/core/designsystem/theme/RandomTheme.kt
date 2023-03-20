@@ -63,7 +63,7 @@ fun RandomPhotoTheme(
     }
 }
 
-object RandomTheme {
+object RandomPhotoTheme {
     val colors: RandomPhotoColors
         @Composable
         get() = LocalRandomColors.current
