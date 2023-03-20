@@ -14,6 +14,7 @@ import androidx.compose.ui.graphics.lerp
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
+import com.haman.core.designsystem.theme.RandomPhotoTheme
 import com.haman.core.designsystem.util.ImageType
 
 @Composable
@@ -43,10 +44,10 @@ fun CollapsingToolbar(
             }
         }
         Surface(
-            color = MaterialTheme.colors.surface.copy(alpha = progress * 0.65f),
+            color = RandomPhotoTheme.colors.dim.copy(alpha = progress * 0.65f),
             contentColor = lerp(
                 start = MaterialTheme.colors.onBackground,
-                stop = MaterialTheme.colors.onSurface,
+                stop = RandomPhotoTheme.colors.onDim,
                 fraction = progress
             )
         ) {
