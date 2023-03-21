@@ -14,20 +14,24 @@ private val DarkColorPalette = RandomPhotoColors(
     primary = Orange800,
     onPrimary = White,
     background = Gray900,
-    onBackground = White,
+    text = White,
+    icon = White,
     dim = Black,
     onDim = White,
-    imageThumb = Gray700
+    imageThumb = Gray700,
+    isDark = true
 )
 
 private val LightColorPalette = RandomPhotoColors(
     primary = Orange800,
     onPrimary = White,
     background = White,
-    onBackground = Gray600,
+    text = Black,
+    icon = Black,
     dim = Black,
     onDim = White,
-    imageThumb = Gray200
+    imageThumb = Gray200,
+    isDark = false
 )
 
 @Composable
@@ -74,10 +78,12 @@ class RandomPhotoColors(
     primary: Color,
     onPrimary: Color,
     background: Color,
-    onBackground: Color,
+    text: Color,
+    icon: Color,
     dim: Color,
     onDim: Color,
-    imageThumb: Color
+    imageThumb: Color,
+    isDark: Boolean
 ) {
     var primary by mutableStateOf(primary)
         private set
@@ -85,32 +91,41 @@ class RandomPhotoColors(
         private set
     var background by mutableStateOf(background)
         private set
-    var onBackground by mutableStateOf(onBackground)
+    var text by mutableStateOf(text)
+        private set
+    var icon by mutableStateOf(icon)
         private set
     var dim by mutableStateOf(dim)
         private set
     var onDim by mutableStateOf(onDim)
         private set
     var imageThumb by mutableStateOf(imageThumb)
+        private set
+    var isDark by mutableStateOf(isDark)
+        private set
 
     fun update(other: RandomPhotoColors) {
         this.primary = other.primary
         this.onPrimary = other.onPrimary
         this.background = other.background
-        this.onBackground = other.onBackground
+        this.text = other.text
+        this.icon = other.icon
         this.dim = other.dim
         this.onDim = other.onDim
         this.imageThumb = other.imageThumb
+        this.isDark = other.isDark
     }
 
     fun copy() = RandomPhotoColors(
         primary = this.primary,
         onPrimary = this.onPrimary,
         background = this.background,
-        onBackground = this.onBackground,
+        text = this.text,
+        icon = this.icon,
         dim = this.dim,
         onDim = this.onDim,
-        imageThumb = this.imageThumb
+        imageThumb = this.imageThumb,
+        isDark = this.isDark
     )
 }
 
@@ -121,13 +136,13 @@ private val LocalRandomColors = staticCompositionLocalOf<RandomPhotoColors> {
 fun debugColor(
     darkTheme: Boolean,
     colors: RandomPhotoColors,
-    defaultColor: Color = Color.White
+    defaultColor: Color = Color.Unspecified
 ) = Colors(
     primary = colors.primary,
     primaryVariant = defaultColor,
     onPrimary = colors.onPrimary,
     background = colors.background,
-    onBackground = colors.onBackground,
+    onBackground = defaultColor,
     surface = defaultColor,
     onSurface = defaultColor,
     secondary = defaultColor,

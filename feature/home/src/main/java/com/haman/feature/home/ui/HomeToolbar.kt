@@ -21,6 +21,7 @@ import com.haman.core.designsystem.R
 import com.haman.core.designsystem.component.CollapsingToolbar
 import com.haman.core.designsystem.component.SubTitle
 import com.haman.core.designsystem.icon.RandomIcons
+import com.haman.core.designsystem.theme.RandomPhotoTheme
 import com.haman.core.designsystem.util.ImageType
 import com.haman.core.ui.state.ToolbarState
 
@@ -58,7 +59,14 @@ fun HomeToolbar(
                 painter = painterResource(id = RandomIcons.logo),
                 contentDescription = stringResource(id = R.string.home_toolbar_image)
             )
-            SubTitle(text = stringResource(id = R.string.app_title))
+            SubTitle(
+                text = stringResource(id = R.string.app_title),
+                color = androidx.compose.ui.graphics.lerp(
+                    start = RandomPhotoTheme.colors.text,
+                    stop = RandomPhotoTheme.colors.onDim,
+                    fraction = progress.value
+                )
+            )
         }
     }
 }
