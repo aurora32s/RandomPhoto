@@ -8,6 +8,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import com.haman.core.designsystem.theme.RandomPhotoTheme
 
 /**
  * Custom 한 Text Component 생성
@@ -25,7 +26,7 @@ fun CustomText(
     style: TextStyle,
     align: TextAlign = TextAlign.Center,
     bold: Boolean = false,
-    color: Color = Color.Unspecified
+    color: Color? = null
 ) {
     Text(
         modifier = modifier,
@@ -33,7 +34,7 @@ fun CustomText(
         style = style,
         textAlign = align,
         fontWeight = if (bold) FontWeight.Bold else null,
-        color = color
+        color = color ?: RandomPhotoTheme.colors.text
     )
 }
 
@@ -49,7 +50,7 @@ fun Header(
     modifier: Modifier = Modifier,
     text: String,
     align: TextAlign = TextAlign.Start,
-    color: Color = Color.Unspecified
+    color: Color? = null
 ) {
     CustomText(
         modifier = modifier,
@@ -72,7 +73,7 @@ fun SubTitle(
     modifier: Modifier = Modifier,
     text: String,
     align: TextAlign = TextAlign.Center,
-    color: Color = Color.Unspecified
+    color: Color? = null
 ) {
     CustomText(
         modifier = modifier,
@@ -95,7 +96,7 @@ fun ContentText(
     modifier: Modifier = Modifier,
     text: String,
     align: TextAlign = TextAlign.Start,
-    color: Color = Color.Unspecified
+    color: Color? = null
 ) {
     CustomText(
         modifier = modifier,
