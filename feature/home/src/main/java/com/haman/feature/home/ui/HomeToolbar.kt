@@ -1,17 +1,17 @@
 package com.haman.feature.home.ui
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -22,7 +22,6 @@ import com.haman.core.designsystem.component.CollapsingToolbar
 import com.haman.core.designsystem.component.SubTitle
 import com.haman.core.designsystem.icon.RandomIcons
 import com.haman.core.designsystem.theme.RandomPhotoTheme
-import com.haman.core.designsystem.util.ImageType
 import com.haman.core.ui.state.ToolbarState
 
 /**
@@ -41,18 +40,29 @@ fun HomeToolbar(
                     bottomStart = 16.dp * progress.value,
                     bottomEnd = 16.dp * progress.value
                 )
-            )
-            .background(
-                color = MaterialTheme.colors.background
-                    .copy(alpha = 1 - progress.value)
             ),
-        imageType = ImageType.DrawableImage(id = R.drawable.background),
-        height = toolbarState.height,
-        progress = progress.value
+        height = toolbarState.height
+    ) {
+        HomeToolbarBody(progress = progress.value)
+    }
+}
+
+@Composable
+private fun HomeToolbarBody(
+    progress: Float
+) {
+    Image(
+        modifier = Modifier.fillMaxWidth(),
+        painter = painterResource(id = R.drawable.background),
+        contentScale = ContentScale.Crop,
+        contentDescription = ""
+    )
+    Surface(
+        color = RandomPhotoTheme.colors.dim.copy(alpha = progress * 0.75f)
     ) {
         HomeToolBarContent(
             modifier = Modifier.padding(8.dp),
-            progress = toolbarState.progress
+            progress = progress
         ) {
             Image(
                 modifier = Modifier.size(50.dp),
@@ -64,7 +74,7 @@ fun HomeToolbar(
                 color = androidx.compose.ui.graphics.lerp(
                     start = RandomPhotoTheme.colors.text,
                     stop = RandomPhotoTheme.colors.onDim,
-                    fraction = progress.value
+                    fraction = progress
                 )
             )
         }
