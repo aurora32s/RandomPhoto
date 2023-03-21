@@ -1,5 +1,6 @@
 package com.haman.feature.detail
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Icon
@@ -42,7 +43,9 @@ fun DetailScreen(
     }
 
     Box(
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier
+            .fillMaxSize()
+            .background(RandomPhotoTheme.colors.background)
     ) {
         Icon(
             modifier = Modifier
