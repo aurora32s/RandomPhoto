@@ -16,6 +16,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.haman.core.designsystem.component.AsyncImage
 import com.haman.core.designsystem.component.SubTitle
 import com.haman.core.designsystem.icon.RandomIcons
+import com.haman.core.designsystem.theme.RandomPhotoTheme
 import com.haman.core.model.ui.ImageUiModel
 
 /**
@@ -46,8 +47,10 @@ fun DetailScreen(
         Icon(
             modifier = Modifier
                 .align(Alignment.TopEnd)
+                .padding(24.dp)
                 .size(24.dp)
                 .clickable { onBackPressed() },
+            tint = RandomPhotoTheme.colors.icon,
             painter = painterResource(id = RandomIcons.close),
             contentDescription = "close button"
         )
