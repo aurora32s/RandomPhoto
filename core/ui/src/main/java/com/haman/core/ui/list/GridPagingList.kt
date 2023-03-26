@@ -1,9 +1,11 @@
 package com.haman.core.ui.list
 
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.lazy.*
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.GridItemSpan
+import androidx.compose.foundation.lazy.grid.LazyGridState
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -20,7 +22,6 @@ import com.haman.core.model.ui.UiModel
  * @param title 리스트 상단 제목
  * @param item 리스트에 들어갈 아이템 Component
  */
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun <T : UiModel> GridPagingList(
     modifier: Modifier = Modifier,
@@ -28,13 +29,13 @@ fun <T : UiModel> GridPagingList(
     contentPadding: PaddingValues = PaddingValues(),
     space: Float = 0f,
     data: LazyPagingItems<T>,
-    listState: LazyListState,
+    listState: LazyGridState,
     title: @Composable () -> Unit = {},
     item: @Composable (T) -> Unit
 ) {
     LazyVerticalGrid(
         modifier = modifier,
-        cells = GridCells.Fixed(cell),
+        columns = GridCells.Fixed(cell),
         state = listState,
         contentPadding = contentPadding,
         verticalArrangement = Arrangement.spacedBy(space.dp),
