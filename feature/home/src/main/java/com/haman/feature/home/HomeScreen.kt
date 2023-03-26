@@ -1,6 +1,7 @@
 package com.haman.feature.home
 
 import android.graphics.Bitmap
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.Scaffold
@@ -86,9 +87,10 @@ fun HomeScreen(
                 toggleListType = { listType.value = it }
             )
         }
-    ) {
+    ) { innerPadding ->
         PagingList(
             modifier = Modifier
+                .padding(innerPadding)
                 .nestedScroll(nestedScrollConnection),
             data = images,
             errorMsg = R.string.fail_to_load_page,
