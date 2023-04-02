@@ -2,4 +2,5 @@
 <resources>
     <color name="Gray900">#FF212121</color>
     <color name="Black">#FF000000</color>
+    <color name="ic_launcher_random_background">#232323</color>
 </resources>
