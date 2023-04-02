@@ -42,10 +42,9 @@ fun AsyncImage(
     cornerRadius: Float = 4f,
     width: Int = LocalConfiguration.current.screenWidthDp.toFloat().fromDpToPx(),
     scaleType: ContentScale = ContentScale.Crop,
-    loadImage: suspend (String, Int, Int, Int) -> Bitmap?,
-    isDarkTheme: Boolean = isSystemInDarkTheme(),
+    loadImage: suspend (String, Int, Int, Int) -> Bitmap?
 ) {
-    val bitmap = produceState<LoadImageState>(initialValue = LoadImageState.Loading, key1 = Unit) {
+    val bitmap = produceState<LoadImageState>(initialValue = LoadImageState.Loading, key1 = image.id) {
         val result = loadImage(image.id, image.width, image.height, width)
         value = result?.let { LoadImageState.Success(it) } ?: LoadImageState.Error
     }

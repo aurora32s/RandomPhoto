@@ -14,6 +14,7 @@ import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
 import androidx.compose.ui.input.nestedscroll.NestedScrollSource
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.LoadState
@@ -46,10 +47,12 @@ private val maxHeightToolbar = 340.dp
 fun HomeScreen(
     uiEvent: MutableSharedFlow<UiEvent>,
     toDetail: (String, ImageUiModel) -> Unit,
-    viewModel: HomeViewModel = hiltViewModel(),
+    viewModel: HomeViewModel = hiltViewModel()
 ) {
     val images = viewModel.imagesInfo.collectAsLazyPagingItems()
+    val listType = viewModel.listType.collectAsState()
     val coroutine = rememberCoroutineScope()
+    val listState = rememberLazyListState()
 
     LaunchedEffect(key1 = images.loadState.refresh) {
         // 최초의 데이터 요청
@@ -57,15 +60,13 @@ fun HomeScreen(
             uiEvent.emit(UiEvent.CompleteLoadInitData)
         }
     }
-
     // Toolbar 가능 높이
-    val toolbarHeightRange = with(LocalDensity.current) {
-        minHeightToolbar.roundToPx()..maxHeightToolbar.roundToPx()
-    }
 
-    val toolbarState = rememberToolbarState(toolbarHeightRange = toolbarHeightRange)
-    val listState = rememberLazyListState()
-    val listType = rememberSaveable { mutableStateOf(ListType.GRID) }
+    val toolbarState = rememberToolbarState(toolbarHeightRangeProvider = {
+        with(LocalDensity.current) {
+            minHeightToolbar.roundToPx()..maxHeightToolbar.roundToPx()
+        }
+    })
 
     val nestedScrollConnection = remember {
         object : NestedScrollConnection {
@@ -84,7 +85,7 @@ fun HomeScreen(
             HomeFloatingButton(
                 listType = listType.value,
                 images = images,
-                toggleListType = { listType.value = it }
+                toggleListType = viewModel::setListType
             )
         }
     ) { innerPadding ->

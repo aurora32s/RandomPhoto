@@ -110,7 +110,9 @@ fun LazyListScope.imageItems(
     toDetail: (String, ImageUiModel) -> Unit,
     loadImage: suspend (String, Int, Int, Int) -> Bitmap?
 ) {
-    items(count = items.itemCount / listType.column) { index ->
+    items(
+        count = items.itemCount / listType.column
+    ) { index ->
         when (listType) {
             ListType.GRID -> GridImageItem(
                 modifier = Modifier.fillMaxWidth(),

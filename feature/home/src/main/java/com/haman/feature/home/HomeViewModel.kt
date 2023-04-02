@@ -11,8 +11,7 @@ import com.haman.core.domain.GetImagesInfoUseCase
 import com.haman.core.model.ui.ImageUiModel
 import com.haman.core.model.ui.toUiModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.*
 import javax.inject.Inject
 
 @HiltViewModel
@@ -33,6 +32,13 @@ class HomeViewModel @Inject constructor(
      */
     suspend fun getImageByUrl(imageId: String, width: Int, height: Int, reqWidth: Int): Bitmap? {
         return getImageUseCase(imageId, width, height, reqWidth)
+    }
+
+    private val _listType: MutableStateFlow<ListType> = MutableStateFlow(ListType.GRID)
+    val listType: StateFlow<ListType> = _listType.asStateFlow()
+
+    fun setListType(listType: ListType) {
+        _listType.value = listType
     }
 }
 

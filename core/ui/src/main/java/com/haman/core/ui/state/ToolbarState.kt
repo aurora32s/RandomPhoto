@@ -92,7 +92,8 @@ class ExitUnitCollapsedState(
 }
 
 @Composable
-fun rememberToolbarState(toolbarHeightRange: IntRange): ToolbarState {
+fun rememberToolbarState(toolbarHeightRangeProvider: @Composable () -> IntRange): ToolbarState {
+    val toolbarHeightRange = toolbarHeightRangeProvider()
     return rememberSaveable(saver = ExitUnitCollapsedState.Saver) {
         ExitUnitCollapsedState(toolbarHeightRange)
     }
