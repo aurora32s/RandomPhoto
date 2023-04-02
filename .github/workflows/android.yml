@@ -41,12 +41,20 @@ jobs:
       run: ./gradlew testDebugUnitTest
       
     - name: Build with Gradle
+      run: ./gradlew assembleDebug
+      if: "contains(github.ref, 'dev')"
+      
+    - name: Build with Gradle
       run: ./gradlew assembleRelease
       if: "contains(github.ref, 'main')"
       
-    - name: Build with Gradle
-      run: ./gradlew assembleDebug
-      if: "contains(github.ref, 'dev')"
+    - name: Upload apk-files Directory
+      uses: actions/upload-artifact@v3
+      with:
+        name: app-release-unsigned
+        path: ${{ github.workspace }}/app/build/outputs/apk/release/
+        if-no-files-found: ignore
+      if: "contains(github.ref, 'main')"
       
   deploy:
     runs-on: ubuntu-latest
@@ -54,6 +62,15 @@ jobs:
     if: "contains(github.ref, 'main')"
     
     steps:
+    - name: Check out Git Repository
+      uses: actions/checkout@v2
+      
+    - name: Download apk-files Artifactory
+      uses: actions/download-artifact@v3
+      with:
+        name: app-release-unsigned
+        path: ${{ github.workspace }}/app/build/outputs/apk/release/
+        
     - name: upload artifact to Firebase App Distribution
       uses: wzieba/Firebase-Distribution-Github-Action@v1
       with:
