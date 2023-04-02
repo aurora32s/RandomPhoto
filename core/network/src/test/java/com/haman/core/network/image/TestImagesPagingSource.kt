@@ -88,7 +88,7 @@ class TestImagesPagingSource {
                 PagingSource.LoadResult.Page(
                     data = firstResponse,
                     prevKey = null,
-                    nextKey = 2
+                    nextKey = null
                 )
             )
         )
