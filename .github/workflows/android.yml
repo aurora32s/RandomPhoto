@@ -45,7 +45,7 @@ jobs:
       if: "contains(github.ref, 'main')"
       
     - name: Build with Gradle
-      run: ./gradle assembleDebug
+      run: ./gradlew assembleDebug
       if: "contains(github.ref, 'dev')"
       
   deploy:
