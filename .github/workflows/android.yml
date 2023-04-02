@@ -35,9 +35,7 @@ jobs:
       run: chmod +x gradlew
       
     - name: Access Google-Service file
-      env:
-        GOOGLE_SERVICE: ${{ secrets.GOOGLE_SERVICE }}
-      run: echo $GOOGLE_SERVICE > ./app/google-service.json
+      run: echo '${{ secrets.GOOGLE_SERVICE }}' > ./app/google-service.json
       
 #     - name: Run klint
 #       run: ./gradlew klintCheck
