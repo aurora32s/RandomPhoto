@@ -26,3 +26,11 @@ jobs:
       run: ./gradlew build
     - name: Print Hello World
       run: echo "Hello World"
+      
+  test:
+    runs-on: ubuntu-latest
+    needs: build
+    
+    steps:
+      - name: test log
+        run: echo "test"
