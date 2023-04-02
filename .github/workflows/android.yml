@@ -38,7 +38,7 @@ jobs:
 #       run: ./gradlew klintCheck
       
     - name: Run unit tests
-      run: ./gradlew testDebugUnitTests
+      run: ./gradlew testDebugUnitTest
       
     - name: Build with Gradle
       run: ./gradlew assembleRelease
