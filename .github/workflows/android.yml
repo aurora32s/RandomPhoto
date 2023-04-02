@@ -12,20 +12,36 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
+    - name: check out repository
+      uses: actions/checkout@v3
+    
     - name: set up JDK 11
       uses: actions/setup-java@v3
       with:
         java-version: '11'
         distribution: 'temurin'
         cache: gradle
-
+        
+    - name: Cache Gradle Packages
+      uses: actions/cache@v2
+      with:
+        path: |
+          ~/.gradle/caches
+          ~/.gradle/wrapper
+        key: ${{runner.os}}-gradle-${{hashFiles('**/*.gradle*', '**/gradle-wrapper.properties', '**/buildSrc/**.*.kt')}}
+        restore-keys: ${{runner.os}}-gradle-
+      
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
+      
+    - name: Run klint
+      run: ./gradlew klintCheck
+      
+    - name: Run unit tests
+      run: ./gradlew testDebugUnitTests
+      
     - name: Build with Gradle
-      run: ./gradlew build
-    - name: Print Hello World
-      run: echo "Hello World"
+      run: ./gradlew assembleRelease
       
   test:
     runs-on: ubuntu-latest
