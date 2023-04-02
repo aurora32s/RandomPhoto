@@ -37,7 +37,7 @@ jobs:
     - name: Access Google-Service file
       env:
         GOOGLE_SERVICE: ${{ secrets.GOOGLE_SERVICE }}
-      run: ehco "$GOOGLE_SERVICE" > ./app/google-service.json
+      run: echo "$GOOGLE_SERVICE" > ./app/google-service.json
       
 #     - name: Run klint
 #       run: ./gradlew klintCheck
